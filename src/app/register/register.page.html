@@ -8,28 +8,26 @@
 </ion-header>
 <ion-content>
   <ion-card>
-    <form>
-      <ion-item lines="full">
-        <ion-label position="floating">Nombre</ion-label>
-        <ion-input type="text" required></ion-input>
-      </ion-item>
-      <ion-item lines="full">
-        <ion-label position="floating">Apellidos</ion-label>
-        <ion-input type="text" required></ion-input>
-      </ion-item>
-      <ion-item lines="full">
-        <ion-label position="floating">Email</ion-label>
-        <ion-input type="text" required></ion-input>
-      </ion-item>
-      <ion-item lines="full">
-        <ion-label position="floating">Contraseña</ion-label>
-        <ion-input type="password" required></ion-input>
-      </ion-item>
-      <ion-row>
-        <ion-col>
-          <ion-button type="submit" color="danger" expand="block">Sign Up</ion-button>
-        </ion-col>
-      </ion-row>
-    </form>
+    <ion-item lines="full">
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input type="text" [(ngModel)]="data.name" minlength="3" maxlength="10" required></ion-input>
+    </ion-item>
+    <ion-item lines="full">
+      <ion-label position="floating">Apellidos</ion-label>
+      <ion-input type="text" [(ngModel)]="data.lastname" minlength="3" maxlength="10" required></ion-input>
+    </ion-item>
+    <ion-item lines="full">
+      <ion-label position="floating">Email</ion-label>
+      <ion-input type="text" [(ngModel)]="data.mail" minlength="3" maxlength="20" required></ion-input>
+    </ion-item>
+    <ion-item lines="full">
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input type="password" [(ngModel)]="data.password" minlength="3" maxlength="20" required></ion-input>
+    </ion-item>
+    <ion-row>
+      <ion-col>
+        <ion-button type="submit" color="danger" expand="block">Sign Up</ion-button>
+      </ion-col>
+    </ion-row>
   </ion-card>
 </ion-content>

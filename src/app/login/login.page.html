@@ -10,11 +10,11 @@
   <ion-card-header>
     <ion-item lines="full">
       <ion-label position="floating">Email</ion-label>
-      <ion-input type="text" minlength="3" maxlength="15" [(ngModel)]="data.mail" required></ion-input>
+      <ion-input type="text" [(ngModel)]="data.mail" minlength="3" maxlength="20" required></ion-input>
     </ion-item>
     <ion-item lines="full">
       <ion-label position="floating">Contraseña</ion-label>
-      <ion-input type="password" minlength="3" maxlength="15" [(ngModel)]="data.password" required></ion-input>
+      <ion-input type="password" [(ngModel)]="data.password" minlength="3" maxlength="20" required></ion-input>
     </ion-item>
     <ion-row>
       <ion-col>

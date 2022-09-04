@@ -14,12 +14,13 @@ export class LoginPage implements OnInit {
     password: ""
   }
 
-  field: String = "";
+  void: String = "";
 
   constructor(private router: Router, public toastController: ToastController) { }
 
   ngOnInit() {
   }
+
   send() {
     if (this.validateModel(this.data)) {
       this.presentToast("Sesion Iniciada con el email: " + this.data.mail);
@@ -30,21 +31,22 @@ export class LoginPage implements OnInit {
       };
       this.router.navigate(['/home'], navigationExtras);
     } else {
-      this.presentToast("Falta informacion en los siguientes campos: "+this.field, 4500);
+      this.presentToast("Falta informacion en los siguientes campos: "+this.void, 4500);
     }
   }
 
-  validateModel(model: any) { // Copiado de la profe     `(*>﹏<*)′
+  validateModel(model: any) { // Copiado de la profe   `(*>﹏<*)′
     // Recorrer todas las entradas que me entrega el Object entries y obtengo su clave-valor
     for (var [key, value] of Object.entries(model)) {
       // Si el value está vacio retorno falso y guardo el nombre del campo para el error
       if (value == "") {
-        this.field = key;
+        this.void = key;
         return false;
       }
     }
     return true;
   }
+
   async presentToast(msg: string, duracion?: number) {
     const toast = await this.toastController.create({
       message: msg,
