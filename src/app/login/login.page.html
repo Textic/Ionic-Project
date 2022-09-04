@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Iniciar Sesion</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card-header>
+    <ion-item lines="full">
+      <ion-label position="floating">Email</ion-label>
+      <ion-input type="text" minlength="3" maxlength="15" [(ngModel)]="data.mail" required></ion-input>
+    </ion-item>
+    <ion-item lines="full">
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input type="password" minlength="3" maxlength="15" [(ngModel)]="data.password" required></ion-input>
+    </ion-item>
+    <ion-row>
+      <ion-col>
+        <ion-button (click)="send()" type="submit" color="danger" expand="block">Iniciar</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-card-header>
+  <ion-card>
+    <ion-button [routerLink]="['/register']" expand="block">Registrarse</ion-button>
+    <ion-button [routerLink]="['/forgotpassword']" expand="block">Olvidaste tu Contraseña?</ion-button>
+  </ion-card>
+</ion-content>
