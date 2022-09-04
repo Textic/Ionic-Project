@@ -29,6 +29,7 @@ export class LoginPage implements OnInit {
           data: this.data
         }
       };
+      localStorage.setItem('data', JSON.stringify(this.data))
       this.router.navigate(['/home'], navigationExtras);
     } else {
       this.presentToast("Falta informacion en los siguientes campos: "+this.void, 4500);
