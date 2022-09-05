@@ -1,6 +1,6 @@
 <ion-app>
   <ion-split-pane contentId="main-content">
-    <ion-menu contentId="main-content" type="overlay">
+    <ion-menu *ngIf="this.service.checkSesion()" contentId="main-content" type="overlay">
       <ion-content>
         <ion-list id="inbox-list" style="border-bottom: 0px;">
           <ion-header>
