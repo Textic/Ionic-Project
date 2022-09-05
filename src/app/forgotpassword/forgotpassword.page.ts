@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, NavigationExtras } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { GlobalService } from '../global.service';
 
 @Component({
   selector: 'app-forgotpassword',
@@ -15,42 +17,28 @@ export class ForgotpasswordPage implements OnInit {
 
   void: String = "";
 
-  constructor(private router: Router, public toastController: ToastController) { }
-
+  constructor(private router: Router, public toastController: ToastController, private service: GlobalService) {}
+  
+  formForgot = new FormGroup({
+    mail: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(20)])
+  });
+  
   ngOnInit() {
   }
 
-  send() {
-    if (this.validateModel(this.data)) {
-      this.presentToast("Revise su correo para poder recuperar la cuenta", 4500);
+  submit() {
+    if (this.formForgot.valid && this.data.mail == "admin") {
       let navigationExtras: NavigationExtras = {
         state: {
           data: this.data
         }
       };
       this.router.navigate(['/login'], navigationExtras);
+      console.log(this.data.mail)
+      this.service.presentAlert("Datos Ingresados Correctamente!", "Revise su correo para recuperar su contraseña");
     } else {
-      this.presentToast("Falta informacion en los siguientes campos: "+this.void, 4500);
+      this.service.presentAlert("Datos Incorrectos", "Datos Invalidos o mal Ingresados.");
     }
-  }
-
-  validateModel(model: any) { // Copiado de la profe   `(*>﹏<*)′
-    // Recorrer todas las entradas que me entrega el Object entries y obtengo su clave-valor
-    for (var [key, value] of Object.entries(model)) {
-      // Si el value está vacio retorno falso y guardo el nombre del campo para el error
-      if (value == "") {
-        this.void = key;
-        return false;
-      }
-    }
-    return true;
-  }
-
-  async presentToast(msg: string, duracion?: number) {
-    const toast = await this.toastController.create({
-      message: msg,
-      duration: duracion ? duracion : 2000
-    });
-    toast.present();
   }
 }
+
