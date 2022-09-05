@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Configuraciones</ion-title>
+    <ion-button fill="" slot="end" [routerLink]="['/login']">
+      <ion-icon style="font-size: 40px;" name="person-circle-outline"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion_label>Modo Oscuro</ion_label>
+    <ion-toggle id="toggle" (ionChange)="toggleTheme($event)"></ion-toggle>
+  </ion-item>
+  <ion-button (click)="clearLS()" type="submit" color="danger" expand="block">Limpiar localStorage | Datos</ion-button>
+</ion-content>

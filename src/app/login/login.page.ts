@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
-import { ToastController } from '@ionic/angular';
+import { GlobalService } from '../global.service';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +16,7 @@ export class LoginPage implements OnInit {
 
   void: String = "";
 
-  constructor(private router: Router, public toastController: ToastController) { }
+  constructor(private service: GlobalService, private router: Router) { }
 
   ngOnInit() {
   }
@@ -24,20 +24,39 @@ export class LoginPage implements OnInit {
   send() {
     if (this.validateModel(this.data)) {
       if (this.data.mail == "admin" && this.data.password == "admin") {
-        this.presentToast("Sesion Iniciada con el email: " + this.data.mail);
+        this.service.presentToast("Sesion Iniciada con el email: " + this.data.mail);
         let navigationExtras: NavigationExtras = {
           state: {
             data: this.data
           }
         };
-        localStorage.setItem('mail', JSON.stringify(this.data.mail))
-        localStorage.setItem('password', JSON.stringify(this.data.password))
+        localStorage.setItem('mail', this.data.mail)
+        localStorage.setItem('password', this.data.password)
         this.router.navigate(['/home'], navigationExtras);
       } else {
-        this.presentToast("Usuario Incorrecto", 4500);
+        this.service.presentAlert("Usuario Incorrecto!");
       }
     } else {
-      this.presentToast("Falta informacion en los siguientes campos: " + this.void, 4500);
+      this.service.presentAlert("Falta informacion en los siguientes campos: ", this.void);
+    }
+  }
+
+  // async presentAlert(m1: any, m2?: any) {
+  //   const alert = await this.alertController.create({
+  //     header: m1,
+  //     // subHeader: 'Important message',
+  //     message: m2 ? m2: "",
+  //     buttons: ['OK'],
+  //   });
+
+  //   await alert.present();
+  // }
+
+  checkSesion() {
+    if (localStorage.getItem("mail") == null || localStorage.getItem("mail") == "") {
+      return false;
+    } else {
+      return true;
     }
   }
 
@@ -51,13 +70,5 @@ export class LoginPage implements OnInit {
       }
     }
     return true;
-  }
-
-  async presentToast(msg: string, duracion?: number) {
-    const toast = await this.toastController.create({
-      message: msg,
-      duration: duracion ? duracion : 2000
-    });
-    toast.present();
   }
 }

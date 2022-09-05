@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+      <ion-back-button *ngIf="checkSesion()"></ion-back-button>
     </ion-buttons>
     <ion-title>Iniciar Sesion</ion-title>
   </ion-toolbar>
@@ -28,6 +28,6 @@
     <ion-button [routerLink]="['/forgotpassword']" expand="block">Olvidaste tu Contraseña?</ion-button>
   </ion-card>
   <div class="ion-text-center">
-    <img style="margin-top: -50px;" id="logo" src="assets/img/TELLEVO2.png" alt=""> 
+    <img style="height: 300px;" id="logo" src="assets/img/TELLEVO2_BLUR.png" alt=""> 
   </div>
 </ion-content>

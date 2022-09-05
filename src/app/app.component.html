@@ -4,8 +4,8 @@
       <ion-content>
         <ion-list id="inbox-list" style="border-bottom: 0px;">
           <ion-header>
-            <ion-list-header>Te Llevo App</ion-list-header>
-            <!-- <ion-note>test.com</ion-note> -->
+            <ion-list-header *ngIf="refresh()">Te Llevo App</ion-list-header>
+            <ion-note>{{ lsMail }}</ion-note>
             <br>
           </ion-header>
 
@@ -25,6 +25,7 @@
             <ion-label>{{ label }}</ion-label>
           </ion-item>
         </ion-list> -->
+
       </ion-content>
     </ion-menu>
     <ion-router-outlet id="main-content"></ion-router-outlet>
