@@ -23,16 +23,21 @@ export class LoginPage implements OnInit {
 
   send() {
     if (this.validateModel(this.data)) {
-      this.presentToast("Sesion Iniciada con el email: " + this.data.mail);
-      let navigationExtras: NavigationExtras = {
-        state: {
-          data: this.data
-        }
-      };
-      localStorage.setItem('data', JSON.stringify(this.data))
-      this.router.navigate(['/home'], navigationExtras);
+      if (this.data.mail == "admin" && this.data.password == "admin") {
+        this.presentToast("Sesion Iniciada con el email: " + this.data.mail);
+        let navigationExtras: NavigationExtras = {
+          state: {
+            data: this.data
+          }
+        };
+        localStorage.setItem('mail', JSON.stringify(this.data.mail))
+        localStorage.setItem('password', JSON.stringify(this.data.password))
+        this.router.navigate(['/home'], navigationExtras);
+      } else {
+        this.presentToast("Usuario Incorrecto", 4500);
+      }
     } else {
-      this.presentToast("Falta informacion en los siguientes campos: "+this.void, 4500);
+      this.presentToast("Falta informacion en los siguientes campos: " + this.void, 4500);
     }
   }
 

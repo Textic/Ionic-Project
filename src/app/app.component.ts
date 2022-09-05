@@ -8,14 +8,10 @@ export class AppComponent {
   public appPages = [
     { title: 'Inicio', url: '/home', icon: 'grid' },
     { title: 'Mapa', url: '/map', icon: 'map' },
-    { title: 'Rutas', url: '/routes', icon: 'navigate-circle' },
-    // { title: 'Inbox', url: '/folder/Inbox', icon: 'mail' },
-    // { title: 'Outbox', url: '/folder/Outbox', icon: 'paper-plane' },
-    // { title: 'Favorites', url: '/folder/Favorites', icon: 'heart' },
-    // { title: 'Archived', url: '/folder/Archived', icon: 'archive' },
-    // { title: 'Trash', url: '/folder/Trash', icon: 'trash' },
-    // { title: 'Spam', url: '/folder/Spam', icon: 'warning' },
+    { title: 'Viajes', url: '/trips', icon: 'navigate-circle' },
   ];
+
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
-  constructor() {}
+
+  constructor() { }
 }
