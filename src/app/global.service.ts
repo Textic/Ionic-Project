@@ -39,8 +39,6 @@ export class GlobalService {
   }
 
   clearLS() {
-    var toggle = document.getElementById("toggle");
-    toggle.setAttribute('checked', "false");
     localStorage.clear();
     this.router.navigateByUrl('splash');
   }

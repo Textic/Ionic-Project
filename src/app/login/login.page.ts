@@ -23,7 +23,7 @@ export class LoginPage implements OnInit {
 
   send() {
     if (this.validateModel(this.data)) {
-      if (this.data.mail == "admin" && this.data.password == "admin") {
+      if (this.data.mail == "admin" && this.data.password == "admin" || this.data.mail == "user" && this.data.password == "user") {
         this.service.presentToast("Sesion Iniciada con el email: " + this.data.mail);
         let navigationExtras: NavigationExtras = {
           state: {
