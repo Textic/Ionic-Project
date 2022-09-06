@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { ToastController, AlertController } from '@ionic/angular';
 
 @Injectable({
@@ -6,7 +7,7 @@ import { ToastController, AlertController } from '@ionic/angular';
 })
 export class GlobalService {
 
-  constructor(public toastController: ToastController, private alertController: AlertController) { }
+  constructor(public toastController: ToastController, private alertController: AlertController, private router: Router) { }
 
   lsMail = localStorage.getItem("mail");
 
@@ -35,5 +36,12 @@ export class GlobalService {
       duration: duracion ? duracion : 2000
     });
     toast.present();
+  }
+
+  clearLS() {
+    var toggle = document.getElementById("toggle");
+    toggle.setAttribute('checked', "false");
+    localStorage.clear();
+    this.router.navigateByUrl('splash');
   }
 }

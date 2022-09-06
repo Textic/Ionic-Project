@@ -41,25 +41,6 @@ export class LoginPage implements OnInit {
     }
   }
 
-  // async presentAlert(m1: any, m2?: any) {
-  //   const alert = await this.alertController.create({
-  //     header: m1,
-  //     // subHeader: 'Important message',
-  //     message: m2 ? m2: "",
-  //     buttons: ['OK'],
-  //   });
-
-  //   await alert.present();
-  // }
-
-  checkSesion() {
-    if (localStorage.getItem("mail") == null || localStorage.getItem("mail") == "") {
-      return false;
-    } else {
-      return true;
-    }
-  }
-
   validateModel(model: any) { // Copiado de la profe   `(*>﹏<*)′
     // Recorrer todas las entradas que me entrega el Object entries y obtengo su clave-valor
     for (var [key, value] of Object.entries(model)) {
