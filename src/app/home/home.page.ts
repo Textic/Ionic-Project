@@ -10,6 +10,8 @@ export class HomePage implements OnInit {
 
   constructor(private service: GlobalService) { }
 
+  mail = this.service.lsMail
+
   ngOnInit() {
   }
 }

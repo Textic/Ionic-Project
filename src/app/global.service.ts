@@ -40,6 +40,6 @@ export class GlobalService {
 
   clearLS() {
     localStorage.clear();
-    this.router.navigateByUrl('splash');
+    this.router.navigateByUrl('login');
   }
 }

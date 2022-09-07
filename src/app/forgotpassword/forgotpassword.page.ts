@@ -27,14 +27,13 @@ export class ForgotpasswordPage implements OnInit {
   }
 
   submit() {
-    if (this.formForgot.valid && this.data.mail == "admin") {
+    if (this.formForgot.valid) {
       let navigationExtras: NavigationExtras = {
         state: {
           data: this.data
         }
       };
       this.router.navigate(['/login'], navigationExtras);
-      console.log(this.data.mail)
       this.service.presentAlert("Datos Ingresados Correctamente!", "Revise su correo para recuperar su contraseña");
     } else {
       this.service.presentAlert("Datos Incorrectos", "Datos Invalidos o mal Ingresados.");

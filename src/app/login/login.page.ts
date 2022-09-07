@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationExtras } from '@angular/router';
+import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { GlobalService } from '../global.service';
 
 @Component({
@@ -8,15 +8,27 @@ import { GlobalService } from '../global.service';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+  
+  dataExtras: any = "";
 
   data = {
     mail: "",
     password: ""
   }
 
+  firstname: string = 'John';
+  user = "hole";
+
   void: String = "";
 
-  constructor(private service: GlobalService, private router: Router) { }
+  constructor(private activeroute: ActivatedRoute, private service: GlobalService, private router: Router) {
+    this.activeroute.queryParams.subscribe(params => {
+      if (this.router.getCurrentNavigation().extras.state) {
+        this.dataExtras = this.router.getCurrentNavigation().extras.state.data;
+      } else {
+        this.router.navigate(["/login"])}
+    });
+  }
 
   ngOnInit() {
   }
