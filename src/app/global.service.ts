@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastController, AlertController } from '@ionic/angular';
+import { Local } from 'protractor/built/driverProviders';
 
 @Injectable({
   providedIn: 'root'
@@ -9,10 +10,8 @@ export class GlobalService {
 
   constructor(public toastController: ToastController, private alertController: AlertController, private router: Router) { }
 
-  lsMail = localStorage.getItem("mail");
-
   checkSesion() {
-    if (localStorage.getItem("mail") == null || localStorage.getItem("mail") == "") {
+    if (!localStorage.getItem("sessionStatus")) {
       return false;
     } else {
       return true;

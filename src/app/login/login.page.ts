@@ -48,8 +48,8 @@ export class LoginPage implements OnInit {
             data: this.data
           }
         };
+        localStorage.setItem('sessionStatus', "true")
         localStorage.setItem('mail', this.data.mail)
-        localStorage.setItem('password', this.data.password)
         this.router.navigate(['/home/home'], navigationExtras);
       } else {
         this.service.presentAlert("Usuario Incorrecto!");

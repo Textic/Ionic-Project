@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { GlobalService } from '../global.service';
+import { Router } from '@angular/router';
+import { Local } from 'protractor/built/driverProviders';
 
 @Component({
   selector: 'app-profile',
@@ -8,9 +9,15 @@ import { GlobalService } from '../global.service';
 })
 export class ProfilePage implements OnInit {
 
-  constructor(private service: GlobalService) { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
+  }
+
+  clearSession() {
+    localStorage.removeItem("sessionStatus");
+    localStorage.removeItem("mail");
+    this.router.navigateByUrl('login');
   }
 
   mail = localStorage.getItem("mail")
