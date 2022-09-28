@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { GlobalService } from '../global.service';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,8 @@ export class LoginPage implements OnInit {
 
   void: String = "";
 
-  constructor(private activeroute: ActivatedRoute, private service: GlobalService, private router: Router) {
+  constructor(private activeroute: ActivatedRoute, private service: GlobalService, private router: Router, private menuController: MenuController) {
+    this.menuController.enable(false)
     this.activeroute.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
         this.dataExtras = this.router.getCurrentNavigation().extras.state.data;
@@ -31,6 +33,10 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  ionViewWillLeave() {
+    this.menuController.enable(true)
   }
 
   send() {
@@ -44,7 +50,7 @@ export class LoginPage implements OnInit {
         };
         localStorage.setItem('mail', this.data.mail)
         localStorage.setItem('password', this.data.password)
-        this.router.navigate(['/home'], navigationExtras);
+        this.router.navigate(['/home/home'], navigationExtras);
       } else {
         this.service.presentAlert("Usuario Incorrecto!");
       }

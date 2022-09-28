@@ -8,14 +8,20 @@
       <ion-icon style="font-size: 40px;" name="person-circle-outline"></ion-icon>
     </ion-button>
   </ion-toolbar>
+  <ion-toolbar>
+    <ion-segment value="home" mode="ios" (ionChange)="onChangeSegment($event)">
+      <ion-segment-button value="driver">
+        <ion-icon name="car-sport-outline"></ion-icon>
+        <ion-label>Conductor</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="passenger">
+        <ion-icon name="person-outline"></ion-icon>
+        <ion-label>Pasajero</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div class="ion-text-center" style="margin-top: 20px;">
-    <h5 style="font-size: 50px;">Bienvenido</h5>
-    <h5>{{ mail }}</h5>
-  </div>
-  <div class="ion-text-center">
-    <img style="margin-top: 60px;" id="logo" src="assets/img/TELLEVO1_Back.png" alt=""> 
-  </div>
+  <ion-router-outlet></ion-router-outlet>
 </ion-content>

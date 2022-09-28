@@ -2,12 +2,8 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\app",
-    "\\src\\app\\config",
-    "\\src\\app\\error",
-    "\\src\\app\\login",
-    "\\src\\app\\profile"
+    "\\src\\app"
   ],
-  "SelectedNode": "\\src\\app\\login\\login.page.spec.ts",
+  "SelectedNode": "\\src\\app",
   "PreviewInSolutionExplorer": false
 }
