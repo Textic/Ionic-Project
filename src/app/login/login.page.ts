@@ -10,15 +10,14 @@ import { MenuController } from '@ionic/angular';
 })
 export class LoginPage implements OnInit {
   
-  dataExtras: any = "";
+  dataExtras = {
+    mail: ""
+  };
 
   data = {
     mail: "",
     password: ""
   }
-
-  firstname: string = 'John';
-  user = "hole";
 
   void: String = "";
 
@@ -41,7 +40,7 @@ export class LoginPage implements OnInit {
 
   send() {
     if (this.validateModel(this.data)) {
-      if (this.data.mail == "admin" && this.data.password == "admin" || this.data.mail == "user" && this.data.password == "user") {
+      if (this.data.mail == "admin" && this.data.password == "admin" || this.data.mail == "dai.gonzalez@duocuc.cl" && this.data.password == "admin") {
         this.service.presentToast("Sesion Iniciada con el email: " + this.data.mail);
         let navigationExtras: NavigationExtras = {
           state: {
@@ -50,6 +49,9 @@ export class LoginPage implements OnInit {
         };
         localStorage.setItem('sessionStatus', "true")
         localStorage.setItem('mail', this.data.mail)
+        localStorage.setItem('name', "Daniel")
+        localStorage.setItem('lName', "Gonzalez")
+        localStorage.setItem('number', "56948347298")
         this.router.navigate(['/home/home'], navigationExtras);
       } else {
         this.service.presentAlert("Usuario Incorrecto!");

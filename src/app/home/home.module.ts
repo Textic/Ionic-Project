@@ -7,9 +7,9 @@ import { IonicModule } from '@ionic/angular';
 import { HomePageRoutingModule } from './home-routing.module';
 
 import { HomePage } from './home.page';
-import { DriverComponent } from '../components/driver/driver.component';
-import { PassengerComponent } from '../components/passenger/passenger.component';
-import { HomeComponent } from '../components/home/home.component';
+import { DriverComponent } from '../others/components/driver/driver.component';
+import { PassengerComponent } from '../others/components/passenger/passenger.component';
+import { HomeComponent } from '../others/components/home/home.component';
 
 @NgModule({
   imports: [

@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-item>
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input [(ngModel)]="name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Apellido</ion-label>
+      <ion-input [(ngModel)]="lName"></ion-input>
+    </ion-item>
+    <ion-item lines="full">
+      <ion-label position="floating">Email</ion-label>
+      <ion-input [(ngModel)]="mail" disabled></ion-input>
+    </ion-item>
+    <ion-item lines="full">
+      <ion-label position="floating">Numero</ion-label>
+      <ion-input [(ngModel)]="number" type="number"></ion-input>
+    </ion-item>
+  </ion-card>
+  <ion-card>
+    <ion-button (click)="this.firestore.getCollection('Users')" type="submit" expand="block">Actualizar Datos</ion-button>
+  </ion-card>
+  <!--<ion-card>
+    <ion-item *ngFor="let i of userData">
+      <ion-label>dadada</ion-label>
+      <ion-label>{{ i.name }}</ion-label>
+    </ion-item>
+  </ion-card>-->
+</ion-content>

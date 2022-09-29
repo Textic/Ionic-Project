@@ -3,7 +3,17 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+
+  firebaseConfig: {
+    apiKey: "AIzaSyBvWEbe0UMlsIvHJBXe4DHrSnSJ-nbDQBc",
+    authDomain: "ionic-tellevoapp-database.firebaseapp.com",
+    projectId: "ionic-tellevoapp-database",
+    storageBucket: "ionic-tellevoapp-database.appspot.com",
+    messagingSenderId: "1045940710521",
+    appId: "1:1045940710521:web:f00c2fb790c93f4c1878a8",
+    measurementId: "G-HNN373Y4E2"
+  }
 };
 
 /*
