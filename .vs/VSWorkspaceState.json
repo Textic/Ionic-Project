@@ -3,8 +3,12 @@
     "",
     "\\src",
     "\\src\\app",
-    "\\src\\app\\others"
+    "\\src\\app\\others",
+    "\\src\\app\\others\\components",
+    "\\src\\app\\others\\components\\home",
+    "\\src\\app\\profile",
+    "\\src\\app\\register"
   ],
-  "SelectedNode": "\\src\\app\\others",
+  "SelectedNode": "\\src\\app\\others\\components\\home\\home.component.html",
   "PreviewInSolutionExplorer": false
 }

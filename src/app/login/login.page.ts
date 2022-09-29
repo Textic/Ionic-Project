@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { GlobalService } from '../global.service';
 import { MenuController } from '@ionic/angular';
+import { FirestoreService } from '../others/services/firestore.service';
+import { iUserData } from '../others/interfaces/interface';
 
 @Component({
   selector: 'app-login',
@@ -9,10 +11,16 @@ import { MenuController } from '@ionic/angular';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  
+
+  userData: iUserData[] = []
+
   dataExtras = {
     mail: ""
   };
+
+  data2 = {
+    mail: ""
+  }
 
   data = {
     mail: "",
@@ -21,7 +29,7 @@ export class LoginPage implements OnInit {
 
   void: String = "";
 
-  constructor(private activeroute: ActivatedRoute, private service: GlobalService, private router: Router, private menuController: MenuController) {
+  constructor(private activeroute: ActivatedRoute, private service: GlobalService, private router: Router, private menuController: MenuController, private firestore: FirestoreService) {
     this.menuController.enable(false)
     this.activeroute.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
@@ -40,18 +48,35 @@ export class LoginPage implements OnInit {
 
   send() {
     if (this.validateModel(this.data)) {
-      if (this.data.mail == "admin" && this.data.password == "admin" || this.data.mail == "dai.gonzalez@duocuc.cl" && this.data.password == "admin") {
+      if (this.data.mail == "admin" && this.data.password == "admin" || this.data.mail == "dai.gonzalez@duocuc.cl" && this.data.password == "admin" || this.data.mail == "holahola@gmail.com" && this.data.password == "admin") {
         this.service.presentToast("Sesion Iniciada con el email: " + this.data.mail);
         let navigationExtras: NavigationExtras = {
           state: {
             data: this.data
           }
         };
+        this.firestore.getCollectionByParameter<iUserData>("Users", "mail", this.data.mail).subscribe(e => {
+          if (e.length == 0) {
+            this.firestore.setColletion("Users", this.firestore.getId(), { mail: this.data.mail })
+            localStorage.setItem('mail', this.data.mail)
+          }
+          this.userData = e
+          this.userData.forEach(e => {
+            if (e.mail) {
+              localStorage.setItem('mail', e.mail)
+            }
+            if (e.name) {
+              localStorage.setItem('name', e.name)
+            }
+            if (e.lName) {
+              localStorage.setItem('lName', e.lName)
+            }
+            if (e.number) {
+              localStorage.setItem('number', e.number)
+            }
+          })
+        })
         localStorage.setItem('sessionStatus', "true")
-        localStorage.setItem('mail', this.data.mail)
-        localStorage.setItem('name', "Daniel")
-        localStorage.setItem('lName', "Gonzalez")
-        localStorage.setItem('number', "56948347298")
         this.router.navigate(['/home/home'], navigationExtras);
       } else {
         this.service.presentAlert("Usuario Incorrecto!");

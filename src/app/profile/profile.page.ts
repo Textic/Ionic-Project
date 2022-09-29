@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Local } from 'protractor/built/driverProviders';
 
 @Component({
   selector: 'app-profile',
@@ -17,8 +16,14 @@ export class ProfilePage implements OnInit {
   clearSession() {
     localStorage.removeItem("sessionStatus");
     localStorage.removeItem("mail");
+    localStorage.removeItem("name");
+    localStorage.removeItem("lName");
+    localStorage.removeItem("number");
     this.router.navigateByUrl('login');
   }
 
   mail = localStorage.getItem("mail")
+  name = localStorage.getItem("name")
+  lName = localStorage.getItem("lName")
+  number = localStorage.getItem("number")
 }

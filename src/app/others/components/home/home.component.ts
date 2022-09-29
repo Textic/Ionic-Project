@@ -10,7 +10,8 @@ export class HomeComponent implements OnInit {
 
   constructor(private service: GlobalService) { }
 
-  mail = localStorage.getItem("mail");
+  name = localStorage.getItem("name")
+  lName = localStorage.getItem("lName")
 
   ngOnInit() {}
 

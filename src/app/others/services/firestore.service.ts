@@ -9,6 +9,10 @@ export class FirestoreService {
 
   constructor(private firestoreService: AngularFirestore) { }
 
+  getId() {
+    return this.firestoreService.createId();
+  }
+
   deleteCollection(path: string, id: string) {
     const collection = this.firestoreService.collection(path)
     return collection.doc(id).delete();
