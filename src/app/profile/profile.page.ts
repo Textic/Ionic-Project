@@ -10,8 +10,23 @@ export class ProfilePage implements OnInit {
 
   constructor(private router: Router) { }
 
+  lsMail = localStorage.getItem("mail")
+  lsName = localStorage.getItem("name")
+  lsLName = localStorage.getItem("lName")
+  lsNumber = localStorage.getItem("number")
+
   ngOnInit() {
-    
+    if (this.lsNumber == null || this.lsNumber == "") {
+      document.getElementById("number").innerHTML = "Sin Número"
+    } else {
+      document.getElementById("number").innerHTML = "+56 " + this.lsNumber
+    }
+
+    if (this.lsName == null || this.lsName == "") {
+      document.getElementById("name").innerHTML = "Sin Nombre"
+    } else {
+      document.getElementById("name").innerHTML = this.lsName + " " + this.lsLName
+    }
   }
 
   clearSession() {
@@ -20,12 +35,6 @@ export class ProfilePage implements OnInit {
     localStorage.removeItem("name");
     localStorage.removeItem("lName");
     localStorage.removeItem("number");
-    localStorage.removeItem("userId");
     this.router.navigateByUrl('login');
   }
-
-  mail = localStorage.getItem("mail")
-  name = localStorage.getItem("name")
-  lName = localStorage.getItem("lName")
-  number = localStorage.getItem("number")
 }

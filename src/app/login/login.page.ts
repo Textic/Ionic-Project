@@ -21,8 +21,6 @@ export class LoginPage implements OnInit {
     number: ""
   }
 
-  idLoop: string = null
-
   dataExtras = {
     mail: ""
   };
@@ -66,7 +64,7 @@ export class LoginPage implements OnInit {
         };
         this.firestore.getCollectionByParameter<iUserData>("Users", "mail", this.data.mail).subscribe(e => {
           if (e.length == 0) {
-            this.firestore.setCollection("Users", this.firestore.getId(), this.makeUserData)
+            this.firestore.setCollection("Users", this.makeUserData.mail, this.makeUserData)
             localStorage.setItem('mail', this.data.mail)
           }
           this.userData = e

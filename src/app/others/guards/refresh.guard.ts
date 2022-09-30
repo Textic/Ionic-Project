@@ -14,10 +14,6 @@ export class RefreshGuard implements CanLoad {
     route: Route,
     segments: UrlSegment[]): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    if (localStorage.getItem('userId') == null) {
-      this.firestore.getCollectionIdByParameter("Users", "mail", localStorage.getItem('mail'))
-    }
-
     if (localStorage.getItem("theme") == "dark") {
       document.body.setAttribute("color-theme", "dark");
     } else {

@@ -2,13 +2,14 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\app",
+    "\\src\\app\\config",
+    "\\src\\app\\forgotpassword",
+    "\\src\\app\\home",
     "\\src\\app\\others",
-    "\\src\\app\\others\\components",
-    "\\src\\app\\others\\components\\home",
-    "\\src\\app\\profile",
-    "\\src\\app\\register"
+    "\\src\\app\\others\\guards",
+    "\\src\\app\\others\\interfaces",
+    "\\src\\app\\splash"
   ],
-  "SelectedNode": "\\src\\app\\others\\components\\home\\home.component.html",
+  "SelectedNode": "\\package.json",
   "PreviewInSolutionExplorer": false
 }

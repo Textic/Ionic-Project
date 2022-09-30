@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SkipSelf } from '@angular/core';
 import { Router } from '@angular/router';
+import { GlobalService } from '../global.service';
 import { iUserData } from '../others/interfaces/interface';
 import { FirestoreService } from '../others/services/firestore.service';
 
@@ -10,7 +11,9 @@ import { FirestoreService } from '../others/services/firestore.service';
 })
 export class ProfileUpdatePage implements OnInit {
 
-  constructor(private firestore: FirestoreService, private router: Router) { }
+  constructor(private firestore: FirestoreService, private router: Router, private service: GlobalService) { }
+
+  void: String = "";
 
   lsMail = localStorage.getItem('mail');
   lsName = localStorage.getItem('name');
@@ -23,17 +26,43 @@ export class ProfileUpdatePage implements OnInit {
     lName: this.lsLName ?? "",
     number: this.lsNumber ?? ""
   }
-  
+
   ngOnInit() {
     
   }
 
   updateProfile() {
-    this.firestore.updateCollection("Users", localStorage.getItem("userId"), this.userData)
-    localStorage.setItem('mail', this.userData.mail)
-    localStorage.setItem('name', this.userData.name)
-    localStorage.setItem('lName', this.userData.lName)
-    localStorage.setItem('number', this.userData.number)
-    this.router.navigate(['/home/home']);
+    if (this.validateModel(this.userData)) {
+      this.firestore.updateCollection("Users", this.userData.mail, this.userData)
+      localStorage.setItem('mail', this.userData.mail)
+      localStorage.setItem('name', this.userData.name)
+      localStorage.setItem('lName', this.userData.lName)
+      localStorage.setItem('number', this.userData.number)
+      this.router.navigate(['/profile']);
+    } else {
+      this.service.presentAlert("Falta informacion en los siguientes campos: ", this.void);
+    }
+  }
+
+  validateModel(model: any) {
+    for (var [key, value] of Object.entries(model)) {
+      if (value == "" || value == null) {
+        if (key == "mail") {
+          key = "Correo"
+        }
+        if (key == "name") {
+          key = "Nombre"
+        }
+        if (key == "lName") {
+          key = "Apellido"
+        }
+        if (key == "number") {
+          key = "Numero"
+        }
+        this.void = key;
+        return false;
+      }
+    }
+    return true;
   }
 }
