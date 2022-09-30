@@ -11,6 +11,7 @@ export class ProfilePage implements OnInit {
   constructor(private router: Router) { }
 
   ngOnInit() {
+    
   }
 
   clearSession() {
@@ -19,6 +20,7 @@ export class ProfilePage implements OnInit {
     localStorage.removeItem("name");
     localStorage.removeItem("lName");
     localStorage.removeItem("number");
+    localStorage.removeItem("userId");
     this.router.navigateByUrl('login');
   }
 

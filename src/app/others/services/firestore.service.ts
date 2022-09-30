@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
+import { log } from 'console';
+import { iUserData } from '../interfaces/interface';
 
 @Injectable({
   providedIn: 'root'
@@ -18,12 +20,12 @@ export class FirestoreService {
     return collection.doc(id).delete();
   }
 
-  updateColletion(path: string, id: string, data: any) {
+  updateCollection(path: string, id: string, data: any) {
     const collection = this.firestoreService.collection(path)
     return collection.doc(id).update(data);
   }
 
-  setColletion(path: string, id: string, data: any) {
+  setCollection(path: string, id: string, data: any) {
     const collection = this.firestoreService.collection(path)
     return collection.doc(id).set(data);
   }
@@ -38,8 +40,18 @@ export class FirestoreService {
     return collection.doc(id).valueChanges()
   }
 
-  getCollectionByParameter<type>(path: string, parameter: string, value: string) {
-    const collection: AngularFirestoreCollection<type> = this.firestoreService.collection<type>(path, e => e.where(parameter, '==', value));
+  getCollectionByParameter<type>(path: string, key: string, value: string) {
+    const collection: AngularFirestoreCollection<type> = this.firestoreService.collection<type>(path, e => e.where(key, '==', value));
     return collection.valueChanges()
+  }
+
+  getCollectionIdByParameter<type>(path: string, key: string, value: string) {
+    const collection: AngularFirestoreCollection<type> = this.firestoreService.collection<type>(path, e => e.where(key, '==', value));
+    collection.valueChanges({ idField: 'propertyId' }).subscribe(a => {
+      for (var i = 0; i < length; i++) {
+        const idField = a[i].propertyId
+        localStorage.setItem('userId', idField)
+      }
+    })
   }
 }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { GlobalService } from './global.service';
+import { FirestoreService } from './others/services/firestore.service';
 
 @Component({
   selector: 'app-root',
@@ -17,13 +18,5 @@ export class AppComponent {
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
   constructor(private service: GlobalService) { }
-  
-  refresh() {
-    if(localStorage.getItem("theme") == "dark") {
-      document.body.setAttribute("color-theme", "dark");
-    } else {
-      document.body.setAttribute("color-theme", "light");
-    }
-    return true;
-  }
+
 }

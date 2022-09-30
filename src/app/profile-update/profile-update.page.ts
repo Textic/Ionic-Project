@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { iUserData } from '../others/interfaces/interface';
 import { FirestoreService } from '../others/services/firestore.service';
 
@@ -9,18 +10,30 @@ import { FirestoreService } from '../others/services/firestore.service';
 })
 export class ProfileUpdatePage implements OnInit {
 
-  constructor(private firestore: FirestoreService) { }
+  constructor(private firestore: FirestoreService, private router: Router) { }
 
-  userData: iUserData[] = []
-
-  NewUserData: iUserData = {
-    name: "dadada",
-    lName: "dadada",
-    mail: "alo@gmail.com",
-    number: "56948347298"
+  lsMail = localStorage.getItem('mail');
+  lsName = localStorage.getItem('name');
+  lsLName = localStorage.getItem('lName');
+  lsNumber = localStorage.getItem('number');
+  
+  userData: iUserData = {
+    mail: this.lsMail ?? "",
+    name: this.lsName ?? "",
+    lName: this.lsLName ?? "",
+    number: this.lsNumber ?? ""
   }
-
+  
   ngOnInit() {
     
+  }
+
+  updateProfile() {
+    this.firestore.updateCollection("Users", localStorage.getItem("userId"), this.userData)
+    localStorage.setItem('mail', this.userData.mail)
+    localStorage.setItem('name', this.userData.name)
+    localStorage.setItem('lName', this.userData.lName)
+    localStorage.setItem('number', this.userData.number)
+    this.router.navigate(['/home/home']);
   }
 }

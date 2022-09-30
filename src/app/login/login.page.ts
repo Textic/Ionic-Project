@@ -14,6 +14,15 @@ export class LoginPage implements OnInit {
 
   userData: iUserData[] = []
 
+  makeUserData: iUserData = {
+    name: "",
+    lName: "",
+    mail: "",
+    number: ""
+  }
+
+  idLoop: string = null
+
   dataExtras = {
     mail: ""
   };
@@ -30,16 +39,15 @@ export class LoginPage implements OnInit {
   void: String = "";
 
   constructor(private activeroute: ActivatedRoute, private service: GlobalService, private router: Router, private menuController: MenuController, private firestore: FirestoreService) {
-    this.menuController.enable(false)
     this.activeroute.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
         this.dataExtras = this.router.getCurrentNavigation().extras.state.data;
-      } else {
-        this.router.navigate(["/login"])}
+      }
     });
   }
 
   ngOnInit() {
+    this.menuController.enable(false)
   }
 
   ionViewWillLeave() {
@@ -47,6 +55,7 @@ export class LoginPage implements OnInit {
   }
 
   send() {
+    this.makeUserData.mail = this.data.mail
     if (this.validateModel(this.data)) {
       if (this.data.mail == "admin" && this.data.password == "admin" || this.data.mail == "dai.gonzalez@duocuc.cl" && this.data.password == "admin" || this.data.mail == "holahola@gmail.com" && this.data.password == "admin") {
         this.service.presentToast("Sesion Iniciada con el email: " + this.data.mail);
@@ -57,13 +66,13 @@ export class LoginPage implements OnInit {
         };
         this.firestore.getCollectionByParameter<iUserData>("Users", "mail", this.data.mail).subscribe(e => {
           if (e.length == 0) {
-            this.firestore.setColletion("Users", this.firestore.getId(), { mail: this.data.mail })
+            this.firestore.setCollection("Users", this.firestore.getId(), this.makeUserData)
             localStorage.setItem('mail', this.data.mail)
           }
           this.userData = e
           this.userData.forEach(e => {
             if (e.mail) {
-              localStorage.setItem('mail', e.mail)
+              localStorage.setItem('mail', this.data.mail)
             }
             if (e.name) {
               localStorage.setItem('name', e.name)

@@ -13,7 +13,11 @@ export class SplashPage implements OnInit {
   
   constructor(public router: Router, private animationCtrl: AnimationController) {
     setTimeout(() => {
-      this.router.navigateByUrl('login');
+      if (localStorage.getItem('sessionStatus') == "true") {
+        this.router.navigateByUrl('home/home')
+      } else {
+        this.router.navigateByUrl('login')
+      }
     },3500);
     setTimeout(() => {
       document.getElementById("loadingdiv").style.display = "block";
