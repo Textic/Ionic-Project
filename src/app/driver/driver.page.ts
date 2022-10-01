@@ -1,45 +1,44 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { GoogleMap } from '@capacitor/google-maps';
-import { environment } from 'src/environments/environment';
+import { Component, OnInit } from '@angular/core';
 
 declare var google;
 
 @Component({
   selector: 'app-driver',
-  templateUrl: './driver.component.html',
-  styleUrls: ['./driver.component.scss'],
+  templateUrl: './driver.page.html',
+  styleUrls: ['./driver.page.scss'],
 })
-export class DriverComponent implements OnInit {
-  
+export class DriverPage implements OnInit {
+
   constructor() { }
 
   map = null;
-  
-  ngOnInit() {
-    // this.loadMap();
 
+  ngOnInit() {
+    this.loadMap();
+    
     const modal = document.querySelector('ion-modal');
-    const searchBar = document.querySelector('ion-searchbar');
+    // const searchBar = document.querySelector('ion-searchbar');
 
     modal.canDismiss = false;
     modal.isOpen = true;
-    modal.breakpoints = [0, 0.25, 0.5, 0.75];
+    modal.breakpoints = [0.13, 0.5];
     modal.backdropBreakpoint = 0.5;
     modal.backdropDismiss = false;
-    modal.initialBreakpoint = 0.25;
-    searchBar.addEventListener('click', () => {
-      modal.setCurrentBreakpoint(1);
-    });
+    modal.initialBreakpoint = 0.13;
+
+    // searchBar.addEventListener('click', e => {
+    //   modal.setCurrentBreakpoint(1);
+    // });
   }
 
   ionViewWillLeave() {
-    const modal = document.querySelector('ion-modal');
+    // const modal = document.querySelector('ion-modal');
 
-    modal.isOpen = false;
+    // modal.isOpen = false;
   }
 
   loadMap() {
-    const mapEle: HTMLElement = document.getElementById('mapPass');
+    const mapEle: HTMLElement = document.getElementById('mapDriver');
     const myLatLng = { lat: -33.033648, lng: -71.5329167 }; // 
     this.map = new google.maps.Map(mapEle, {
       center: myLatLng,
@@ -225,9 +224,5 @@ export class DriverComponent implements OnInit {
       map: this.map,
       title: marker.title
     });
-  }
-
-  closeMap() {
-    document.getElementById("mapDriver").style.display = "none";
   }
 }

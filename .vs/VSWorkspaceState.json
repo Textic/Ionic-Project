@@ -1,15 +1,7 @@
 {
   "ExpandedNodes": [
     "",
-    "\\src",
-    "\\src\\app\\config",
-    "\\src\\app\\forgotpassword",
-    "\\src\\app\\home",
-    "\\src\\app\\others",
-    "\\src\\app\\others\\guards",
-    "\\src\\app\\others\\interfaces",
-    "\\src\\app\\splash"
+    "\\android"
   ],
-  "SelectedNode": "\\package.json",
   "PreviewInSolutionExplorer": false
 }

@@ -12,6 +12,9 @@ export class HomePage implements OnInit {
 
   constructor(private service: GlobalService, private router: Router, private firestore: FirestoreService) { }
 
+  lsName = localStorage.getItem("name")
+  lsLName = localStorage.getItem("lName")
+
   ngOnInit() {
     if (localStorage.getItem("theme") == "dark") {
       document.body.setAttribute("color-theme", "dark");
@@ -20,9 +23,16 @@ export class HomePage implements OnInit {
     }
   }
 
+  ionViewDidLeave() {
+    document.getElementById("segment").setAttribute("value", "home");
+  }
+
   onChangeSegment(e) {
-    /*console.log("Segment Selection");*/
     let select = e.detail.value;
-    this.router.navigate(['home/' + select]);
+    if (select == "driver") {
+      this.router.navigateByUrl('driver');
+    } else if (select == "passenger") {
+      this.router.navigateByUrl('passenger');
+    }
   }
 }

@@ -11,6 +11,8 @@ import { DriverComponent } from '../others/components/driver/driver.component';
 import { PassengerComponent } from '../others/components/passenger/passenger.component';
 import { HomeComponent } from '../others/components/home/home.component';
 
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -18,6 +20,7 @@ import { HomeComponent } from '../others/components/home/home.component';
     IonicModule,
     HomePageRoutingModule
   ],
-  declarations: [HomePage, DriverComponent, PassengerComponent, HomeComponent]
+  declarations: [HomePage], // old code: [HomePage, DriverComponent, PassengerComponent, HomeComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class HomePageModule {}

@@ -29,6 +29,10 @@ export class ProfilePage implements OnInit {
     }
   }
 
+  profileEdit() {
+    this.router.navigateByUrl('profile-update', { skipLocationChange: true, replaceUrl: true });
+  }
+
   clearSession() {
     localStorage.removeItem("sessionStatus");
     localStorage.removeItem("mail");

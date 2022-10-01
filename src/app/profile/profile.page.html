@@ -23,7 +23,7 @@
           <h5 style="font-size: 15px; font-family: 'Segoe UI';">{{ lsMail }}</h5>
         </ion-col>
       </ion-row>
-      <ion-router-link color="dark" [routerLink]="['/profile-update']">
+      <ion-router-link color="dark" (click)="profileEdit()">
         <ion-row style="margin-top: 20px;">
           <ion-col size="2" style="display: flex; align-items: center; justify-content: end;">
             <img style="height: 30px;" src="assets/img/star.png" alt="">

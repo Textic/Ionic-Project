@@ -84,7 +84,7 @@ export class LoginPage implements OnInit {
           })
         })
         localStorage.setItem('sessionStatus', "true")
-        this.router.navigate(['/home/home'], navigationExtras);
+        this.router.navigateByUrl('/home', { skipLocationChange: true, replaceUrl: true });
       } else {
         this.service.presentAlert("Usuario Incorrecto!");
       }

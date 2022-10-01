@@ -61,6 +61,16 @@ const routes: Routes = [
     canLoad: [RefreshGuard]
   },
   {
+    path: 'driver',
+    loadChildren: () => import('./driver/driver.module').then( m => m.DriverPageModule),
+    canLoad: [RefreshGuard]
+  },
+  {
+    path: 'passenger',
+    loadChildren: () => import('./passenger/passenger.module').then( m => m.PassengerPageModule),
+    canLoad: [RefreshGuard]
+  },
+  {
     path: '**',
     loadChildren: () => import('./error/error.module').then(m => m.ErrorPageModule),
     canLoad: [RefreshGuard]
