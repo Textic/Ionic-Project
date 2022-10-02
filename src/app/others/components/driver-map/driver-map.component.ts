@@ -1,46 +1,28 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 
 declare var google;
 
 @Component({
-  selector: 'app-driver',
-  templateUrl: './driver.page.html',
-  styleUrls: ['./driver.page.scss'],
+  selector: 'app-driver-map',
+  templateUrl: './driver-map.component.html',
+  styleUrls: ['./driver-map.component.scss'],
 })
-export class DriverPage implements OnInit {
+export class DriverMapComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor() { }
 
   map = null;
 
   ngOnInit() {
-    const modal = document.querySelector('ion-modal');
-    // const searchBar = document.querySelector('ion-searchbar');
+    this.loadMap();
+  }
 
-    modal.canDismiss = false;
-    modal.isOpen = true;
-    modal.breakpoints = [0.13, 0.5];
-    modal.backdropBreakpoint = 0.3;
-    modal.backdropDismiss = true;
-    modal.showBackdrop = true;
-    modal.initialBreakpoint = 0.13;
-
-    // searchBar.addEventListener('click', e => {
-    //   modal.setCurrentBreakpoint(1);
-    // });
+  ionViewWillEnter() {
+    document.getElementById('mapDriver').style.display = 'block';
   }
 
   ionViewWillLeave() {
-    const modal = document.querySelector('ion-modal');
-
-    modal.canDismiss = true;
-    modal.isOpen = false;
-  }
-
-  onChangeSegment($event){
-    let value = $event.detail.value;
-    this.router.navigate(['driver/' + value]);
+    document.getElementById('mapDriver').style.display = 'none';
   }
 
   loadMap() {

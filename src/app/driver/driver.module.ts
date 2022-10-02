@@ -7,6 +7,8 @@ import { IonicModule } from '@ionic/angular';
 import { DriverPageRoutingModule } from './driver-routing.module';
 
 import { DriverPage } from './driver.page';
+import { DriverMapComponent } from '../others/components/driver-map/driver-map.component';
+import { DriverConfigComponent } from '../others/components/driver-config/driver-config.component';
 
 @NgModule({
   imports: [
@@ -15,6 +17,6 @@ import { DriverPage } from './driver.page';
     IonicModule,
     DriverPageRoutingModule
   ],
-  declarations: [DriverPage]
+  declarations: [DriverPage, DriverConfigComponent, DriverMapComponent]
 })
 export class DriverPageModule {}

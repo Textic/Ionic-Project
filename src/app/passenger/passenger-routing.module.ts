@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { PassMapComponent } from '../others/components/pass-map/pass-map.component';
-import { TripsComponent } from '../others/components/trips/trips.component';
+import { PassTripsComponent } from '../others/components/pass-trips/pass-trips.component';
 
 import { PassengerPage } from './passenger.page';
 
@@ -11,8 +11,8 @@ const routes: Routes = [
     component: PassengerPage,
     children: [
       {
-        path: 'trips',
-        component: TripsComponent
+        path: 'pass-trips',
+        component: PassTripsComponent
       },
       {
         path: 'pass-map',

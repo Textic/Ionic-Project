@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { TripsComponent } from './trips.component';
+import { DriverMapComponent } from './driver-map.component';
 
-describe('TripsComponent', () => {
-  let component: TripsComponent;
-  let fixture: ComponentFixture<TripsComponent>;
+describe('DriverMapComponent', () => {
+  let component: DriverMapComponent;
+  let fixture: ComponentFixture<DriverMapComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ TripsComponent ],
+      declarations: [ DriverMapComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(TripsComponent);
+    fixture = TestBed.createComponent(DriverMapComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

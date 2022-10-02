@@ -8,10 +8,22 @@
       <ion-icon style="font-size: 40px;" name="person-circle-outline"></ion-icon>
     </ion-button>
   </ion-toolbar>
+  <ion-toolbar>
+    <ion-segment id="segment" value="driver-config" mode="ios" (ionChange)="onChangeSegment($event)">
+      <ion-segment-button value="driver-map">
+        <ion-icon name="map-outline"></ion-icon>
+        <ion-label>Mapa</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="driver-config">
+        <ion-icon name="list-outline"></ion-icon>
+        <ion-label>Configuracion</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div id="mapDriver"></div>
+  <ion-router-outlet></ion-router-outlet>
 </ion-content>
 
 <ion-footer>

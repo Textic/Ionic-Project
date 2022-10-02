@@ -30,9 +30,9 @@ export class HomePage implements OnInit {
   onChangeSegment(e) {
     let select = e.detail.value;
     if (select == "driver") {
-      this.router.navigateByUrl('driver');
+      this.router.navigateByUrl('driver/driver-config');
     } else if (select == "passenger") {
-      this.router.navigateByUrl('passenger');
+      this.router.navigateByUrl('passenger/pass-trips');
     }
   }
 }
