@@ -38,7 +38,7 @@ export class ProfileUpdatePage implements OnInit {
       localStorage.setItem('name', this.userData.name)
       localStorage.setItem('lName', this.userData.lName)
       localStorage.setItem('number', this.userData.number)
-      this.router.navigateByUrl('/profile', { skipLocationChange: true, replaceUrl: true });
+      this.router.navigateByUrl('/profile', { replaceUrl: true });
     } else {
       this.service.presentAlert("Falta informacion en el siguiente campo: ", this.void);
     }

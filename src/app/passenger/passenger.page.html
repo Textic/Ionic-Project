@@ -8,8 +8,23 @@
       <ion-icon style="font-size: 40px;" name="person-circle-outline"></ion-icon>
     </ion-button>
   </ion-toolbar>
+  <ion-toolbar>
+    <ion-segment id="segment" value="trips" mode="ios" (ionChange)="onChangeSegment($event)">
+      <ion-segment-button value="trips">
+        <ion-icon name="list-outline"></ion-icon>
+        <ion-label>Viajes</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="pass-map">
+        <ion-icon name="map-outline"></ion-icon>
+        <ion-label>Mapa</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  
+  <ion-refresher slot="fixed">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-router-outlet></ion-router-outlet>
 </ion-content>

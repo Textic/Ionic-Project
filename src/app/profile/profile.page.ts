@@ -30,7 +30,7 @@ export class ProfilePage implements OnInit {
   }
 
   profileEdit() {
-    this.router.navigateByUrl('profile-update', { skipLocationChange: true, replaceUrl: true });
+    this.router.navigateByUrl('profile-update', { replaceUrl: true });
   }
 
   clearSession() {

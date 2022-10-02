@@ -22,8 +22,9 @@ export class DriverPage implements OnInit {
     modal.canDismiss = false;
     modal.isOpen = true;
     modal.breakpoints = [0.13, 0.5];
-    modal.backdropBreakpoint = 0.5;
-    modal.backdropDismiss = false;
+    modal.backdropBreakpoint = 0.3;
+    modal.backdropDismiss = true;
+    modal.showBackdrop = true;
     modal.initialBreakpoint = 0.13;
 
     // searchBar.addEventListener('click', e => {
@@ -32,9 +33,10 @@ export class DriverPage implements OnInit {
   }
 
   ionViewWillLeave() {
-    // const modal = document.querySelector('ion-modal');
+    const modal = document.querySelector('ion-modal');
 
-    // modal.isOpen = false;
+    modal.canDismiss = true;
+    modal.isOpen = false;
   }
 
   loadMap() {
@@ -58,6 +60,7 @@ export class DriverPage implements OnInit {
       const directionsService = new google.maps.DirectionsService();
       const directionsRenderer = new google.maps.DirectionsRenderer();
       directionsRenderer.setMap(this.map);
+      // map settings
       this.map.setOptions({
         clickableIcons: false,
         disableDefaultUI: true,

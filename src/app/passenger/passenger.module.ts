@@ -7,6 +7,8 @@ import { IonicModule } from '@ionic/angular';
 import { PassengerPageRoutingModule } from './passenger-routing.module';
 
 import { PassengerPage } from './passenger.page';
+import { TripsComponent } from '../others/components/trips/trips.component';
+import { PassMapComponent } from '../others/components/pass-map/pass-map.component';
 
 @NgModule({
   imports: [
@@ -15,6 +17,6 @@ import { PassengerPage } from './passenger.page';
     IonicModule,
     PassengerPageRoutingModule
   ],
-  declarations: [PassengerPage]
+  declarations: [PassengerPage, TripsComponent, PassMapComponent]
 })
 export class PassengerPageModule {}
