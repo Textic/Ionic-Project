@@ -16,11 +16,7 @@ export class HomePage implements OnInit {
   lsLName = localStorage.getItem("lName")
 
   ngOnInit() {
-    if (localStorage.getItem("theme") == "dark") {
-      document.body.setAttribute("color-theme", "dark");
-    } else {
-      document.body.setAttribute("color-theme", "light");
-    }
+    history.replaceState(null, null, location.href);
   }
 
   ionViewDidLeave() {

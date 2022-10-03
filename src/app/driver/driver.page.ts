@@ -16,7 +16,6 @@ export class DriverPage implements OnInit {
 
   ngOnInit() {
     const modal = document.querySelector('ion-modal');
-    // const searchBar = document.querySelector('ion-searchbar');
 
     modal.canDismiss = false;
     modal.isOpen = true;
@@ -25,10 +24,6 @@ export class DriverPage implements OnInit {
     modal.backdropDismiss = true;
     modal.showBackdrop = true;
     modal.initialBreakpoint = 0.13;
-
-    // searchBar.addEventListener('click', e => {
-    //   modal.setCurrentBreakpoint(1);
-    // });
   }
 
   ionViewWillLeave() {
@@ -40,6 +35,7 @@ export class DriverPage implements OnInit {
 
   onChangeSegment($event){
     let value = $event.detail.value;
+    console.log(value);
     this.router.navigate(['driver/' + value]);
   }
 

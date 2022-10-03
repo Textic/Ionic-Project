@@ -31,6 +31,7 @@ export class ProfilePage implements OnInit {
 
   profileEdit() {
     this.router.navigateByUrl('profile-update', { replaceUrl: true });
+    // this.router.navigate(['profile-update'], { replaceUrl: true });
   }
 
   clearSession() {

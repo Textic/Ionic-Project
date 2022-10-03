@@ -1,3 +1,19 @@
-<p>
-  pass-trips works!
-</p>
+<ion-content>
+  <ion-card *ngFor="let i of trips">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="auto">
+          <h5 style="margin-left: 10px; font-size: 12px;">Conductor -> {{ i.driver }}</h5>
+          <b style="margin-left: 10px; font-size: 16px;">Capacidad {{ i.capacity }} pasajeros.</b>
+          <h5 style="margin-left: 10px; font-size: 12px;">{{ i.patent }}</h5>
+          <h5 style="margin-left: 10px; font-size: 12px;">Valor -> {{ i.value }}</h5>
+          <h5 style="margin-left: 10px; font-size: 14px;">Hora de inicio viaje: {{ i.time }} hrs.</h5>
+        </ion-col>
+        <ion-col>
+          <h5 style="margin-top: 30px;">{{ i.car }}</h5>
+          <ion-button style="margin-top: 25px;" color="{{ i.btncolor }}" fill="outline" size="small">{{ i.status }}</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+</ion-content>

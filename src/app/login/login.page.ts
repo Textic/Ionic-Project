@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalService } from '../global.service';
 import { MenuController } from '@ionic/angular';
 import { FirestoreService } from '../others/services/firestore.service';
 import { iUserData } from '../others/interfaces/interface';
+// import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -14,6 +15,8 @@ export class LoginPage implements OnInit {
 
   userData: iUserData[] = []
 
+  // sub: Subscription
+
   makeUserData: iUserData = {
     name: "",
     lName: "",
@@ -23,7 +26,7 @@ export class LoginPage implements OnInit {
 
   dataExtras = {
     mail: ""
-  };
+  }
 
   data2 = {
     mail: ""
@@ -34,6 +37,7 @@ export class LoginPage implements OnInit {
     password: ""
   }
 
+  img: string;
   void: String = "";
 
   constructor(private activeroute: ActivatedRoute, private service: GlobalService, private router: Router, private menuController: MenuController, private firestore: FirestoreService) {
@@ -45,7 +49,21 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
+    history.replaceState(null, null, location.href);
     this.menuController.enable(false)
+  }
+
+  // ngOnDestroy() {
+  //   console.log("Subscripcion cerrada")
+  //   this.sub.unsubscribe()
+  // }
+
+  ionViewWillEnter() {
+    if (localStorage.getItem('theme') == "dark") {
+      this.img = "assets/img/TELLEVO1_Back.png"
+    } else {
+      this.img = "assets/img/TELLEVO2_BLUR.png"
+    }
   }
 
   ionViewWillLeave() {
@@ -55,18 +73,15 @@ export class LoginPage implements OnInit {
   send() {
     this.makeUserData.mail = this.data.mail
     if (this.validateModel(this.data)) {
-      if (this.data.mail == "admin" && this.data.password == "admin" || this.data.mail == "dai.gonzalez@duocuc.cl" && this.data.password == "admin" || this.data.mail == "holahola@gmail.com" && this.data.password == "admin") {
+      if (this.data.mail == "dai.gonzalez@duocuc.cl" && this.data.password == "admin" || this.data.mail == "hola@gmail.com" && this.data.password == "admin" || this.data.mail == "lol@gmail.com" && this.data.password == "admin") {
         this.service.presentToast("Sesion Iniciada con el email: " + this.data.mail);
-        let navigationExtras: NavigationExtras = {
-          state: {
-            data: this.data
-          }
-        };
+        // this.sub = this.firestore.getCollectionByParameter<iUserData>("Users", "mail", this.data.mail).subscribe(e => {     // asign to this.sub variable to unsubscribe later
         this.firestore.getCollectionByParameter<iUserData>("Users", "mail", this.data.mail).subscribe(e => {
           if (e.length == 0) {
             this.firestore.setCollection("Users", this.makeUserData.mail, this.makeUserData)
             localStorage.setItem('mail', this.data.mail)
           }
+          // console.log(e)
           this.userData = e
           this.userData.forEach(e => {
             if (e.mail) {
@@ -84,7 +99,7 @@ export class LoginPage implements OnInit {
           })
         })
         localStorage.setItem('sessionStatus', "true")
-        this.router.navigateByUrl('/home', { skipLocationChange: true, replaceUrl: true });
+        this.router.navigateByUrl('/home', { replaceUrl: true });
       } else {
         this.service.presentAlert("Usuario Incorrecto!");
       }

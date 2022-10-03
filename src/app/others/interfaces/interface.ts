@@ -13,4 +13,5 @@ export interface iTripData {
   patent: string;
   time: string;
   status: string;
+  location: string;
 }

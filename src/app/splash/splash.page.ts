@@ -36,5 +36,4 @@ export class SplashPage implements OnInit {
 
     squareA.play()
   }
-
 }

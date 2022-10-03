@@ -9,6 +9,7 @@ import { DriverPageRoutingModule } from './driver-routing.module';
 import { DriverPage } from './driver.page';
 import { DriverMapComponent } from '../others/components/driver-map/driver-map.component';
 import { DriverConfigComponent } from '../others/components/driver-config/driver-config.component';
+import { DriverMapSetComponent } from '../others/components/driver-map-set/driver-map-set.component';
 
 @NgModule({
   imports: [
@@ -17,6 +18,6 @@ import { DriverConfigComponent } from '../others/components/driver-config/driver
     IonicModule,
     DriverPageRoutingModule
   ],
-  declarations: [DriverPage, DriverConfigComponent, DriverMapComponent]
+  declarations: [DriverPage, DriverConfigComponent, DriverMapComponent, DriverMapSetComponent]
 })
 export class DriverPageModule {}
