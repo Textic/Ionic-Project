@@ -4,7 +4,9 @@
 
 export const environment = {
   production: false,
-  mapskey: 'AIzaSyBUZpDOtzM1O85n-4A6vtp81ORR99FFv-o',
+  googleMapsConfig: {
+    apiKey: 'AIzaSyBUZpDOtzM1O85n-4A6vtp81ORR99FFv-o',
+  },
 
   firebaseConfig: {
     apiKey: "AIzaSyBvWEbe0UMlsIvHJBXe4DHrSnSJ-nbDQBc",

@@ -10,6 +10,7 @@ import { DriverPage } from './driver.page';
 import { DriverMapComponent } from '../others/components/driver-map/driver-map.component';
 import { DriverConfigComponent } from '../others/components/driver-config/driver-config.component';
 import { DriverMapSetComponent } from '../others/components/driver-map-set/driver-map-set.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import { DriverMapSetComponent } from '../others/components/driver-map-set/drive
     IonicModule,
     DriverPageRoutingModule
   ],
-  declarations: [DriverPage, DriverConfigComponent, DriverMapComponent, DriverMapSetComponent]
+  declarations: [DriverPage, DriverConfigComponent, DriverMapComponent, DriverMapSetComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class DriverPageModule {}

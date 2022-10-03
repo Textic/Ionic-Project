@@ -1,4 +1,4 @@
-<ion-content>
+<!-- <ion-content>
   <tr>
     <td>
       <ion-input type="text" id="search_address"></ion-input>
@@ -8,18 +8,9 @@
     </td>
   </tr>
   <capacitor-google-map id="mapDriverSet"></capacitor-google-map>
-</ion-content>
-
-<!-- <ion-content padding>
-
-  <h3>Geocoding</h3>
-  <div id="map_canvas1">
-    <table class="smallPanel">
-      <tr>
-        <td ><ion-input type="text" id="search_address" #search_address style="ime-mode: disable" readonly></ion-input></td>
-        <td><ion-button (click)="onButton1_click($event)">Search</ion-button></td>
-      </tr>
-    </table>
-  </div>
-
 </ion-content> -->
+
+<ion-content>
+  <!-- <ion-button (click)="createMap()">Create Map</ion-button> -->
+  <capacitor-google-maps id="mapDriverSet" #mapDriverSet></capacitor-google-maps>
+</ion-content>
