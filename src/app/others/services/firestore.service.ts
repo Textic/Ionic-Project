@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
-import { log } from 'console';
-import { iUserData } from '../interfaces/interface';
 
 @Injectable({
   providedIn: 'root'

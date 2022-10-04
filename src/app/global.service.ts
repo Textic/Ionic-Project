@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastController, AlertController } from '@ionic/angular';
-import { Local } from 'protractor/built/driverProviders';
 
 @Injectable({
   providedIn: 'root'

@@ -11,6 +11,15 @@
 </ion-content> -->
 
 <ion-content>
-  <!-- <ion-button (click)="createMap()">Create Map</ion-button> -->
-  <capacitor-google-maps id="mapDriverSet" #mapDriverSet></capacitor-google-maps>
+  <div>
+    <tr>
+      <td>
+        <ion-input [(ngModel)]="input" #search_address id="search_address" type="text"></ion-input>
+      </td>
+      <td>
+        <ion-button (click)="searchMap()">Buscar</ion-button>
+      </td>
+    </tr>
+  </div>
+  <capacito-google-maps id="mapDriverSet" #mapDriverSet></capacito-google-maps>
 </ion-content>

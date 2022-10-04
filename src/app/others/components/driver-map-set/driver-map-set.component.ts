@@ -1,8 +1,9 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
-// import { Geocoder, GeocoderResult, GoogleMap, Marker } from '@ionic-native/google-maps';
-import { GoogleMap, MapType, Marker } from '@capacitor/google-maps';
+// import { GoogleMap } from '@capacitor/google-maps';
 import { environment } from 'src/environments/environment';
+import { GlobalService } from 'src/app/global.service';
+import { Http, HttpResponse } from '@capacitor-community/http';
 
 declare var google;
 
@@ -14,10 +15,14 @@ declare var google;
 
 export class DriverMapSetComponent implements OnInit, AfterViewInit {
   
-  constructor(public loadingCtrl: LoadingController) { }
+  constructor(private loadingCtrl: LoadingController, private service: GlobalService) { }
+  
   @ViewChild('mapDriverSet') mapRef: ElementRef<HTMLElement>;
-  newMap: GoogleMap;
-  map = null;
+  map = null;    // previous code:          map: GoogleMap;
+  marker: any;
+  loading: any;
+  input = "";
+  response: HttpResponse;
   
   ngOnInit() {
     
@@ -28,24 +33,25 @@ export class DriverMapSetComponent implements OnInit, AfterViewInit {
   }
 
   async createMap() {
-    this.newMap = await GoogleMap.create({
-      id: 'mapDriverSet',     // anything you want - meo corte, como le pongo al ingles
-      element: this.mapRef.nativeElement,
-      apiKey: environment.googleMapsConfig.apiKey,
-      config: {
-        center: {
-          lat: 43.0741904,
-          lng: -89.3809802
-        },
-        zoom: 18,
-      }
-    });
-    const map = new google.maps.Map(
-      document.getElementById("mapDriverSet") as HTMLElement,
+    if (localStorage.getItem('theme') !== 'dark') {
+      this.map = new google.maps.Map(document.getElementById("mapDriverSet") as HTMLElement,
       {
         disableDefaultUI: true,
-        center: { lat: 40.674, lng: -73.945 },
-        zoom: 12,
+        center: {
+          lat: -33.033648,
+          lng: -71.5329167 
+        },
+        zoom: 15,
+      });
+    } else {
+      this.map = new google.maps.Map(document.getElementById("mapDriverSet") as HTMLElement,
+      {
+        disableDefaultUI: true,
+        center: { 
+          lat: -33.033648,
+          lng: -71.5329167 
+        },
+        zoom: 15,
         styles: [
           { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
           { elementType: "labels.text.stroke", stylers: [{ color: "#242f3e" }] },
@@ -126,7 +132,57 @@ export class DriverMapSetComponent implements OnInit, AfterViewInit {
             stylers: [{ color: "#17263c" }],
           },
         ],
-      }
-    );
+      });
+    }
   }
+
+  async searchMap() {
+    this.loading = await this.loadingCtrl.create({
+      message: 'Por favor espere...'
+    });
+    await this.loading.present();
+    if (this.input != "") {
+      this.response = await Http.request({
+        method: 'GET',
+        url: 'https://maps.googleapis.com/maps/api/geocode/json?address=' + this.input + '&key=' + environment.googleMapsConfig.apiKey
+      });
+      if (this.response.data.status == "ZERO_RESULTS") { // check if the address is valid
+        console.log("Error: ");
+        console.log(this.response);
+        this.loading.dismiss();
+        this.service.presentToast("No Ubieron Resultados");
+      } else if (this.response.status == 200) {  //    will pass if the status code is 200
+        if (this.marker) {  //    check if marker is already added
+          this.marker.setMap(null);
+        }
+        this.map.setOptions({
+          center: this.response.data.results[0].geometry.location
+        })
+        // set marker
+        this.marker = new google.maps.Marker({
+          position: this.response.data.results[0].geometry.location,
+          map: this.map,
+          title: this.response.data.results[0].formatted_address
+        });
+        console.log(this.response.data.results[0].formatted_address);
+        this.loading.dismiss();
+      } else {   //                    any error
+        console.log("Error: ");
+        console.log(this.response);
+        this.loading.dismiss();
+        this.service.presentToast("Hubo un error");
+      }
+    } else {
+      this.loading.dismiss();
+      this.service.presentAlert('Error', 'Ingrese una dirección');
+    }
+  };
+
+  // async addMarker(latLong: [], title: string, draggable: boolean) {
+  //   this.marker = await this.map.addMarker({
+  //     coordinates: latLong,
+  //     title: title,
+  //     draggable: draggable
+  //   });
+  // }
 }
