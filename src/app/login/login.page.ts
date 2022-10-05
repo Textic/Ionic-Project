@@ -73,7 +73,7 @@ export class LoginPage implements OnInit {
   send() {
     this.makeUserData.mail = this.data.mail
     if (this.validateModel(this.data)) {
-      if (this.data.mail == "dai.gonzalez@duocuc.cl" && this.data.password == "admin" || this.data.mail == "hola@gmail.com" && this.data.password == "admin" || this.data.mail == "lol@gmail.com" && this.data.password == "admin") {
+      if (this.data.mail == "dai.gonzalez@duocuc.cl" && this.data.password == "admin" || this.data.mail == "hola@gmail.com" && this.data.password == "admin" || this.data.mail == "lol@gmail.com" && this.data.password == "admin" || this.data.mail == "ja.espindola@duocuc.cl" && this.data.password == "admin") {
         this.service.presentToast("Sesion Iniciada con el email: " + this.data.mail);
         // this.sub = this.firestore.getCollectionByParameter<iUserData>("Users", "mail", this.data.mail).subscribe(e => {     // asign to this.sub variable to unsubscribe later
         this.firestore.getCollectionByParameter<iUserData>("Users", "mail", this.data.mail).subscribe(e => {
