@@ -33,7 +33,7 @@ export class ProfileUpdatePage implements OnInit {
 
   updateProfile() {
     if (this.validateModel(this.userData)) {
-      this.firestore.updateCollection("Users", this.userData.mail, this.userData)
+      this.firestore.updateCollection("Users", this.userData.mail, this.userData) // Update user data in firestore
       localStorage.setItem('userMail', this.userData.mail)
       localStorage.setItem('userName', this.userData.name)
       localStorage.setItem('userLName', this.userData.lName)

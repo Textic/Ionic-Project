@@ -12,14 +12,17 @@ export class DriverConfigComponent implements OnInit {
   constructor(private router: Router, private pickerCtrl: PickerController) { }
 
   data = {
-    vehicle: "",
-    capacity: "",
-    patent: "",
-    // time: this.fixTime("00:00"),    // 0000-01-01T20:30:00-00:00
-    location: ""
+    vehicle: localStorage.getItem('driverVehicle') ?? "",
+    capacity: localStorage.getItem('driverCapacity') ?? "",
+    patent: localStorage.getItem('driverPatent') ?? "",
+    time: localStorage.getItem('driverTime') ?? "",
+    locationName: localStorage.getItem('driverLocationName') ?? "",
+    lat: localStorage.getItem('driverLat') ?? "",
+    lng: localStorage.getItem('driverLng') ?? "",
   }
 
   ngOnInit() {
+
   }
   
   // fixTime(e: string){
@@ -28,8 +31,19 @@ export class DriverConfigComponent implements OnInit {
   //   return currentTime;
   // }
 
+  ionViewWillEnter() {
+    this.data.lat = localStorage.getItem('driverLat') ?? "";
+    this.data.lng = localStorage.getItem('driverLng') ?? "";
+    this.data.locationName = localStorage.getItem('driverLocationName') ?? "";
+    console.log(this.data);
+  }
+
   map() {
     this.router.navigate(['driver/driver-map-set']);
+  }
+
+  save() {
+    
   }
 
   async openPicker() {
@@ -390,7 +404,8 @@ export class DriverConfigComponent implements OnInit {
         {
           text: 'Confirm',
           handler: (value) => {
-            console.log("hola");
+            this.data.time = value.hour.value + ':' + value.minute.value;
+            // console.log(this.data.time);
           },
         },
       ],

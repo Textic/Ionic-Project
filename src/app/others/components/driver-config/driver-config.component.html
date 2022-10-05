@@ -13,14 +13,16 @@
       <ion-input minlength="3" [(ngModel)]="data.patent" maxlength="30" required></ion-input>
     </ion-item>
     <br>
-    <div class="ion-text-center">
-      <ion-button (click)="openPicker()">Hora de Salida</ion-button>
-    </div>
-    <div class="ion-text-center">
+    <ion-item>
+      <ion-input [(ngModel)]="data.locationName"></ion-input>
       <ion-button (click)="map()">Ubicacion</ion-button>
-    </div>
+    </ion-item>
+    <ion-item>
+      <ion-input [(ngModel)]="data.time"></ion-input>
+      <ion-button (click)="openPicker()">Hora de Salida</ion-button>
+    </ion-item>
   </ion-card>
   <ion-card>
-    <ion-button color="success" expand="block">Guardar</ion-button>
+    <ion-button color="success" expand="block" (click)="save()">Guardar</ion-button>
   </ion-card>
 </ion-content>

@@ -25,13 +25,8 @@ export class DriverMapSetComponent implements OnInit, AfterViewInit {
   input = "";
   response: HttpResponse;
 
-  title: string
   lat: string
   lng: string
-  latLng: {
-    lat: string;
-    lng: string;
-  }
   
   ngOnInit() {
     
@@ -189,17 +184,25 @@ export class DriverMapSetComponent implements OnInit, AfterViewInit {
     }
   };
 
-  save() {
-    // if lant and lng
+  async save() {
+    this.loading = await this.loadingCtrl.create({
+      message: 'Por favor espere...'
+    });
+    this.loading.present();
     if (this.lat && this.lng) {
-      this.latLng = {
-        lat: this.lat,
-        lng: this.lng
-      }
-      localStorage.setItem('DriverLatLng', JSON.stringify(this.latLng));
-      this.service.presentAlert('Guardado');
-      // console.log(this.latLng);
+      this.response = await Http.request({
+        method: 'GET',
+        url: 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + this.lat + "," + this.lng + '&key=' + environment.googleMapsConfig.apiKey
+      });
+      // console.log(this.response);
+      localStorage.setItem("driverLocationName", this.response.data.results[0].formatted_address);
+      localStorage.setItem("driverLat", this.lat);
+      localStorage.setItem("driverLng", this.lng);
+      this.loading.dismiss();
       this.router.navigate(['driver/driver-config']);
+    } else {
+      this.loading.dismiss();
+      this.service.presentAlert('Error', 'Hubo un error al guardar la ubicación');
     }
   }
 }
