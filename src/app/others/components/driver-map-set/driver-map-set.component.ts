@@ -34,7 +34,79 @@ export class DriverMapSetComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.createMap();
+  }
 
+  async searchMap() {
+    this.loading = await this.loadingCtrl.create({
+      message: 'Por favor espere...'
+    });
+    await this.loading.present();
+    if (this.input != "") {
+      this.response = await Http.request({
+        method: 'GET',
+        url: 'https://maps.googleapis.com/maps/api/geocode/json?address=' + this.input + '&key=' + environment.googleMapsConfig.apiKey
+      });
+      if (this.response.data.status == "ZERO_RESULTS") { // check if the address is valid
+        console.log("Error: ");
+        console.log(this.response);
+        this.loading.dismiss();
+        this.service.presentToast("No Ubieron Resultados");
+      } else if (this.response.status == 200) {  //    will pass if the status code is 200
+        // console.log(this.response);
+        if (this.marker) {  //    check if marker is already added
+          this.marker.setMap(null);
+        }
+        this.map.setOptions({
+          center: this.response.data.results[0].geometry.location
+        })
+        this.lat = this.response.data.results[0].geometry.location.lat; //save the latitude
+        this.lng = this.response.data.results[0].geometry.location.lng; //save the longitude
+        this.marker = new google.maps.Marker({  // set marker
+          position: this.response.data.results[0].geometry.location,
+          map: this.map,
+          title: this.response.data.results[0].formatted_address,
+          draggable: true
+        });
+        console.log(this.response.data.results[0].formatted_address);
+        google.maps.event.addListener(this.marker, 'dragend', (event) => { // on drag listener to get the new coordinates of the marker and update the lat and lng variables
+          this.lat = event.latLng.lat();
+          this.lng = event.latLng.lng();
+          // console.log(this.lat);
+          // console.log(this.lng);
+        });
+        this.loading.dismiss();
+      } else {   //                    any error
+        console.log("Error: ");
+        console.log(this.response);
+        this.loading.dismiss();
+        this.service.presentToast("Hubo un error");
+      }
+    } else {
+      this.loading.dismiss();
+      this.service.presentAlert('Error', 'Ingrese una dirección');
+    }
+  };
+
+  async save() {
+    this.loading = await this.loadingCtrl.create({
+      message: 'Por favor espere...'
+    });
+    this.loading.present();
+    if (this.lat && this.lng) {
+      this.response = await Http.request({
+        method: 'GET',
+        url: 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + this.lat + "," + this.lng + '&key=' + environment.googleMapsConfig.apiKey
+      });
+      // console.log(this.response);
+      localStorage.setItem("driverLocationName", this.response.data.results[0].formatted_address);
+      localStorage.setItem("driverLat", this.lat);
+      localStorage.setItem("driverLng", this.lng);
+      this.loading.dismiss();
+      this.router.navigate(['driver/driver-config']);
+    } else {
+      this.loading.dismiss();
+      this.service.presentAlert('Error', 'Hubo un error al guardar la ubicación');
+    }
   }
 
   async createMap() {
@@ -130,79 +202,6 @@ export class DriverMapSetComponent implements OnInit, AfterViewInit {
           },
         ],
       });
-    }
-  }
-
-  async searchMap() {
-    this.loading = await this.loadingCtrl.create({
-      message: 'Por favor espere...'
-    });
-    await this.loading.present();
-    if (this.input != "") {
-      this.response = await Http.request({
-        method: 'GET',
-        url: 'https://maps.googleapis.com/maps/api/geocode/json?address=' + this.input + '&key=' + environment.googleMapsConfig.apiKey
-      });
-      if (this.response.data.status == "ZERO_RESULTS") { // check if the address is valid
-        console.log("Error: ");
-        console.log(this.response);
-        this.loading.dismiss();
-        this.service.presentToast("No Ubieron Resultados");
-      } else if (this.response.status == 200) {  //    will pass if the status code is 200
-        // console.log(this.response);
-        if (this.marker) {  //    check if marker is already added
-          this.marker.setMap(null);
-        }
-        this.map.setOptions({
-          center: this.response.data.results[0].geometry.location
-        })
-        this.lat = this.response.data.results[0].geometry.location.lat; //save the latitude
-        this.lng = this.response.data.results[0].geometry.location.lng; //save the longitude
-        this.marker = new google.maps.Marker({  // set marker
-          position: this.response.data.results[0].geometry.location,
-          map: this.map,
-          title: this.response.data.results[0].formatted_address,
-          draggable: true
-        });
-        console.log(this.response.data.results[0].formatted_address);
-        google.maps.event.addListener(this.marker, 'dragend', (event) => { // on drag listener to get the new coordinates of the marker and update the lat and lng variables
-          this.lat = event.latLng.lat();
-          this.lng = event.latLng.lng();
-          // console.log(this.lat);
-          // console.log(this.lng);
-        });
-        this.loading.dismiss();
-      } else {   //                    any error
-        console.log("Error: ");
-        console.log(this.response);
-        this.loading.dismiss();
-        this.service.presentToast("Hubo un error");
-      }
-    } else {
-      this.loading.dismiss();
-      this.service.presentAlert('Error', 'Ingrese una dirección');
-    }
-  };
-
-  async save() {
-    this.loading = await this.loadingCtrl.create({
-      message: 'Por favor espere...'
-    });
-    this.loading.present();
-    if (this.lat && this.lng) {
-      this.response = await Http.request({
-        method: 'GET',
-        url: 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + this.lat + "," + this.lng + '&key=' + environment.googleMapsConfig.apiKey
-      });
-      // console.log(this.response);
-      localStorage.setItem("driverLocationName", this.response.data.results[0].formatted_address);
-      localStorage.setItem("driverLat", this.lat);
-      localStorage.setItem("driverLng", this.lng);
-      this.loading.dismiss();
-      this.router.navigate(['driver/driver-config']);
-    } else {
-      this.loading.dismiss();
-      this.service.presentAlert('Error', 'Hubo un error al guardar la ubicación');
     }
   }
 }
