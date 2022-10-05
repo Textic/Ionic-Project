@@ -79,22 +79,22 @@ export class LoginPage implements OnInit {
         this.firestore.getCollectionByParameter<iUserData>("Users", "mail", this.data.mail).subscribe(e => {
           if (e.length == 0) {
             this.firestore.setCollection("Users", this.makeUserData.mail, this.makeUserData)
-            localStorage.setItem('mail', this.data.mail)
+            localStorage.setItem('userMail', this.data.mail)
           }
           // console.log(e)
           this.userData = e
           this.userData.forEach(e => {
             if (e.mail) {
-              localStorage.setItem('mail', this.data.mail)
+              localStorage.setItem('userMail', this.data.mail)
             }
             if (e.name) {
-              localStorage.setItem('name', e.name)
+              localStorage.setItem('userName', e.name)
             }
             if (e.lName) {
-              localStorage.setItem('lName', e.lName)
+              localStorage.setItem('userLName', e.lName)
             }
             if (e.number) {
-              localStorage.setItem('number', e.number)
+              localStorage.setItem('userNumber', e.number)
             }
           })
         })

@@ -15,10 +15,10 @@ export class ProfileUpdatePage implements OnInit {
 
   void: String = "";
 
-  lsMail = localStorage.getItem('mail');
-  lsName = localStorage.getItem('name');
-  lsLName = localStorage.getItem('lName');
-  lsNumber = localStorage.getItem('number');
+  lsMail = localStorage.getItem('userMail');
+  lsName = localStorage.getItem('userName');
+  lsLName = localStorage.getItem('userLName');
+  lsNumber = localStorage.getItem('userNumber');
   
   userData: iUserData = {
     mail: this.lsMail ?? "",
@@ -34,10 +34,10 @@ export class ProfileUpdatePage implements OnInit {
   updateProfile() {
     if (this.validateModel(this.userData)) {
       this.firestore.updateCollection("Users", this.userData.mail, this.userData)
-      localStorage.setItem('mail', this.userData.mail)
-      localStorage.setItem('name', this.userData.name)
-      localStorage.setItem('lName', this.userData.lName)
-      localStorage.setItem('number', this.userData.number)
+      localStorage.setItem('userMail', this.userData.mail)
+      localStorage.setItem('userName', this.userData.name)
+      localStorage.setItem('userLName', this.userData.lName)
+      localStorage.setItem('userNumber', this.userData.number)
       this.router.navigateByUrl('/profile', { replaceUrl: true });
       // this.router.navigate(['profile'], { replaceUrl: true });
     } else {

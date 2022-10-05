@@ -4,6 +4,7 @@ import { LoadingController } from '@ionic/angular';
 import { environment } from 'src/environments/environment';
 import { GlobalService } from 'src/app/global.service';
 import { Http, HttpResponse } from '@capacitor-community/http';
+import { Router } from '@angular/router';
 
 declare var google;
 
@@ -15,7 +16,7 @@ declare var google;
 
 export class DriverMapSetComponent implements OnInit, AfterViewInit {
   
-  constructor(private loadingCtrl: LoadingController, private service: GlobalService) { }
+  constructor(private loadingCtrl: LoadingController, private service: GlobalService, private router: Router) { }
   
   @ViewChild('mapDriverSet') mapRef: ElementRef<HTMLElement>;
   map = null;    // previous code:          map: GoogleMap;
@@ -23,6 +24,13 @@ export class DriverMapSetComponent implements OnInit, AfterViewInit {
   loading: any;
   input = "";
   response: HttpResponse;
+
+  lat: string
+  lng: string
+  latLng: {
+    lat: string;
+    lng: string;
+  }
   
   ngOnInit() {
     
@@ -30,28 +38,21 @@ export class DriverMapSetComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.createMap();
+
   }
 
   async createMap() {
-    if (localStorage.getItem('theme') !== 'dark') {
-      this.map = new google.maps.Map(document.getElementById("mapDriverSet") as HTMLElement,
-      {
-        disableDefaultUI: true,
-        center: {
-          lat: -33.033648,
-          lng: -71.5329167 
+    this.map = new google.maps.Map(document.getElementById("mapDriverSet") as HTMLElement, {
+      disableDefaultUI: true,
+      clickableIcons: false,
+      center: {
+        lat: -33.033648,
+        lng: -71.5329167
         },
-        zoom: 15,
-      });
-    } else {
-      this.map = new google.maps.Map(document.getElementById("mapDriverSet") as HTMLElement,
-      {
-        disableDefaultUI: true,
-        center: { 
-          lat: -33.033648,
-          lng: -71.5329167 
-        },
-        zoom: 15,
+      zoom: 15,
+    });
+    if (localStorage.getItem('theme') == 'dark') {
+      this.map.setOptions({
         styles: [
           { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
           { elementType: "labels.text.stroke", stylers: [{ color: "#242f3e" }] },
@@ -152,19 +153,28 @@ export class DriverMapSetComponent implements OnInit, AfterViewInit {
         this.loading.dismiss();
         this.service.presentToast("No Ubieron Resultados");
       } else if (this.response.status == 200) {  //    will pass if the status code is 200
+        // console.log(this.response);
         if (this.marker) {  //    check if marker is already added
           this.marker.setMap(null);
         }
         this.map.setOptions({
           center: this.response.data.results[0].geometry.location
         })
-        // set marker
-        this.marker = new google.maps.Marker({
+        this.lat = this.response.data.results[0].geometry.location.lat; //save the latitude
+        this.lng = this.response.data.results[0].geometry.location.lng; //save the longitude
+        this.marker = new google.maps.Marker({  // set marker
           position: this.response.data.results[0].geometry.location,
           map: this.map,
-          title: this.response.data.results[0].formatted_address
+          title: this.response.data.results[0].formatted_address,
+          draggable: true
         });
         console.log(this.response.data.results[0].formatted_address);
+        google.maps.event.addListener(this.marker, 'dragend', (event) => { // on drag listener to get the new coordinates of the marker and update the lat and lng variables
+          this.lat = event.latLng.lat();
+          this.lng = event.latLng.lng();
+          // console.log(this.lat);
+          // console.log(this.lng);
+        });
         this.loading.dismiss();
       } else {   //                    any error
         console.log("Error: ");
@@ -178,11 +188,17 @@ export class DriverMapSetComponent implements OnInit, AfterViewInit {
     }
   };
 
-  // async addMarker(latLong: [], title: string, draggable: boolean) {
-  //   this.marker = await this.map.addMarker({
-  //     coordinates: latLong,
-  //     title: title,
-  //     draggable: draggable
-  //   });
-  // }
+  save() {
+    // if lant and lng
+    if (this.lat && this.lng) {
+      this.latLng = {
+        lat: this.lat,
+        lng: this.lng
+      }
+      localStorage.setItem('DriverLatLng', JSON.stringify(this.latLng));
+      this.service.presentAlert('Guardado');
+      // console.log(this.latLng);
+      this.router.navigate(['driver/driver-config']);
+    }
+  }
 }

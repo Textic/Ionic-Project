@@ -11,15 +11,13 @@
 </ion-content> -->
 
 <ion-content>
-  <div>
-    <tr>
-      <td>
-        <ion-input [(ngModel)]="input" #search_address id="search_address" type="text"></ion-input>
-      </td>
-      <td>
-        <ion-button (click)="searchMap()">Buscar</ion-button>
-      </td>
-    </tr>
+  <!-- <ion-input [(ngModel)]="input" #search_address id="search_address" type="text" style="background-color: rgba(83, 83, 83, 0.5); border-radius: 9px;"></ion-input> -->
+  <ion-searchbar [(ngModel)]="input" #search_address id="search_address" search-icon="search-circle" clear-icon="trash-bin" placeholder="Buscar Ubicacion"></ion-searchbar>
+  <div class="ion-text-center">
+    <ion-button (click)="searchMap()">Buscar</ion-button>
   </div>
-  <capacito-google-maps id="mapDriverSet" #mapDriverSet></capacito-google-maps>
+  <google-maps id="mapDriverSet" #mapDriverSet></google-maps>
+  <div class="ion-text-center">
+    <ion-button (click)="save()" color="success">Guardar</ion-button>
+  </div>
 </ion-content>
