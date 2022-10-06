@@ -35,11 +35,7 @@ export class ProfilePage implements OnInit {
   }
 
   clearSession() {
-    localStorage.removeItem("sessionStatus");
-    localStorage.removeItem("userMail");
-    localStorage.removeItem("userName");
-    localStorage.removeItem("userLName");
-    localStorage.removeItem("userNumber");
+    localStorage.clear();
     this.router.navigateByUrl('login');
   }
 }

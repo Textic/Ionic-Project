@@ -3,7 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalService } from '../global.service';
 import { MenuController } from '@ionic/angular';
 import { FirestoreService } from '../others/services/firestore.service';
-import { iUserData } from '../others/interfaces/interface';
+import { iDriverData, iUserData } from '../others/interfaces/interface';
+import { take } from 'rxjs/operators';
 // import { Subscription } from 'rxjs';
 
 @Component({
@@ -16,6 +17,20 @@ export class LoginPage implements OnInit {
   userData: iUserData[] = []
 
   // sub: Subscription
+
+  makeDriverData: iDriverData = {
+    vehicle: "",
+    capacity: "",
+    patent: "",
+    time: "",
+    locationName: "",
+    lName: "",
+    lat: "",
+    lng: "",
+    mail: "",
+    name: "",
+    value: ""
+  }
 
   makeUserData: iUserData = {
     name: "",
@@ -70,7 +85,7 @@ export class LoginPage implements OnInit {
     if (this.validateModel(this.data)) {
       if (this.data.mail == "dai.gonzalez@duocuc.cl" && this.data.password == "admin" || this.data.mail == "hola@gmail.com" && this.data.password == "admin" || this.data.mail == "lol@gmail.com" && this.data.password == "admin" || this.data.mail == "ja.espindola@duocuc.cl" && this.data.password == "admin") {
         this.service.presentToast("Sesion Iniciada con el email: " + this.data.mail);
-        this.firestore.getCollectionByParameter<iUserData>("Users", "mail", this.data.mail).subscribe(e => {
+        this.firestore.getCollectionByParameter<iUserData>("Users", "mail", this.data.mail).pipe(take(1)).subscribe(e => {
           if (e.length == 0) {
             this.firestore.setCollection("Users", this.makeUserData.mail, this.makeUserData)
             localStorage.setItem('userMail', this.data.mail)
@@ -92,6 +107,44 @@ export class LoginPage implements OnInit {
             }
           })
         })
+        this.firestore.getCollectionById<iDriverData>("Drivers", this.data.mail).pipe(take(1)).subscribe(e => {
+          if (!e) {
+            this.firestore.setCollection("Drivers", this.data.mail, this.makeDriverData)
+          }
+          if (e.vehicle) {
+            localStorage.setItem('driverVehicle', e.vehicle)
+          }
+          if (e.capacity) {
+            localStorage.setItem('driverCapacity', e.capacity)
+          }
+          if (e.patent) {
+            localStorage.setItem('driverPatent', e.patent)
+          }
+          if (e.time) {
+            localStorage.setItem('driverTime', e.time)
+          }
+          if (e.locationName) {
+            localStorage.setItem('driverLocationName', e.locationName)
+          }
+          if (e.name) {
+            localStorage.setItem('driverName', e.name)
+          }
+          if (e.lName) {
+            localStorage.setItem('driverLName', e.lName)
+          }
+          if (e.mail) {
+            localStorage.setItem('driverMail', e.mail)
+          }
+          if (e.lat) {
+            localStorage.setItem('driverLat', e.lat)
+          }
+          if (e.lng) {
+            localStorage.setItem('driverLng', e.lng)
+          }
+          if (e.value) {
+            localStorage.setItem('driverValue', e.value)
+          }
+        });
         localStorage.setItem('sessionStatus', "true")
         this.router.navigateByUrl('/home', { replaceUrl: true });
       } else {

@@ -19,16 +19,25 @@ export class HomePage implements OnInit {
     history.replaceState(null, null, location.href);
   }
 
+  ionViewWillEnter() {
+    this.lsName = localStorage.getItem("userName")
+    this.lsLName = localStorage.getItem("userLName")
+    console.log("hola")
+  }
+
   ionViewDidLeave() {
     document.getElementById("segment").setAttribute("value", "home");
   }
 
   onChangeSegment(e) {
     let select = e.detail.value;
-    if (select == "driver") {
-      this.router.navigateByUrl('driver/driver-config');
+    if (((localStorage.getItem("userName") == null || localStorage.getItem("userName") == "") && (localStorage.getItem("userLName") == null || localStorage.getItem("userLName") == "")) && select != "home") {
+      this.service.presentToast("Nesesita proporcionar mas informacion en su cuenta.", 'middle', 1700)
+      this.router.navigateByUrl('profile-update');
+    } else if (select == "driver") {
+      this.router.navigate(['driver/driver-config']);
     } else if (select == "passenger") {
-      this.router.navigateByUrl('passenger/pass-trips');
+      this.router.navigate(['passenger/pass-trips']);
     }
   }
 }

@@ -63,7 +63,7 @@ export class DriverMapComponent implements OnInit, AfterViewInit {
       center: {
         lat: -33.033648,
         lng: -71.5329167
-        },
+      },
       zoom: 15,
     });
     if (localStorage.getItem('theme') == 'dark') {

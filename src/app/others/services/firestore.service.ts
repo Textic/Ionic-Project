@@ -33,8 +33,8 @@ export class FirestoreService {
     return collection.valueChanges();
   }
 
-  getCollectionById(path: string, id: string) {
-    const collection = this.firestoreService.collection(path)
+  getCollectionById<type>(path: string, id: string) {
+    const collection: AngularFirestoreCollection<type> = this.firestoreService.collection<type>(path)
     return collection.doc(id).valueChanges()
   }
 

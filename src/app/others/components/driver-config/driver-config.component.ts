@@ -22,9 +22,9 @@ export class DriverConfigComponent implements OnInit {
     patent: localStorage.getItem('driverPatent') ?? "",
     time: localStorage.getItem('driverTime') ?? "",
     value: localStorage.getItem('driverValue') ?? "",
-    locationName: localStorage.getItem('driverLocationName') ?? "",
-    lat: localStorage.getItem('driverLat') ?? "",
-    lng: localStorage.getItem('driverLng') ?? "",
+    locationName: localStorage.getItem('TEMPdriverLocationName') ?? "",
+    lat: localStorage.getItem('TEMPdriverLat') ?? "",
+    lng: localStorage.getItem('TEMPdriverLng') ?? "",
     name: localStorage.getItem('userName') ?? "",
     lName: localStorage.getItem('userLName') ?? "",
     mail: localStorage.getItem('userMail') ?? "",
@@ -33,17 +33,11 @@ export class DriverConfigComponent implements OnInit {
   ngOnInit() {
 
   }
-  
-  // fixTime(e: string){
-  //   const currentTime = "0000-01-01T" + e + ":00-00:00";
-  //   console.log(currentTime);
-  //   return currentTime;
-  // }
 
   ionViewWillEnter() {
-    this.data.lat = localStorage.getItem('driverLat') ?? "";
-    this.data.lng = localStorage.getItem('driverLng') ?? "";
-    this.data.locationName = localStorage.getItem('driverLocationName') ?? "";
+    this.data.lat = localStorage.getItem('TEMPdriverLat') ?? "";
+    this.data.lng = localStorage.getItem('TEMPdriverLng') ?? "";
+    this.data.locationName = localStorage.getItem('TEMPdriverLocationName') ?? localStorage.getItem('driverLocationName') ?? "";
     // console.log(this.data);
   }
 

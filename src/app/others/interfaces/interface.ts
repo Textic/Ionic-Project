@@ -5,13 +5,16 @@ export interface iUserData {
   number: string;
 }
 
-export interface iTripData {
-  driver: string;
-  passengers: Array<string>;
-  car: string;
+export interface iDriverData {
+  vehicle: string;
   capacity: string;
   patent: string;
   time: string;
-  status: string;
-  location: string;
+  locationName: string;
+  lName: string;
+  lat: string;
+  lng: string;
+  mail: string;
+  name: string;
+  value: string;
 }

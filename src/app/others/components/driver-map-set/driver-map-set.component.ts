@@ -98,9 +98,9 @@ export class DriverMapSetComponent implements OnInit, AfterViewInit {
         url: 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + this.lat + "," + this.lng + '&key=' + environment.googleMapsConfig.apiKey
       });
       // console.log(this.response);
-      localStorage.setItem("driverLocationName", this.response.data.results[0].formatted_address);
-      localStorage.setItem("driverLat", this.lat);
-      localStorage.setItem("driverLng", this.lng);
+      localStorage.setItem("TEMPdriverLocationName", this.response.data.results[0].formatted_address);
+      localStorage.setItem("TEMPdriverLat", this.lat);
+      localStorage.setItem("TEMPdriverLng", this.lng);
       this.loading.dismiss();
       this.router.navigate(['driver/driver-config']);
     } else {

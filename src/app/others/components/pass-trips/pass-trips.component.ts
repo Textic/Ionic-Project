@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { iTripData } from '../../interfaces/interface';
 import { FirestoreService } from '../../services/firestore.service';
 import { take } from 'rxjs/operators';
 
@@ -28,7 +27,7 @@ export class PassTripsComponent implements OnInit {
   }
 
   ionViewWillEnter() {
-    
+
   }
 
   doRefresh(event) {
