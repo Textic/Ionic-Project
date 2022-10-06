@@ -28,10 +28,11 @@ export class GlobalService {
     await alert.present();
   }
 
-  async presentToast(msg: string, duracion?: number) {// Copiado de la profe   `(*>﹏<*)′
+  async presentToast(msg: string, position?: any , duration?: number) {// Copiado de la profe   `(*>﹏<*)′
     const toast = await this.toastController.create({
       message: msg,
-      duration: duracion ? duracion : 2000
+      duration: duration ?? 2000,
+      position: position ?? 'bottom'
     });
     toast.present();
   }

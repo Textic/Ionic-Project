@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { iTripData } from '../../interfaces/interface';
+import { FirestoreService } from '../../services/firestore.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-pass-trips',
@@ -8,9 +10,9 @@ import { iTripData } from '../../interfaces/interface';
 })
 export class PassTripsComponent implements OnInit {
 
-  constructor() { }
+  constructor(private firestore: FirestoreService) { }
 
-  tripData: iTripData
+  tripsData: any
 
   trips: Array<any> = [
     { driver: 'Javier Espindola', capacity: '4', patent: '0812-8312-4596', value: '$4.000', time: '14:20', car: 'Nissan Skyline', status: 'Disponible', btncolor: 'success'},
@@ -18,6 +20,23 @@ export class PassTripsComponent implements OnInit {
     { driver: 'Carlos Donoso', capacity: '1', patent: '8421-9491-8313', value: '$700', time: '17:30', car: 'Suzuki S-presso', status: 'No Disponible', btncolor: 'danger'},
   ];
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.firestore.getCollection('Drivers').pipe(take(1)).subscribe(e => {
+      console.log(e);
+      this.tripsData = e;
+    });
+  }
 
+  ionViewWillEnter() {
+    
+  }
+
+  doRefresh(event) {
+    this.firestore.getCollection('Drivers').pipe(take(1)).subscribe(e => {
+      console.log(e);
+      this.tripsData = e;
+      
+      event.target.complete();
+    });
+  }
 }

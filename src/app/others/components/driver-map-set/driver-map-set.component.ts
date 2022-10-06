@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
-import { GoogleMap } from '@capacitor/google-maps';
+// import { GoogleMap } from '@capacitor/google-maps';
 import { environment } from 'src/environments/environment';
 import { GlobalService } from 'src/app/global.service';
 import { Http, HttpResponse } from '@capacitor-community/http';
@@ -19,7 +19,7 @@ export class DriverMapSetComponent implements OnInit, AfterViewInit {
   constructor(private loadingCtrl: LoadingController, private service: GlobalService, private router: Router) { }
   
   @ViewChild('mapDriverSet') mapRef: ElementRef<HTMLElement>;
-  map = null;    // previous code:          map: GoogleMap;
+  map = null;
   marker: any;
   loading: any;
   input = "";

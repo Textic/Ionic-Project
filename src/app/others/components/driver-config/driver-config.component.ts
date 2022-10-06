@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { PickerController } from '@ionic/angular';
+import { LoadingController, PickerController } from '@ionic/angular';
+import { GlobalService } from 'src/app/global.service';
+import { FirestoreService } from '../../services/firestore.service';
 
 @Component({
   selector: 'app-driver-config',
@@ -8,17 +10,24 @@ import { PickerController } from '@ionic/angular';
   styleUrls: ['./driver-config.component.scss'],
 })
 export class DriverConfigComponent implements OnInit {
-
-  constructor(private router: Router, private pickerCtrl: PickerController) { }
-
+  
+  constructor(private router: Router, private pickerCtrl: PickerController, private firestore: FirestoreService, private service: GlobalService, private loadingCtrl: LoadingController) { }
+  
+  loading: any;
+  lsMail = localStorage.getItem('userMail');
+  void: string = "";
   data = {
     vehicle: localStorage.getItem('driverVehicle') ?? "",
     capacity: localStorage.getItem('driverCapacity') ?? "",
     patent: localStorage.getItem('driverPatent') ?? "",
     time: localStorage.getItem('driverTime') ?? "",
+    value: localStorage.getItem('driverValue') ?? "",
     locationName: localStorage.getItem('driverLocationName') ?? "",
     lat: localStorage.getItem('driverLat') ?? "",
     lng: localStorage.getItem('driverLng') ?? "",
+    name: localStorage.getItem('userName') ?? "",
+    lName: localStorage.getItem('userLName') ?? "",
+    mail: localStorage.getItem('userMail') ?? "",
   }
 
   ngOnInit() {
@@ -35,15 +44,40 @@ export class DriverConfigComponent implements OnInit {
     this.data.lat = localStorage.getItem('driverLat') ?? "";
     this.data.lng = localStorage.getItem('driverLng') ?? "";
     this.data.locationName = localStorage.getItem('driverLocationName') ?? "";
-    console.log(this.data);
+    // console.log(this.data);
   }
 
   map() {
     this.router.navigate(['driver/driver-map-set']);
   }
 
-  save() {
-    
+  async save() {
+    this.loading = await this.loadingCtrl.create({
+      message: 'Por favor espere...'
+    });
+    await this.loading.present();
+    if (!this.validateModel(this.data)) {
+      this.loading.dismiss();
+      this.service.presentAlert("Falta informacion en el siguiente campo: ", this.void);
+    } else if (this.data.patent.substring(2, 3) != "-" || this.data.patent.substring(5, 6) != "-") {
+      this.loading.dismiss();
+      this.service.presentAlert("Patente inválida");
+    // } else if (this.data.capacity.substring(0, 1).toUpperCase() == "E" || this.data.capacity.substring(1, 2).toUpperCase() == "E") {
+    //   this.loading.dismiss();
+    //   this.service.presentAlert("Capacidad inválida");
+    } else {
+      this.firestore.setCollection("Drivers", this.lsMail, this.data);
+      localStorage.setItem('driverVehicle', this.data.vehicle);
+      localStorage.setItem('driverCapacity', this.data.capacity);
+      localStorage.setItem('driverPatent', this.data.patent.toUpperCase());
+      localStorage.setItem('driverTime', this.data.time);
+      localStorage.setItem('driverLocationName', this.data.locationName);
+      localStorage.setItem('driverLat', this.data.lat);
+      localStorage.setItem('driverLng', this.data.lng);
+      localStorage.setItem('driverValue', this.data.value);
+      this.loading.dismiss();
+      this.service.presentToast("Datos guardados", 'middle');
+    }
   }
 
   async openPicker() {
@@ -410,13 +444,40 @@ export class DriverConfigComponent implements OnInit {
         },
       ],
     });
-
     await picker.present();
   }
 
-  // getTime(date: string) {
-  //   const time = date.substring(11, 16);
-  //   console.log(time);
-  //   return time;
-  // }
+  validateModel(model: any) {
+    for (var [key, value] of Object.entries(model)) {
+      if (value == "") {
+        if (key == "vehicle") {
+          key = "Vehiculo"
+        }
+        if (key == "capacity") {
+          key = "Capacidad"
+        }
+        if (key == "patent") {
+          key = "Patente"
+        }
+        if (key == "time") {
+          key = "Tiempo"
+        }
+        if (key == "locationName") {
+          key = "Nombre de la ubicación"
+        }
+        if (key == "lat") {
+          key = "Latencia"
+        }
+        if (key == "lng") {
+          key = "Longitud"
+        }
+        if (key == "value") {
+          key = "Valor"
+        }
+        this.void = key;
+        return false;
+      }
+    }
+    return true;
+  }
 }

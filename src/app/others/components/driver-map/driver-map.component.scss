@@ -1,13 +1,5 @@
-ion-content {
-    #mapDriver {
-        width: 100%;
-        height: 85%;
-        opacity: 0;
-        transition: opacity 150ms ease-in;
-        display: block;
-
-        &.show-map {
-            opacity: 1;
-        }
-    }
+#mapDriver {
+    display: inline-block;
+    width: 100%;
+    height: 82%;
 }

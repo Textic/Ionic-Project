@@ -53,11 +53,6 @@ export class LoginPage implements OnInit {
     this.menuController.enable(false)
   }
 
-  // ngOnDestroy() {
-  //   console.log("Subscripcion cerrada")
-  //   this.sub.unsubscribe()
-  // }
-
   ionViewWillEnter() {
     if (localStorage.getItem('theme') == "dark") {
       this.img = "assets/img/TELLEVO1_Back.png"
@@ -75,7 +70,6 @@ export class LoginPage implements OnInit {
     if (this.validateModel(this.data)) {
       if (this.data.mail == "dai.gonzalez@duocuc.cl" && this.data.password == "admin" || this.data.mail == "hola@gmail.com" && this.data.password == "admin" || this.data.mail == "lol@gmail.com" && this.data.password == "admin" || this.data.mail == "ja.espindola@duocuc.cl" && this.data.password == "admin") {
         this.service.presentToast("Sesion Iniciada con el email: " + this.data.mail);
-        // this.sub = this.firestore.getCollectionByParameter<iUserData>("Users", "mail", this.data.mail).subscribe(e => {     // asign to this.sub variable to unsubscribe later
         this.firestore.getCollectionByParameter<iUserData>("Users", "mail", this.data.mail).subscribe(e => {
           if (e.length == 0) {
             this.firestore.setCollection("Users", this.makeUserData.mail, this.makeUserData)
