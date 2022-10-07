@@ -11,12 +11,19 @@
           <h5 style="margin-left: 10px; font-size: 14px;">Hora de inicio -> {{ i.time }} hrs.</h5>
         </ion-col>
         <ion-col class="ion-text-center">
-          <h5>{{ i.vehicle }}</h5>
+          <h5>Vehiculo -> {{ i.vehicle }}</h5>
           <!-- <ion-button style="margin-top: 25px;" color="{{ i.btncolor }}" fill="outline" size="small">{{ i.status }}</ion-button> -->
-          <br>
           <br>
           <!-- <ion-label fill="outline">Ubicacion</ion-label> -->
           <ion-label>{{ i.locationName }}</ion-label>
+          <br>
+          <br>
+          <!-- <ion-segment color="success" mode="ios" (ionChange)="xd($event)">
+            <ion-segment-button value="{{ i.mail }}">
+              <ion-label>Pedir Viaje</ion-label>
+            </ion-segment-button>
+          </ion-segment> -->
+          <ion-button id="{{ i.mail }}" size="small" color="success" (click)="getTrip($event)">Pedir Viaje</ion-button>
         </ion-col>
       </ion-row>
     </ion-grid>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FirestoreService } from '../../services/firestore.service';
 import { take } from 'rxjs/operators';
+import { GlobalService } from 'src/app/global.service';
 
 @Component({
   selector: 'app-pass-trips',
@@ -9,7 +10,7 @@ import { take } from 'rxjs/operators';
 })
 export class PassTripsComponent implements OnInit {
 
-  constructor(private firestore: FirestoreService) { }
+  constructor(private firestore: FirestoreService, private service: GlobalService) { }
 
   tripsData: any
 
@@ -21,7 +22,7 @@ export class PassTripsComponent implements OnInit {
 
   ngOnInit() {
     this.firestore.getCollection('Drivers').pipe(take(1)).subscribe(e => {
-      console.log(e);
+      // console.log(e);
       this.tripsData = e;
     });
   }
@@ -30,9 +31,31 @@ export class PassTripsComponent implements OnInit {
 
   }
 
+  getTrip(e) {
+    // console.log(e.path.length);
+    for (let i = 0; i < e.path.length; i++) {
+      if (typeof e.path[i].id == 'string') {
+        var mail = e.path[i].id;
+        if (this.checkMail(mail)) {
+          // console.log(mail);
+          this.service.presentAlert('Información del viaje', 'Mail del conductor: ' + mail);
+          break;
+        }
+      }
+    }
+  }
+
+  checkMail(mail: string) {
+    if (mail.includes("@") && mail.includes(".")) {
+      return true;
+    }
+    return false;
+  }
+
+
   doRefresh(event) {
     this.firestore.getCollection('Drivers').pipe(take(1)).subscribe(e => {
-      console.log(e);
+      // console.log(e);
       this.tripsData = e;
       
       event.target.complete();
