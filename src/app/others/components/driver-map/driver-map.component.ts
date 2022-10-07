@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/global.service';
 
 declare var google;
@@ -10,7 +11,7 @@ declare var google;
 })
 export class DriverMapComponent implements OnInit, AfterViewInit {
 
-  constructor(private service: GlobalService) { }
+  constructor(private service: GlobalService, private router: Router) { }
 
   @ViewChild('mapDriver') mapRef: ElementRef<HTMLElement>;
   map = null;
@@ -45,7 +46,8 @@ export class DriverMapComponent implements OnInit, AfterViewInit {
       if (status === google.maps.DirectionsStatus.OK) {
         this.directionsRenderer.setDirections(response);
       } else {
-        this.service.presentAlert("Error", "No se pudo calcular la ruta");
+        this.service.presentAlert("Error", "No se pudo calcular la ruta, verifique que los datos esten ingresados correctamente en la configuración");
+        // this.router.navigate(['driver/driver-config']);
         console.log(response);
         console.log(status);
       }

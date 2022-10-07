@@ -1,7 +1,7 @@
 <ion-content>
   <!-- <ion-card type="button" (click)="xd()" *ngFor="let i of tripsData"> -->
   <ion-card type="button" *ngFor="let i of tripsData">
-    <ion-grid>
+    <ion-grid *ngIf="i.available == 'true'">
       <ion-row>
         <ion-col size="auto">
           <h5 style="margin-left: 10px; font-size: 12px;">Conductor -> {{ i.name }} {{ i.lName }}</h5>

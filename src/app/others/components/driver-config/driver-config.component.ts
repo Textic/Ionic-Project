@@ -28,6 +28,7 @@ export class DriverConfigComponent implements OnInit {
     name: localStorage.getItem('userName') ?? "",
     lName: localStorage.getItem('userLName') ?? "",
     mail: localStorage.getItem('userMail') ?? "",
+    available: localStorage.getItem('driverAvailable') ?? "false",
   }
 
   ngOnInit() {
@@ -35,10 +36,33 @@ export class DriverConfigComponent implements OnInit {
   }
 
   ionViewWillEnter() {
+    const toggle = document.getElementById("toggle");
     this.data.lat = localStorage.getItem('TEMPdriverLat') ?? "";
     this.data.lng = localStorage.getItem('TEMPdriverLng') ?? "";
     this.data.locationName = localStorage.getItem('TEMPdriverLocationName') ?? localStorage.getItem('driverLocationName') ?? "";
+    if (this.data.patent != "") {
+      toggle.setAttribute("disabled", "false");
+      if (this.data.available == "true") {
+        toggle.setAttribute("checked", "true");
+      }
+    }
     // console.log(this.data);
+  }
+
+  async toggleAvailability($event) {
+    this.loading = await this.loadingCtrl.create({
+      message: 'Por favor espere...'
+    });
+    this.loading.present();
+    if ($event.detail.checked) {
+      this.firestore.updateCollection("Drivers", this.lsMail, { available: "true" });
+      localStorage.setItem('driverAvailable', "true");
+      this.loading.dismiss();
+    } else {
+      this.firestore.updateCollection("Drivers", this.lsMail, { available: "false" });
+      localStorage.setItem('driverAvailable', "false");
+      this.loading.dismiss();
+    }
   }
 
   map() {
@@ -46,6 +70,7 @@ export class DriverConfigComponent implements OnInit {
   }
 
   async save() {
+    const toggle = document.getElementById("toggle");
     this.loading = await this.loadingCtrl.create({
       message: 'Por favor espere...'
     });
@@ -69,6 +94,7 @@ export class DriverConfigComponent implements OnInit {
       localStorage.setItem('driverLat', this.data.lat);
       localStorage.setItem('driverLng', this.data.lng);
       localStorage.setItem('driverValue', this.data.value);
+      toggle.setAttribute("disabled", "false");
       this.loading.dismiss();
       this.service.presentToast("Datos guardados", 'middle');
     }

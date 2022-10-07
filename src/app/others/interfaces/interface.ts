@@ -17,4 +17,5 @@ export interface iDriverData {
   mail: string;
   name: string;
   value: string;
+  available: string;
 }

@@ -29,7 +29,8 @@ export class LoginPage implements OnInit {
     lng: "",
     mail: "",
     name: "",
-    value: ""
+    value: "",
+    available: "false"
   }
 
   makeUserData: iUserData = {
@@ -143,6 +144,9 @@ export class LoginPage implements OnInit {
           }
           if (e.value) {
             localStorage.setItem('driverValue', e.value)
+          }
+          if (e.available) {
+            localStorage.setItem('driverAvailable', e.available)
           }
         });
         localStorage.setItem('sessionStatus', "true")
