@@ -40,7 +40,7 @@ export class DriverConfigComponent implements OnInit {
     this.data.lat = localStorage.getItem('TEMPdriverLat') ?? "";
     this.data.lng = localStorage.getItem('TEMPdriverLng') ?? "";
     this.data.locationName = localStorage.getItem('TEMPdriverLocationName') ?? localStorage.getItem('driverLocationName') ?? "";
-    if (this.data.patent != "") {
+    if (localStorage.getItem('driverPatent')) {
       toggle.setAttribute("disabled", "false");
       if (this.data.available == "true") {
         toggle.setAttribute("checked", "true");
