@@ -22,7 +22,6 @@ export class HomePage implements OnInit {
   ionViewWillEnter() {
     this.lsName = localStorage.getItem("userName")
     this.lsLName = localStorage.getItem("userLName")
-    console.log("hola")
   }
 
   ionViewDidLeave() {
