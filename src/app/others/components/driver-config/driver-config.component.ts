@@ -46,7 +46,6 @@ export class DriverConfigComponent implements OnInit {
         toggle.setAttribute("checked", "true");
       }
     }
-    // console.log(this.data);
   }
 
   async toggleAvailability($event) {
@@ -483,13 +482,13 @@ export class DriverConfigComponent implements OnInit {
           key = "Tiempo"
         }
         if (key == "locationName") {
-          key = "Nombre de la ubicación"
+          key = "Nombre de la ubicación (Reingrese la ubicación)"
         }
         if (key == "lat") {
-          key = "Latencia"
+          key = "Latencia (Reingrese la ubicación)"
         }
         if (key == "lng") {
-          key = "Longitud"
+          key = "Longitud (Reingrese la ubicación)"
         }
         if (key == "value") {
           key = "Valor"

@@ -64,11 +64,13 @@ const routes: Routes = [
   {
     path: 'driver',
     loadChildren: () => import('./driver/driver.module').then( m => m.DriverPageModule),
+    canActivate: [AuthGuard],
     canLoad: [RefreshGuard]
   },
   {
     path: 'passenger',
     loadChildren: () => import('./passenger/passenger.module').then( m => m.PassengerPageModule),
+    canActivate: [AuthGuard],
     canLoad: [RefreshGuard]
   },
   {

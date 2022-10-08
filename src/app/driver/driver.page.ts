@@ -35,7 +35,6 @@ export class DriverPage implements OnInit {
 
   onChangeSegment($event){
     let value = $event.detail.value;
-    console.log(value);
     this.router.navigate(['driver/' + value]);
   }
 

@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { GlobalService } from 'src/app/global.service';
 import { Http, HttpResponse } from '@capacitor-community/http';
 import { Router } from '@angular/router';
+import { Geolocation } from '@awesome-cordova-plugins/geolocation/ngx';
 
 declare var google;
 
@@ -16,7 +17,7 @@ declare var google;
 
 export class DriverMapSetComponent implements OnInit, AfterViewInit {
   
-  constructor(private loadingCtrl: LoadingController, private service: GlobalService, private router: Router) { }
+  constructor(private loadingCtrl: LoadingController, private service: GlobalService, private router: Router, private geolocation: Geolocation) { }
   
   @ViewChild('mapDriverSet') mapRef: ElementRef<HTMLElement>;
   map = null;
@@ -34,6 +35,9 @@ export class DriverMapSetComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.createMap();
+  }
+
+  ionViewDidEnter() {
   }
 
   async searchMap() {
@@ -87,11 +91,17 @@ export class DriverMapSetComponent implements OnInit, AfterViewInit {
     }
   };
 
+  test() {
+    
+  }
+
   async save() {
     this.loading = await this.loadingCtrl.create({
       message: 'Por favor espere...'
     });
     this.loading.present();
+    console.log(this.lat);
+    console.log(this.lng);
     if (this.lat && this.lng) {
       this.response = await Http.request({
         method: 'GET',
@@ -118,6 +128,51 @@ export class DriverMapSetComponent implements OnInit, AfterViewInit {
         lng: -71.5329167
         },
       zoom: 15,
+    });
+    const geolocateControl = document.createElement("ion-button");    // make button to geolocate
+    geolocateControl.appendChild(document.createElement("ion-icon"));
+    geolocateControl.firstElementChild.setAttribute("name", "location");
+    // geolocateControl.textContent = "Ubicación Actual";
+    // geolocateControl.classList.add("custom-map-control-button");
+    this.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(geolocateControl);
+    geolocateControl.addEventListener("click", () => {               // geolocate function on click
+      this.geolocation.getCurrentPosition().then(async (resp) => {
+        console.log(resp);
+        this.lat = resp.coords.latitude.toString()     //save the latitude
+        this.lng = resp.coords.longitude.toString()     //save the longitude
+        this.map.setOptions({
+          center: {
+            lat: resp.coords.latitude,
+            lng: resp.coords.longitude
+          }
+        })
+        this.response = await Http.request({
+          method: 'GET',
+          url: 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + this.lat + "," + this.lng + '&key=' + environment.googleMapsConfig.apiKey
+        });
+        if (this.marker) {  //    check if marker is already added
+          this.marker.setMap(null);
+        }
+        console.log(this.response);
+        this.marker = new google.maps.Marker({  // set marker
+          position: {
+            lat: resp.coords.latitude,
+            lng: resp.coords.longitude
+          },
+          map: this.map,
+          title: this.response.data.results[0].formatted_address,
+          draggable: true
+        });
+        google.maps.event.addListener(this.marker, 'dragend', (event) => { // on drag listener to get the new coordinates of the marker and update the lat and lng variables
+          this.lat = event.latLng.lat();
+          this.lng = event.latLng.lng();
+          // console.log(this.lat);
+          // console.log(this.lng);
+        });
+      }).catch((error) => {
+        this.service.presentAlert('Error', 'Hubo un error al obtener su ubicación');
+        console.log('Error getting location', error);
+      });
     });
     if (localStorage.getItem('theme') == 'dark') {
       this.map.setOptions({

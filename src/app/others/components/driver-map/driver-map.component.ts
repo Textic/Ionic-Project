@@ -30,10 +30,6 @@ export class DriverMapComponent implements OnInit, AfterViewInit {
     this.createMap();
   }
 
-  ngOnDestroy() {
-    console.log("destroy");
-  }
-
   ionViewDidEnter() {
     this.lsLat = Number(localStorage.getItem('driverLat'));
     this.lsLng = Number(localStorage.getItem('driverLng'));
