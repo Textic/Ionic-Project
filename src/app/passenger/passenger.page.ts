@@ -14,6 +14,11 @@ export class PassengerPage implements OnInit {
     
   }
 
+  click() {
+    const modal = document.querySelector('ion-modal');
+    modal.isOpen = false;
+  }
+
   onChangeSegment($event){
     let value = $event.detail.value;
     this.router.navigate(['passenger/' + value]);

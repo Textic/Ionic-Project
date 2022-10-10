@@ -1,90 +1,59 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { take } from 'rxjs/operators';
 import { GlobalService } from 'src/app/global.service';
-import { iDriverData, iUserData } from '../../interfaces/interface';
-import { FirestoreService } from '../../services/firestore.service';
 
 declare var google;
 
 @Component({
-  selector: 'app-driver-map',
-  templateUrl: './driver-map.component.html',
-  styleUrls: ['./driver-map.component.scss'],
+  selector: 'app-pass-map-view',
+  templateUrl: './pass-map-view.component.html',
+  styleUrls: ['./pass-map-view.component.scss'],
 })
-export class DriverMapComponent implements OnInit, AfterViewInit {
+export class PassMapViewComponent implements OnInit, AfterViewInit {
 
-  constructor(private service: GlobalService, private firestore: FirestoreService) { }
+  constructor(private router: Router, private service: GlobalService) { }
 
-  @ViewChild('mapDriver') mapRef: ElementRef<HTMLElement>;
+  @ViewChild('mapPassView') mapRef: ElementRef<HTMLElement>;
   map = null;
   marker: any;
   directionsService = new google.maps.DirectionsService();
   directionsRenderer = new google.maps.DirectionsRenderer();
-  lsMail = localStorage.getItem('userMail');
-  usersData: iUserData[] = [];
 
-  lsLat = Number(localStorage.getItem('driverLat'));
-  lsLng = Number(localStorage.getItem('driverLng'));
-
-  ngOnInit() {
-    const modal = document.querySelector('ion-modal');
-
-    modal.isOpen = true;
-    modal.breakpoints = [0.2, 0.65];
-    modal.backdropBreakpoint = 0.3;
-    modal.backdropDismiss = false;
-    modal.showBackdrop = true;
-    modal.initialBreakpoint = 0.2;
-  }
-
-  ionViewWillLeave() {
-    const modal = document.querySelector('ion-modal');
-    modal.isOpen = false;
-  }
+  ngOnInit() {}
 
   ngAfterViewInit() {
     this.createMap();
   }
 
-  ionViewDidEnter() {
-    const modal = document.querySelector('ion-modal');
-    modal.isOpen = true;
-    this.lsLat = Number(localStorage.getItem('driverLat'));
-    this.lsLng = Number(localStorage.getItem('driverLng'));
+  ionViewWillEnter() {
+    this.createRoute();
+  }
+
+  back() {
+    this.router.navigate(['passenger/pass-trips']);
+  }
+
+  createRoute() {
+    this.directionsRenderer.setMap(null);
     this.directionsRenderer.setMap(this.map);
     this.directionsService.route({
       origin: { lat: -33.033648, lng: -71.5329167 },
-      destination: { lat: this.lsLat, lng: this.lsLng },
+      destination: { lat: Number(localStorage.getItem('TEMPpassMapViewLat')), lng: Number(localStorage.getItem('TEMPpassMapViewLng')) },
       travelMode: google.maps.TravelMode.DRIVING
     }, (response, status) => {
       if (status === google.maps.DirectionsStatus.OK) {
         this.directionsRenderer.setDirections(response);
       } else {
-        this.service.presentAlert("Error", "No se pudo calcular la ruta, verifique que los datos esten ingresados correctamente en la configuración");
+        this.service.presentAlert("Error", "No se pudo calcular la ruta");
         // this.router.navigate(['driver/driver-config']);
         console.log(response);
         console.log(status);
       }
     }, 2000);
-
-    this.firestore.getCollectionById<iDriverData>('Drivers', this.lsMail).subscribe(e => {
-      this.usersData = [];
-      for(let i = 0; i < e.passengers.length; i++) {
-        this.firestore.getCollectionById<iUserData>('Users', e.passengers[i]).pipe(take(1)).subscribe(resp => {
-          this.usersData.push(resp);
-        })
-      }
-      console.log(this.usersData);
-    });
-  }
-
-  ionViewDidLeave() {
-    this.directionsRenderer.setMap(null);
   }
 
   async createMap() {
-    this.map = new google.maps.Map(document.getElementById("mapDriver") as HTMLElement, {
+    this.map = new google.maps.Map(document.getElementById("mapPassView") as HTMLElement, {
       disableDefaultUI: true,
       clickableIcons: false,
       center: {

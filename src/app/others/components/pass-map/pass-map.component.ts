@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
+import { take } from 'rxjs/operators';
 import { GlobalService } from 'src/app/global.service';
 import { iDriverData } from '../../interfaces/interface';
 import { FirestoreService } from '../../services/firestore.service';
@@ -21,13 +22,16 @@ export class PassMapComponent implements OnInit, AfterViewInit {
   directionsService = new google.maps.DirectionsService();
   directionsRenderer = new google.maps.DirectionsRenderer();
   driverData: iDriverData;
+  driverDataNull: iDriverData
   loading: any;
+  myDriver: string;
+  sub: any;
 
   ngOnInit() {
     const modal = document.querySelector('ion-modal');
 
     modal.isOpen = true;
-    modal.breakpoints = [0.2, 0.6];
+    modal.breakpoints = [0.2, 0.65];
     modal.backdropBreakpoint = 0.3;
     modal.backdropDismiss = false;
     modal.showBackdrop = true;
@@ -53,14 +57,17 @@ export class PassMapComponent implements OnInit, AfterViewInit {
     this.loading = await this.loadingCtrl.create({
       message: 'Por favor espere...'
     });
-    this.loading.present();
-    this.firestore.getCollection<iDriverData>('Drivers').subscribe(e => {
-      console.log(e);
+    await this.loading.present();
+    this.firestore.getCollection<iDriverData>('Drivers').pipe(take(1)).subscribe(e => {
+      // console.log(e);
       for(let i = 0; i < e.length; i++) {
-        // console.log(e[i].passengers);
         if(e[i].passengers.includes(localStorage.getItem('userMail'))) {
-          this.driverData = e[i];
-          this.createRoute();
+          this.myDriver = e[i].mail;
+          this.sub = this.firestore.getCollectionById<iDriverData>('Drivers', this.myDriver).subscribe(resp => {
+            // console.log(resp);
+            this.driverData = resp;
+            this.createRoute();
+          });
         }
       }
     });
@@ -88,6 +95,17 @@ export class PassMapComponent implements OnInit, AfterViewInit {
         console.log(status);
       }
     }, 2000);
+  }
+
+  leaveTrip() {
+    this.firestore.getCollectionById<iDriverData>('Drivers', this.driverData.mail).pipe(take(1)).subscribe(e => {
+      const index = e.passengers.indexOf(localStorage.getItem('userMail'));
+      e.passengers.splice(index, 1);
+      this.sub.unsubscribe();
+      this.firestore.updateCollection('Drivers', this.driverData.mail, e);
+      this.driverData = this.driverDataNull;
+      this.directionsRenderer.setMap(null);
+    });
   }
 
   async createMap() {

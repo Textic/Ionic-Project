@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { take } from 'rxjs/operators';
+import { iDriverData } from '../others/interfaces/interface';
+import { FirestoreService } from '../others/services/firestore.service';
 
 @Component({
   selector: 'app-driver',
@@ -8,25 +11,21 @@ import { Router } from '@angular/router';
 })
 export class DriverPage implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private firestore: FirestoreService) { }
+
+  lsMail = localStorage.getItem('userMail');
+
 
   ngOnInit() {
-    const modal = document.querySelector('ion-modal');
-
-    modal.canDismiss = false;
-    modal.isOpen = true;
-    modal.breakpoints = [0.13, 0.5];
-    modal.backdropBreakpoint = 0.3;
-    modal.backdropDismiss = true;
-    modal.showBackdrop = true;
-    modal.initialBreakpoint = 0.13;
   }
 
-  ionViewWillLeave() {
+  click() {
     const modal = document.querySelector('ion-modal');
-
-    modal.canDismiss = true;
     modal.isOpen = false;
+  }
+
+  ionViewWilEnter() {
+
   }
 
   onChangeSegment($event){

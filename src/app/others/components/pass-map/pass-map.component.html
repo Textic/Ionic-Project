@@ -13,6 +13,7 @@
           <ion-card-subtitle>Pasajeros: {{ driverData.passengers.length }}</ion-card-subtitle>
           <ion-card-subtitle>Valor: {{ driverData.value }}</ion-card-subtitle>
         </ion-card-header>
+        <ion-button (click)="leaveTrip()">Salir de Viaje</ion-button>
       </ion-card>
       <ng-template #noData>
         <ion-card-header class="ion-text-center">

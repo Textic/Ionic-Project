@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FirestoreService } from '../../services/firestore.service';
 import { take } from 'rxjs/operators';
 import { GlobalService } from 'src/app/global.service';
-import { AlertController, LoadingController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
 import { iDriverData } from '../../interfaces/interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pass-trips',
@@ -12,7 +13,7 @@ import { iDriverData } from '../../interfaces/interface';
 })
 export class PassTripsComponent implements OnInit {
 
-  constructor(private firestore: FirestoreService, private service: GlobalService, private alertController: AlertController) { }
+  constructor(private firestore: FirestoreService, private service: GlobalService, private alertController: AlertController, private router: Router) { }
 
   tripsData: any
   lsMail: string;
@@ -28,7 +29,7 @@ export class PassTripsComponent implements OnInit {
     // });
     // this.loading.present();
     this.firestore.getCollection('Drivers').pipe(take(1)).subscribe(e => {
-      console.log(e);
+      // console.log(e);
       this.tripsData = e;
 
     });
@@ -56,13 +57,27 @@ export class PassTripsComponent implements OnInit {
                 text: 'Aceptar',
                 handler: () => {
                   this.requestTrip(mail, localStorage.getItem('userMail'));
-
                 }
               }
             ]
           });
           await alert.present();
           break;
+        }
+      }
+    }
+  }
+
+  viewInMap(e) {
+    for (let i = 0; i < e.path.length; i++) {    //
+      if (typeof e.path[i].id == 'string') {     //
+        var mail = e.path[i].id;                //  Get the mail of the driver
+        if (this.checkMail(mail)) {             //
+          this.firestore.getCollectionById<iDriverData>('Drivers', mail).pipe(take(1)).subscribe(e => {
+            localStorage.setItem('TEMPpassMapViewLat', e.lat);
+            localStorage.setItem('TEMPpassMapViewLng', e.lng);
+            this.router.navigate(['passenger/pass-map-view']);
+          });
         }
       }
     }

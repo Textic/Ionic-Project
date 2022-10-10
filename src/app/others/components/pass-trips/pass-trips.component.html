@@ -12,11 +12,11 @@
         </ion-col>
         <ion-col class="ion-text-center">
           <h5>Vehiculo -> {{ i.vehicle }}</h5>
-          <br>
           <ion-label>{{ i.locationName }}</ion-label>
           <br>
           <br>
           <ion-button id="{{ i.mail }}" size="small" color="success" (click)="getTrip($event)">Pedir Viaje</ion-button>
+          <ion-button id="{{ i.mail }}" size="small" (click)="viewInMap($event)">Ver en Mapa</ion-button>
         </ion-col>
       </ion-row>
     </ion-grid>
