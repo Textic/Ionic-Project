@@ -75,7 +75,7 @@ export class DriverMapComponent implements OnInit, AfterViewInit {
           this.usersData.push(resp);
         })
       }
-      console.log(this.usersData);
+      // console.log(this.usersData);
     });
   }
 
