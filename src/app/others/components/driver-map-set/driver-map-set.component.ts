@@ -22,6 +22,7 @@ export class DriverMapSetComponent implements OnInit, AfterViewInit {
   @ViewChild('mapDriverSet') mapRef: ElementRef<HTMLElement>;
   map = null;
   marker: any;
+  marketDuoc: any;
   loading: any;
   input = "";
   response: HttpResponse;
@@ -38,6 +39,16 @@ export class DriverMapSetComponent implements OnInit, AfterViewInit {
   }
 
   ionViewDidEnter() {
+    this.marketDuoc = new google.maps.Marker({
+      position: {lat: -33.033648, lng: -71.5329167},
+      map: this.map,
+      title: 'Duoc UC',
+      draggable: false,
+      icon: {
+        url: 'assets/img/duocucMarker.png',
+        scaledSize: new google.maps.Size(50, 80)
+      }
+    });
   }
 
   async searchMap() {

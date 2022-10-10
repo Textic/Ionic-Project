@@ -1,7 +1,7 @@
 <ion-content>
   <!-- <ion-card type="button" (click)="xd()" *ngFor="let i of tripsData"> -->
   <ion-card type="button" *ngFor="let i of tripsData">
-    <ion-grid *ngIf="i.available == 'true'">
+    <ion-grid *ngIf="i.available == 'true' && checkSpace(i.capacity, i.passengers) && lsMail != i.mail;">
       <ion-row>
         <ion-col size="auto">
           <h5 style="margin-left: 10px; font-size: 12px;">Conductor -> {{ i.name }} {{ i.lName }}</h5>
@@ -12,17 +12,10 @@
         </ion-col>
         <ion-col class="ion-text-center">
           <h5>Vehiculo -> {{ i.vehicle }}</h5>
-          <!-- <ion-button style="margin-top: 25px;" color="{{ i.btncolor }}" fill="outline" size="small">{{ i.status }}</ion-button> -->
           <br>
-          <!-- <ion-label fill="outline">Ubicacion</ion-label> -->
           <ion-label>{{ i.locationName }}</ion-label>
           <br>
           <br>
-          <!-- <ion-segment color="success" mode="ios" (ionChange)="xd($event)">
-            <ion-segment-button value="{{ i.mail }}">
-              <ion-label>Pedir Viaje</ion-label>
-            </ion-segment-button>
-          </ion-segment> -->
           <ion-button id="{{ i.mail }}" size="small" color="success" (click)="getTrip($event)">Pedir Viaje</ion-button>
         </ion-col>
       </ion-row>

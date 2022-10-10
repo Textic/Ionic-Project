@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoadingController, PickerController } from '@ionic/angular';
 import { GlobalService } from 'src/app/global.service';
+import { iDriverData } from '../../interfaces/interface';
 import { FirestoreService } from '../../services/firestore.service';
 
 @Component({
@@ -16,7 +17,7 @@ export class DriverConfigComponent implements OnInit {
   loading: any;
   lsMail = localStorage.getItem('userMail');
   void: string = "";
-  data = {
+  data: iDriverData = {
     vehicle: localStorage.getItem('driverVehicle') ?? "",
     capacity: localStorage.getItem('driverCapacity') ?? "",
     patent: localStorage.getItem('driverPatent') ?? "",
@@ -29,6 +30,7 @@ export class DriverConfigComponent implements OnInit {
     lName: localStorage.getItem('userLName') ?? "",
     mail: localStorage.getItem('userMail') ?? "",
     available: localStorage.getItem('driverAvailable') ?? "false",
+    passengers: localStorage.getItem('driverPassengers')?.split(',') ?? []
   }
 
   ngOnInit() {
@@ -44,6 +46,11 @@ export class DriverConfigComponent implements OnInit {
       toggle.setAttribute("disabled", "false");
       if (this.data.available == "true") {
         toggle.setAttribute("checked", "true");
+      }
+    }
+    for (let i = 0; i < this.data.passengers.length; i++) {
+      if (this.data.passengers[i] == "") {
+        this.data.passengers.splice(i, 1);
       }
     }
   }
@@ -84,7 +91,7 @@ export class DriverConfigComponent implements OnInit {
     //   this.loading.dismiss();
     //   this.service.presentAlert("Capacidad inválida");
     } else {
-      this.firestore.setCollection("Drivers", this.lsMail, this.data);
+      this.firestore.updateCollection("Drivers", this.lsMail, this.data);
       localStorage.setItem('driverVehicle', this.data.vehicle);
       localStorage.setItem('driverCapacity', this.data.capacity);
       localStorage.setItem('driverPatent', this.data.patent.toUpperCase());
@@ -93,6 +100,8 @@ export class DriverConfigComponent implements OnInit {
       localStorage.setItem('driverLat', this.data.lat);
       localStorage.setItem('driverLng', this.data.lng);
       localStorage.setItem('driverValue', this.data.value);
+      localStorage.setItem('driverPassengers', this.data.passengers.toString());
+      localStorage.setItem('TEMPdriverLocationName', this.data.locationName);
       toggle.setAttribute("disabled", "false");
       this.loading.dismiss();
       this.service.presentToast("Datos guardados", 'middle');
@@ -469,6 +478,9 @@ export class DriverConfigComponent implements OnInit {
   validateModel(model: any) {
     for (var [key, value] of Object.entries(model)) {
       if (value == "") {
+        if (key == "passengers") {
+          continue;
+        }
         if (key == "vehicle") {
           key = "Vehiculo"
         }

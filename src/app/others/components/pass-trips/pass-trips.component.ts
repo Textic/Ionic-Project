@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FirestoreService } from '../../services/firestore.service';
 import { take } from 'rxjs/operators';
 import { GlobalService } from 'src/app/global.service';
+import { AlertController, LoadingController } from '@ionic/angular';
+import { iDriverData } from '../../interfaces/interface';
 
 @Component({
   selector: 'app-pass-trips',
@@ -10,39 +12,104 @@ import { GlobalService } from 'src/app/global.service';
 })
 export class PassTripsComponent implements OnInit {
 
-  constructor(private firestore: FirestoreService, private service: GlobalService) { }
+  constructor(private firestore: FirestoreService, private service: GlobalService, private alertController: AlertController) { }
 
   tripsData: any
-
-  trips: Array<any> = [
-    { driver: 'Javier Espindola', capacity: '4', patent: '0812-8312-4596', value: '$4.000', time: '14:20', car: 'Nissan Skyline', status: 'Disponible', btncolor: 'success'},
-    { driver: 'Daniel Gonzalez', capacity: '3', patent: '3581-3812-2048', value: '$2.000', time: '12:30', car: 'Ferrari', status: 'Disponible', btncolor: 'success'},
-    { driver: 'Carlos Donoso', capacity: '1', patent: '8421-9491-8313', value: '$700', time: '17:30', car: 'Suzuki S-presso', status: 'No Disponible', btncolor: 'danger'},
-  ];
+  lsMail: string;
+  driverData: iDriverData;
+  loading: any;
+  bool: boolean;
 
   ngOnInit() {
-    this.firestore.getCollection('Drivers').pipe(take(1)).subscribe(e => {
-      // console.log(e);
-      this.tripsData = e;
-    });
   }
 
   ionViewWillEnter() {
+    // this.loading = await this.loadingCtrl.create({
+    //   message: 'Por favor espere...'
+    // });
+    // this.loading.present();
+    this.firestore.getCollection('Drivers').pipe(take(1)).subscribe(e => {
+      console.log(e);
+      this.tripsData = e;
 
+    });
+    this.lsMail = localStorage.getItem('userMail');
+    // this.loading.dismiss();
   }
 
-  getTrip(e) {
+  async getTrip(e) {
     // console.log(e.path.length);
-    for (let i = 0; i < e.path.length; i++) {
-      if (typeof e.path[i].id == 'string') {
-        var mail = e.path[i].id;
-        if (this.checkMail(mail)) {
+    for (let i = 0; i < e.path.length; i++) {    //
+      if (typeof e.path[i].id == 'string') {     //
+        var mail = e.path[i].id;                //  Get the mail of the driver
+        if (this.checkMail(mail)) {             //
           // console.log(mail);
-          this.service.presentAlert('Información del viaje', 'Mail del conductor: ' + mail);
+          const alert = await this.alertController.create({
+            header: '¿Desea solicitar viaje?',
+            message: 'Se le enviará una notificación al conductor ' + mail,
+            mode: 'ios',
+            buttons: [
+              {
+                text: 'Cancelar',
+                handler: (blah) => {
+                }
+              }, {
+                text: 'Aceptar',
+                handler: () => {
+                  this.requestTrip(mail, localStorage.getItem('userMail'));
+
+                }
+              }
+            ]
+          });
+          await alert.present();
           break;
         }
       }
     }
+  }
+
+  requestTrip(driverMail: string, userMail: string) {
+    this.checkIfIAmPassenger();
+    this.firestore.getCollectionById<iDriverData>('Drivers', driverMail).pipe(take(1)).subscribe(e => {
+      // console.log(e);
+      if(this.bool) {
+        this.service.presentAlert('Usted ya esta en un viaje');
+      } else {
+        e.passengers.push(userMail);
+        this.firestore.updateCollection('Drivers', driverMail, e);
+        this.firestore.getCollection('Drivers').pipe(take(1)).subscribe(e => {
+          // console.log(e);
+          this.tripsData = e;
+        });
+      }
+    })
+  }
+
+  checkIfIAmPassenger() {   // check if the user is already in a trip
+    this.firestore.getCollection<iDriverData>('Drivers').pipe(take(1)).subscribe(e => {
+      // console.log(e);
+      for(let i = 0; i < e.length; i++) {
+        console.log(e[i].passengers);
+        if(e[i].passengers.includes(localStorage.getItem('userMail'))) {
+          this.driverData = e[i];
+          if(this.driverData) {
+            this.bool = true;
+            return
+          }
+        }
+      }
+      this.bool = false;
+      return
+    });
+  }
+
+  checkSpace(capacity: string, passengers: Array<string>) {
+    if (passengers.length < parseInt(capacity)) {
+      return true;
+    }
+    // console.log('No hay espacio');
+    return false;
   }
 
   checkMail(mail: string) {

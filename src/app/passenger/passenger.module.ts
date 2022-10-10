@@ -9,6 +9,7 @@ import { PassengerPageRoutingModule } from './passenger-routing.module';
 import { PassengerPage } from './passenger.page';
 import { PassMapComponent } from '../others/components/pass-map/pass-map.component';
 import { PassTripsComponent } from '../others/components/pass-trips/pass-trips.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import { PassTripsComponent } from '../others/components/pass-trips/pass-trips.c
     IonicModule,
     PassengerPageRoutingModule
   ],
-  declarations: [PassengerPage, PassTripsComponent, PassMapComponent]
+  declarations: [PassengerPage, PassTripsComponent, PassMapComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class PassengerPageModule {}

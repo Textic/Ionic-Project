@@ -30,7 +30,8 @@ export class LoginPage implements OnInit {
     mail: "",
     name: "",
     value: "",
-    available: "false"
+    available: "false",
+    passengers: [],
   }
 
   makeUserData: iUserData = {
@@ -84,14 +85,19 @@ export class LoginPage implements OnInit {
   send() {
     this.makeUserData.mail = this.data.mail
     if (this.validateModel(this.data)) {
-      if (this.data.mail == "dai.gonzalez@duocuc.cl" && this.data.password == "admin" || this.data.mail == "hola@gmail.com" && this.data.password == "admin" || this.data.mail == "lol@gmail.com" && this.data.password == "admin" || this.data.mail == "ja.espindola@duocuc.cl" && this.data.password == "admin") {
+      if (this.data.mail == "dai.gonzalez@duocuc.cl" && this.data.password == "admin" ||
+          this.data.mail == "hola@gmail.com" && this.data.password == "admin" || 
+          this.data.mail == "lol@gmail.com" && this.data.password == "admin" || 
+          this.data.mail == "ja.espindola@duocuc.cl" && this.data.password == "admin" ||
+          this.data.mail == "test1@gmail.com" && this.data.password == "admin" ||
+          this.data.mail == "test2@gmail.com" && this.data.password == "admin") {
         this.service.presentToast("Sesion Iniciada con el email: " + this.data.mail);
         this.firestore.getCollectionByParameter<iUserData>("Users", "mail", this.data.mail).pipe(take(1)).subscribe(e => {
           if (e.length == 0) {
             this.firestore.setCollection("Users", this.makeUserData.mail, this.makeUserData)
             localStorage.setItem('userMail', this.data.mail)
           }
-          // console.log(e)
+          console.log(e)
           this.userData = e
           this.userData.forEach(e => {
             if (e.mail) {
@@ -147,6 +153,9 @@ export class LoginPage implements OnInit {
           }
           if (e.available) {
             localStorage.setItem('driverAvailable', e.available)
+          }
+          if (e.passengers) {
+            localStorage.setItem('driverPassengers', JSON.stringify(e.passengers))
           }
         });
         localStorage.setItem('sessionStatus', "true")

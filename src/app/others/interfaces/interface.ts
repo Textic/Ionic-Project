@@ -18,4 +18,5 @@ export interface iDriverData {
   name: string;
   value: string;
   available: string;
+  passengers: Array<string>;
 }
