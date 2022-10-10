@@ -24,11 +24,29 @@ export class PassMapComponent implements OnInit, AfterViewInit {
   loading: any;
 
   ngOnInit() {
+    const modal = document.querySelector('ion-modal');
 
+    modal.isOpen = true;
+    modal.breakpoints = [0.2, 0.6];
+    modal.backdropBreakpoint = 0.3;
+    modal.backdropDismiss = false;
+    modal.showBackdrop = true;
+    modal.initialBreakpoint = 0.2;
   }
-
+  
   ngAfterViewInit() {
     this.createMap();
+  }
+  
+  ionViewDidEnter() {
+    const modal = document.querySelector('ion-modal');
+    modal.isOpen = true;
+    
+  }
+
+  ionViewWillLeave() {
+    const modal = document.querySelector('ion-modal');
+    modal.isOpen = false;
   }
 
   async ionViewWillEnter() {
@@ -37,6 +55,7 @@ export class PassMapComponent implements OnInit, AfterViewInit {
     });
     this.loading.present();
     this.firestore.getCollection<iDriverData>('Drivers').subscribe(e => {
+      console.log(e);
       for(let i = 0; i < e.length; i++) {
         // console.log(e[i].passengers);
         if(e[i].passengers.includes(localStorage.getItem('userMail'))) {

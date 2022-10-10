@@ -16,7 +16,6 @@ export class PassTripsComponent implements OnInit {
 
   tripsData: any
   lsMail: string;
-  driverData: iDriverData;
   loading: any;
   bool: boolean;
 
@@ -90,13 +89,10 @@ export class PassTripsComponent implements OnInit {
     this.firestore.getCollection<iDriverData>('Drivers').pipe(take(1)).subscribe(e => {
       // console.log(e);
       for(let i = 0; i < e.length; i++) {
-        console.log(e[i].passengers);
+        // console.log(e[i].passengers);
         if(e[i].passengers.includes(localStorage.getItem('userMail'))) {
-          this.driverData = e[i];
-          if(this.driverData) {
-            this.bool = true;
-            return
-          }
+          this.bool = true;
+          return
         }
       }
       this.bool = false;

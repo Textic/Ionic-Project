@@ -1,19 +1,24 @@
 <ion-content>
   <google-maps id="mapPass" #mapPass></google-maps>
-  <ion-card *ngIf="driverData; else noData" class="ion-text-center">
-    <ion-card-header>
-      <ion-card-title>{{ driverData.name }} {{ driverData.lName }}</ion-card-title>
-      <ion-card-subtitle>Correo: {{ driverData.mail }}</ion-card-subtitle>
-      <br>
-      <ion-icon name="car" size="large"></ion-icon>
-      <ion-card-subtitle>Patente: {{ driverData.patent }}</ion-card-subtitle>
-      <ion-card-subtitle>Pasajeros: {{ driverData.passengers.length }}</ion-card-subtitle>
-      <ion-card-subtitle>Valor: {{ driverData.value }}</ion-card-subtitle>
-    </ion-card-header>
-  </ion-card>
-  <ng-template #noData>
-    <ion-card-header class="ion-text-center">
-      <ion-card-title>No esta en ningun viaje</ion-card-title>
-    </ion-card-header>
-  </ng-template>
+  <ion-modal id="passModal" #modal>
+    <ng-template>
+      <ion-card *ngIf="driverData; else noData" class="ion-text-center">
+        <ion-card-header>
+          <ion-card-title>{{ driverData.name }} {{ driverData.lName }}</ion-card-title>
+          <ion-card-subtitle>Correo: {{ driverData.mail }}</ion-card-subtitle>
+          <br>
+          <ion-icon name="car" size="large"></ion-icon>
+          <ion-card-subtitle>Patente: {{ driverData.patent }}</ion-card-subtitle>
+          <ion-card-subtitle>Capacidad: {{ driverData.capacity }}</ion-card-subtitle>
+          <ion-card-subtitle>Pasajeros: {{ driverData.passengers.length }}</ion-card-subtitle>
+          <ion-card-subtitle>Valor: {{ driverData.value }}</ion-card-subtitle>
+        </ion-card-header>
+      </ion-card>
+      <ng-template #noData>
+        <ion-card-header class="ion-text-center">
+          <ion-card-title>No esta en ningun viaje</ion-card-title>
+        </ion-card-header>
+      </ng-template>
+    </ng-template>
+  </ion-modal>
 </ion-content>
