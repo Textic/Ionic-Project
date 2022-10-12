@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalService } from '../global.service';
-import { MenuController } from '@ionic/angular';
+import { LoadingController, MenuController } from '@ionic/angular';
 import { FirestoreService } from '../others/services/firestore.service';
 import { iDriverData, iUserData } from '../others/interfaces/interface';
 import { take } from 'rxjs/operators';
@@ -58,11 +58,12 @@ export class LoginPage implements OnInit {
     name: "",
   }
 
+  loading: any;
   boolean: boolean;
   img: string;
   void: String = "";
 
-  constructor(private activeroute: ActivatedRoute, private service: GlobalService, private router: Router, private menuController: MenuController, private firestore: FirestoreService) {
+  constructor(private activeroute: ActivatedRoute, private service: GlobalService, private router: Router, private menuController: MenuController, private firestore: FirestoreService, private loadingCtrl: LoadingController) {
     this.activeroute.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
         this.dataExtras = this.router.getCurrentNavigation().extras.state.data;
@@ -110,6 +111,9 @@ export class LoginPage implements OnInit {
   }
 
   async send() {
+    this.loading = await this.loadingCtrl.create({
+      message: 'Por favor espere...'
+    });
     this.makeUserData.mail = this.data.mail
     if (this.validateModel(this.data)) {
       this.response = await Http.request({
@@ -118,8 +122,8 @@ export class LoginPage implements OnInit {
       });
       this.loginCheck(this.data.mail, this.data.password, this.response.data.alumnos)
       if (this.boolean == true) {
-        this.service.presentToast("Sesion Iniciada con el email: " + this.data.mail);
-        this.firestore.getCollectionById<iUserData>("Users", this.loginCheckData.mail).pipe(take(1)).subscribe(e => {
+        this.firestore.getCollectionById<iUserData>("Users", this.loginCheckData.mail).pipe(take(1)).subscribe(async e => {
+          await this.loading.present();
           if (!e) {
             this.makeUserData.name = this.loginCheckData.name.substring(0, this.loginCheckData.name.indexOf(" "));
             this.makeUserData.lName = this.loginCheckData.name.substring(this.loginCheckData.name.indexOf(" ") + 1);
@@ -141,6 +145,9 @@ export class LoginPage implements OnInit {
           if (e.number) {
             localStorage.setItem('userNumber', e.number)
           }
+          await this.loading.dismiss();
+          this.router.navigate(['/home']);
+          this.service.presentToast("Sesion Iniciada con el email: " + this.data.mail);
         })
         this.firestore.getCollectionById<iDriverData>("Drivers", this.loginCheckData.mail).pipe(take(1)).subscribe(e => {
           if (!e) {
@@ -187,7 +194,6 @@ export class LoginPage implements OnInit {
           }
         });
         localStorage.setItem('sessionStatus', "true")
-        this.router.navigate(['/home']);
       } else {
         this.service.presentAlert("Usuario Incorrecto!");
       }

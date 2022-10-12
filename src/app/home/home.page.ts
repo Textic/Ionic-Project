@@ -12,12 +12,14 @@ export class HomePage implements OnInit {
 
   constructor(private service: GlobalService, private router: Router, private firestore: FirestoreService) { }
 
+  lsMail: string;
+
   ngOnInit() {
     history.replaceState(null, null, location.href);
   }
 
   ionViewWillEnter() {
-    
+    this.lsMail = localStorage.getItem("userMail")
   }
 
   ionViewDidLeave() {
