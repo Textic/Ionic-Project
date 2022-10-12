@@ -10,28 +10,31 @@ export class ProfilePage implements OnInit {
 
   constructor(private router: Router) { }
 
-  lsMail = localStorage.getItem("userMail")
-  lsName = localStorage.getItem("userName")
-  lsLName = localStorage.getItem("userLName")
-  lsNumber = localStorage.getItem("userNumber")
+  lsMail: string;
+  lsName: string;
+  lsLName: string;
+  lsNumber: string;
 
   ngOnInit() {
-    if (this.lsNumber == null || this.lsNumber == "") {
-      document.getElementById("number").innerHTML = "Sin Número"
-    } else {
-      document.getElementById("number").innerHTML = "+56 " + this.lsNumber
-    }
+    
+  }
 
-    if (this.lsName == null || this.lsName == "") {
-      document.getElementById("name").innerHTML = "Sin Nombre"
+  ionViewDidEnter() {
+    this.lsMail = localStorage.getItem("userMail")
+    this.lsName = localStorage.getItem("userName")
+    this.lsLName = localStorage.getItem("userLName")
+    this.lsNumber = localStorage.getItem("userNumber")
+
+    const number = document.getElementById("number");
+    if (this.lsNumber == null || this.lsNumber == "") {
+      number.innerHTML = "Sin Número"
     } else {
-      document.getElementById("name").innerHTML = this.lsName + " " + this.lsLName
+      number.innerHTML = "+56 " + this.lsNumber
     }
   }
 
   profileEdit() {
     this.router.navigateByUrl('profile-update', { replaceUrl: true });
-    // this.router.navigate(['profile-update'], { replaceUrl: true });
   }
 
   clearSession() {

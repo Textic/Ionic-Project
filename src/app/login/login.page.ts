@@ -5,6 +5,7 @@ import { MenuController } from '@ionic/angular';
 import { FirestoreService } from '../others/services/firestore.service';
 import { iDriverData, iUserData } from '../others/interfaces/interface';
 import { take } from 'rxjs/operators';
+import { Http, HttpResponse } from '@capacitor-community/http'
 // import { Subscription } from 'rxjs';
 
 @Component({
@@ -14,9 +15,7 @@ import { take } from 'rxjs/operators';
 })
 export class LoginPage implements OnInit {
 
-  userData: iUserData[] = []
-
-  // sub: Subscription
+  response: HttpResponse;
 
   makeDriverData: iDriverData = {
     vehicle: "",
@@ -54,6 +53,12 @@ export class LoginPage implements OnInit {
     password: ""
   }
 
+  loginCheckData = {
+    mail: "",
+    name: "",
+  }
+
+  boolean: boolean;
   img: string;
   void: String = "";
 
@@ -82,41 +87,64 @@ export class LoginPage implements OnInit {
     this.menuController.enable(true)
   }
 
-  send() {
+  async loginCheck(mail: string, pass: string, data: any) {
+    const length = data.length;
+    for (let i = 0; i < length; i++) {
+      var username = data[i].username;
+      // remove @duocuc.cl from mail
+      var userMail = mail.split('@duocuc.cl')[0];
+      if (username == userMail && data[i].password == pass) {
+        if (mail.includes("@duocuc.cl")) {
+          this.loginCheckData.mail = mail;
+        } else {
+          this.loginCheckData.mail = mail + "@duocuc.cl"
+        }
+        this.loginCheckData.name = data[i].nombre;
+        this.boolean = true;
+        return
+      }
+    }
+    console.log("No se encontró el usuario");
+    this.boolean = false;
+    return
+  }
+
+  async send() {
     this.makeUserData.mail = this.data.mail
     if (this.validateModel(this.data)) {
-      if (this.data.mail == "dai.gonzalez@duocuc.cl" && this.data.password == "admin" ||
-          this.data.mail == "hola@gmail.com" && this.data.password == "admin" || 
-          this.data.mail == "lol@gmail.com" && this.data.password == "admin" || 
-          this.data.mail == "ja.espindola@duocuc.cl" && this.data.password == "admin" ||
-          this.data.mail == "test1@gmail.com" && this.data.password == "admin" ||
-          this.data.mail == "test2@gmail.com" && this.data.password == "admin") {
+      this.response = await Http.request({
+        method: 'GET',
+        url: 'https://nancyb3a.github.io/Test/usuarios_PGY4121_09.json'
+      });
+      this.loginCheck(this.data.mail, this.data.password, this.response.data.alumnos)
+      if (this.boolean == true) {
         this.service.presentToast("Sesion Iniciada con el email: " + this.data.mail);
-        this.firestore.getCollectionByParameter<iUserData>("Users", "mail", this.data.mail).pipe(take(1)).subscribe(e => {
-          if (e.length == 0) {
-            this.firestore.setCollection("Users", this.makeUserData.mail, this.makeUserData)
-            localStorage.setItem('userMail', this.data.mail)
-          }
-          console.log(e)
-          this.userData = e
-          this.userData.forEach(e => {
-            if (e.mail) {
-              localStorage.setItem('userMail', this.data.mail)
-            }
-            if (e.name) {
-              localStorage.setItem('userName', e.name)
-            }
-            if (e.lName) {
-              localStorage.setItem('userLName', e.lName)
-            }
-            if (e.number) {
-              localStorage.setItem('userNumber', e.number)
-            }
-          })
-        })
-        this.firestore.getCollectionById<iDriverData>("Drivers", this.data.mail).pipe(take(1)).subscribe(e => {
+        this.firestore.getCollectionById<iUserData>("Users", this.loginCheckData.mail).pipe(take(1)).subscribe(e => {
           if (!e) {
-            this.firestore.setCollection("Drivers", this.data.mail, this.makeDriverData)
+            this.makeUserData.name = this.loginCheckData.name.substring(0, this.loginCheckData.name.indexOf(" "));
+            this.makeUserData.lName = this.loginCheckData.name.substring(this.loginCheckData.name.indexOf(" ") + 1);
+            this.makeUserData.mail = this.loginCheckData.mail;
+            this.firestore.setCollection("Users", this.loginCheckData.mail, this.makeUserData)
+            localStorage.setItem('userMail', this.loginCheckData.mail)
+            localStorage.setItem('userName', this.loginCheckData.name.substring(0, this.loginCheckData.name.indexOf(" ")))
+            localStorage.setItem('userLName', this.loginCheckData.name.substring(this.loginCheckData.name.indexOf(" ") + 1))
+          }
+          if (e.mail) {
+            localStorage.setItem('userMail', e.mail)
+          }
+          if (e.name) {
+            localStorage.setItem('userName', e.name)
+          }
+          if (e.lName) {
+            localStorage.setItem('userLName', e.lName)
+          }
+          if (e.number) {
+            localStorage.setItem('userNumber', e.number)
+          }
+        })
+        this.firestore.getCollectionById<iDriverData>("Drivers", this.loginCheckData.mail).pipe(take(1)).subscribe(e => {
+          if (!e) {
+            this.firestore.setCollection("Drivers", this.loginCheckData.mail, this.makeDriverData)
           }
           if (e.vehicle) {
             localStorage.setItem('driverVehicle', e.vehicle)
@@ -159,7 +187,7 @@ export class LoginPage implements OnInit {
           }
         });
         localStorage.setItem('sessionStatus', "true")
-        this.router.navigateByUrl('/home', { replaceUrl: true });
+        this.router.navigate(['/home']);
       } else {
         this.service.presentAlert("Usuario Incorrecto!");
       }

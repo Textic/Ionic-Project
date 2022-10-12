@@ -10,7 +10,7 @@
 <ion-content>
   <ion-card-header>
     <ion-item lines="full">
-      <ion-label position="floating">Email</ion-label>
+      <ion-label position="floating">Email o Nombre de Usuario</ion-label>
       <ion-input type="text" [(ngModel)]="data.mail" [(ngModel)]="dataExtras.mail" minlength="3" maxlength="30" required></ion-input>
     </ion-item>
     <ion-item lines="full">
@@ -20,6 +20,7 @@
     <ion-row>
       <ion-col>
         <ion-button (click)="send()" type="submit" color="danger" expand="block">Iniciar</ion-button>
+        <ion-button (click)="loginCheck()" type="submit" color="danger" expand="block">test</ion-button>
       </ion-col>
     </ion-row>
   </ion-card-header>

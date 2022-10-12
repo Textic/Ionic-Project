@@ -12,16 +12,12 @@ export class HomePage implements OnInit {
 
   constructor(private service: GlobalService, private router: Router, private firestore: FirestoreService) { }
 
-  lsName = localStorage.getItem("userName")
-  lsLName = localStorage.getItem("userLName")
-
   ngOnInit() {
     history.replaceState(null, null, location.href);
   }
 
   ionViewWillEnter() {
-    this.lsName = localStorage.getItem("userName")
-    this.lsLName = localStorage.getItem("userLName")
+    
   }
 
   ionViewDidLeave() {

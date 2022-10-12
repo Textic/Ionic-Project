@@ -18,9 +18,9 @@
           <ion-icon style="font-size: 120px;" name="person-circle-outline"></ion-icon>
         </ion-col>
         <ion-col style="margin-top: 10px; text-align: left;" size="auto">
-          <b id="name" style="font-size: 18px;"></b>
+          <h5 id="name" style="font-size: 18px;">{{ lsName }}</h5>
           <h5 id="number" style="font-size: 15px; font-family: 'Segoe UI';"></h5>
-          <h5 style="font-size: 15px; font-family: 'Segoe UI';">{{ lsMail }}</h5>
+          <h5 id="mail" style="font-size: 15px; font-family: 'Segoe UI';">{{ lsMail }}</h5>
         </ion-col>
       </ion-row>
       <ion-router-link color="dark" (click)="profileEdit()">
