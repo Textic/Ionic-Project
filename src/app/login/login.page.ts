@@ -6,6 +6,7 @@ import { FirestoreService } from '../others/services/firestore.service';
 import { iDriverData, iUserData } from '../others/interfaces/interface';
 import { take } from 'rxjs/operators';
 import { Http, HttpResponse } from '@capacitor-community/http'
+import { LoginService } from '../others/services/login.service';
 // import { Subscription } from 'rxjs';
 
 @Component({
@@ -58,12 +59,14 @@ export class LoginPage implements OnInit {
     name: "",
   }
 
+  loginData: any
+
   loading: any;
   boolean: boolean;
   img: string;
   void: String = "";
 
-  constructor(private activeroute: ActivatedRoute, private service: GlobalService, private router: Router, private menuController: MenuController, private firestore: FirestoreService, private loadingCtrl: LoadingController) {
+  constructor(private activeroute: ActivatedRoute, private service: GlobalService, private router: Router, private menuController: MenuController, private firestore: FirestoreService, private loadingCtrl: LoadingController, private login: LoginService) {
     this.activeroute.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
         this.dataExtras = this.router.getCurrentNavigation().extras.state.data;
@@ -84,30 +87,16 @@ export class LoginPage implements OnInit {
     }
   }
 
-  ionViewWillLeave() {
-    this.menuController.enable(true)
+  ionViewDidEnter() {
+    // this.loginData = {
+    //   mail: "",
+    //   name: "",
+    //   boolean: false
+    // }
   }
 
-  async loginCheck(mail: string, pass: string, data: any) {
-    const length = data.length;
-    for (let i = 0; i < length; i++) {
-      var username = data[i].username;
-      // remove @duocuc.cl from mail
-      var userMail = mail.split('@duocuc.cl')[0];
-      if (username == userMail && data[i].password == pass) {
-        if (mail.includes("@duocuc.cl")) {
-          this.loginCheckData.mail = mail;
-        } else {
-          this.loginCheckData.mail = mail + "@duocuc.cl"
-        }
-        this.loginCheckData.name = data[i].nombre;
-        this.boolean = true;
-        return
-      }
-    }
-    console.log("No se encontró el usuario");
-    this.boolean = false;
-    return
+  ionViewWillLeave() {
+    this.menuController.enable(true)
   }
 
   async send() {
@@ -120,10 +109,15 @@ export class LoginPage implements OnInit {
         method: 'GET',
         url: 'https://nancyb3a.github.io/Test/usuarios_PGY4121_09.json'
       });
-      this.loginCheck(this.data.mail, this.data.password, this.response.data.alumnos)
-      if (this.boolean == true) {
+      await this.loading.present();
+      // this.loginCheck(this.data.mail, this.data.password, this.response.data.alumnos)
+      this.loginData = this.login.loginCheck(this.data.mail, this.data.password, this.response.data.alumnos)
+      if (this.loginData.__zone_symbol__value.boolean == true) {
+        this.loginCheckData = {
+          mail: this.loginData.__zone_symbol__value.mail,
+          name: this.loginData.__zone_symbol__value.name,
+        }
         this.firestore.getCollectionById<iUserData>("Users", this.loginCheckData.mail).pipe(take(1)).subscribe(async e => {
-          await this.loading.present();
           if (!e) {
             this.makeUserData.name = this.loginCheckData.name.substring(0, this.loginCheckData.name.indexOf(" "));
             this.makeUserData.lName = this.loginCheckData.name.substring(this.loginCheckData.name.indexOf(" ") + 1);
@@ -195,9 +189,11 @@ export class LoginPage implements OnInit {
         });
         localStorage.setItem('sessionStatus', "true")
       } else {
+        await this.loading.dismiss();
         this.service.presentAlert("Usuario Incorrecto!");
       }
     } else {
+      await this.loading.dismiss();
       this.service.presentAlert("Falta informacion en los siguientes campos: ", this.void);
     }
   }
