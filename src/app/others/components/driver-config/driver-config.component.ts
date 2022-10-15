@@ -39,14 +39,17 @@ export class DriverConfigComponent implements OnInit {
 
   ionViewWillEnter() {
     const toggle = document.getElementById("toggle");
-    this.data.lat = localStorage.getItem('TEMPdriverLat') ?? "";
-    this.data.lng = localStorage.getItem('TEMPdriverLng') ?? "";
+    this.data.lat = localStorage.getItem('TEMPdriverLat') ?? localStorage.getItem('driverLat') ?? "";
+    this.data.lng = localStorage.getItem('TEMPdriverLng') ?? localStorage.getItem('driverLng') ?? "";
     this.data.locationName = localStorage.getItem('TEMPdriverLocationName') ?? localStorage.getItem('driverLocationName') ?? "";
     if (localStorage.getItem('driverPatent')) {
       toggle.setAttribute("disabled", "false");
       if (this.data.available == "true") {
         toggle.setAttribute("checked", "true");
       }
+    }
+    if(this.data.passengers[0] == '[]') {
+      this.data.passengers = Array();
     }
     for (let i = 0; i < this.data.passengers.length; i++) {
       if (this.data.passengers[i] == "") {
@@ -91,6 +94,9 @@ export class DriverConfigComponent implements OnInit {
     //   this.loading.dismiss();
     //   this.service.presentAlert("Capacidad inválida");
     } else {
+      console.log(this.data);
+      console.log(this.data.passengers);
+      // check if clear []
       this.firestore.updateCollection("Drivers", this.lsMail, this.data);
       localStorage.setItem('driverVehicle', this.data.vehicle);
       localStorage.setItem('driverCapacity', this.data.capacity);

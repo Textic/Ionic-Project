@@ -4,6 +4,7 @@ import { take } from 'rxjs/operators';
 import { GlobalService } from 'src/app/global.service';
 import { iDriverData, iUserData } from '../../interfaces/interface';
 import { FirestoreService } from '../../services/firestore.service';
+import { Geolocation } from '@awesome-cordova-plugins/geolocation/ngx';
 
 declare var google;
 
@@ -14,7 +15,7 @@ declare var google;
 })
 export class DriverMapComponent implements OnInit, AfterViewInit {
 
-  constructor(private service: GlobalService, private firestore: FirestoreService) { }
+  constructor(private service: GlobalService, private firestore: FirestoreService, private geolocation: Geolocation) { }
 
   @ViewChild('mapDriver') mapRef: ElementRef<HTMLElement>;
   map = null;
@@ -26,6 +27,8 @@ export class DriverMapComponent implements OnInit, AfterViewInit {
 
   lsLat = Number(localStorage.getItem('driverLat'));
   lsLng = Number(localStorage.getItem('driverLng'));
+
+  watch = this.geolocation.watchPosition();
 
   ngOnInit() {
     const modal = document.querySelector('ion-modal');
@@ -92,6 +95,24 @@ export class DriverMapComponent implements OnInit, AfterViewInit {
         lng: -71.5329167
       },
       zoom: 15,
+    });
+    this.watch.subscribe((e: any) => {  // current location
+      console.log(e);
+      if (this.marker) {  //    check if marker is already added
+        this.marker.setMap(null);
+      }
+      this.marker = new google.maps.Marker({
+        position: {
+          lat: e.coords.latitude,
+          lng: e.coords.longitude
+        },
+        map: this.map,
+        title: 'Tu localizacion',
+        icon: {
+          url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+        }
+      });
+      this.marker.setMap(this.map);
     });
     if (localStorage.getItem('theme') == 'dark') {
       this.map.setOptions({

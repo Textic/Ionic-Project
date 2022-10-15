@@ -147,7 +147,7 @@ export class DriverMapSetComponent implements OnInit, AfterViewInit {
     // geolocateControl.classList.add("custom-map-control-button");
     this.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(geolocateControl);
     geolocateControl.addEventListener("click", () => {               // geolocate function on click
-      this.geolocation.getCurrentPosition().then(async (resp) => {
+      this.geolocation.getCurrentPosition().then((resp) => {
         console.log(resp);
         this.lat = resp.coords.latitude.toString()     //save the latitude
         this.lng = resp.coords.longitude.toString()     //save the longitude
@@ -157,21 +157,15 @@ export class DriverMapSetComponent implements OnInit, AfterViewInit {
             lng: resp.coords.longitude
           }
         })
-        this.response = await Http.request({
-          method: 'GET',
-          url: 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + this.lat + "," + this.lng + '&key=' + environment.googleMapsConfig.apiKey
-        });
         if (this.marker) {  //    check if marker is already added
           this.marker.setMap(null);
         }
-        console.log(this.response);
         this.marker = new google.maps.Marker({  // set marker
           position: {
             lat: resp.coords.latitude,
             lng: resp.coords.longitude
           },
           map: this.map,
-          title: this.response.data.results[0].formatted_address,
           draggable: true
         });
         google.maps.event.addListener(this.marker, 'dragend', (event) => { // on drag listener to get the new coordinates of the marker and update the lat and lng variables

@@ -62,7 +62,6 @@ export class LoginPage implements OnInit {
   loginData: any
 
   loading: any;
-  boolean: boolean;
   img: string;
   void: String = "";
 
@@ -85,14 +84,6 @@ export class LoginPage implements OnInit {
     } else {
       this.img = "assets/img/TELLEVO2_BLUR.png"
     }
-  }
-
-  ionViewDidEnter() {
-    // this.loginData = {
-    //   mail: "",
-    //   name: "",
-    //   boolean: false
-    // }
   }
 
   ionViewWillLeave() {
