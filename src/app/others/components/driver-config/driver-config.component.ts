@@ -17,7 +17,7 @@ export class DriverConfigComponent implements OnInit {
   loading: any;
   lsMail = localStorage.getItem('userMail');
   void: string = "";
-  data: iDriverData = {
+  data = {     // iDriverData withou passengers
     vehicle: localStorage.getItem('driverVehicle') ?? "",
     capacity: localStorage.getItem('driverCapacity') ?? "",
     patent: localStorage.getItem('driverPatent') ?? "",
@@ -30,7 +30,6 @@ export class DriverConfigComponent implements OnInit {
     lName: localStorage.getItem('userLName') ?? "",
     mail: localStorage.getItem('userMail') ?? "",
     available: localStorage.getItem('driverAvailable') ?? "false",
-    passengers: localStorage.getItem('driverPassengers')?.split(',') ?? []
   }
 
   ngOnInit() {
@@ -46,14 +45,6 @@ export class DriverConfigComponent implements OnInit {
       toggle.setAttribute("disabled", "false");
       if (this.data.available == "true") {
         toggle.setAttribute("checked", "true");
-      }
-    }
-    if(this.data.passengers[0] == '[]') {
-      this.data.passengers = Array();
-    }
-    for (let i = 0; i < this.data.passengers.length; i++) {
-      if (this.data.passengers[i] == "") {
-        this.data.passengers.splice(i, 1);
       }
     }
   }
@@ -94,9 +85,6 @@ export class DriverConfigComponent implements OnInit {
     //   this.loading.dismiss();
     //   this.service.presentAlert("Capacidad inválida");
     } else {
-      console.log(this.data);
-      console.log(this.data.passengers);
-      // check if clear []
       this.firestore.updateCollection("Drivers", this.lsMail, this.data);
       localStorage.setItem('driverVehicle', this.data.vehicle);
       localStorage.setItem('driverCapacity', this.data.capacity);
@@ -106,7 +94,6 @@ export class DriverConfigComponent implements OnInit {
       localStorage.setItem('driverLat', this.data.lat);
       localStorage.setItem('driverLng', this.data.lng);
       localStorage.setItem('driverValue', this.data.value);
-      localStorage.setItem('driverPassengers', this.data.passengers.toString());
       localStorage.setItem('TEMPdriverLocationName', this.data.locationName);
       toggle.setAttribute("disabled", "false");
       this.loading.dismiss();
