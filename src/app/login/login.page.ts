@@ -141,7 +141,7 @@ export class LoginPage implements OnInit {
                 if (e.number) {
                   localStorage.setItem('userNumber', e.number)
                 }
-                this.service.presentToast("Sesion Iniciada con el email: " + this.data.mail);
+                this.service.presentToast("Sesion Iniciada con el email: " + this.data.mail, 'middle');
               })
               this.firestore.getCollectionById<iDriverData>("Drivers", this.loginCheckData.mail).pipe(take(1)).subscribe(e => {
                 if (!e) {
@@ -198,7 +198,7 @@ export class LoginPage implements OnInit {
             }
           }
         }
-        console.log("No se encontró el usuario");
+        this.service.presentAlert("Usuario Incorrecto", this.void);
         this.tempLoginData.mail = "";
         this.tempLoginData.name = "";
         this.tempLoginData.boolean = false;

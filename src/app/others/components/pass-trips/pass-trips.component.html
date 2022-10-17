@@ -1,5 +1,10 @@
 <ion-content>
   <!-- <ion-card type="button" (click)="xd()" *ngFor="let i of tripsData"> -->
+    <ion-card color="success" class="ion-text-center">
+      <ion-label>
+        <h1>Usted ya esta en un Viaje</h1>
+      </ion-label>
+    </ion-card>
   <ion-card type="button" *ngFor="let i of tripsData">
     <ion-grid *ngIf="i.available == 'true' && checkSpace(i.capacity, i.passengers) && lsMail != i.mail;">
       <ion-row>

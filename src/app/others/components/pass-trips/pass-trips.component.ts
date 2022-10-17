@@ -15,10 +15,14 @@ export class PassTripsComponent implements OnInit {
 
   constructor(private firestore: FirestoreService, private service: GlobalService, private alertController: AlertController, private router: Router) { }
 
-  tripsData: any
+  tripsData: Array<any>;
   lsMail: string;
   loading: any;
   bool: boolean;
+
+  data = {
+    passengers: Array()
+  }
 
   ngOnInit() {
   }
@@ -28,11 +32,7 @@ export class PassTripsComponent implements OnInit {
     //   message: 'Por favor espere...'
     // });
     // this.loading.present();
-    this.firestore.getCollection('Drivers').pipe(take(1)).subscribe(e => {
-      // console.log(e);
-      this.tripsData = e;
-
-    });
+    this.refreshTripData();
     this.lsMail = localStorage.getItem('userMail');
     // this.loading.dismiss();
   }
@@ -84,18 +84,19 @@ export class PassTripsComponent implements OnInit {
   }
 
   requestTrip(driverMail: string, userMail: string) {
+    this.data = {
+      passengers: Array()
+    }
     this.checkIfIAmPassenger();
     this.firestore.getCollectionById<iDriverData>('Drivers', driverMail).pipe(take(1)).subscribe(e => {
       // console.log(e);
       if(this.bool) {
         this.service.presentAlert('Usted ya esta en un viaje');
       } else {
-        e.passengers.push(userMail);
-        this.firestore.updateCollection('Drivers', driverMail, e);
-        this.firestore.getCollection('Drivers').pipe(take(1)).subscribe(e => {
-          // console.log(e);
-          this.tripsData = e;
-        });
+        this.data.passengers = e.passengers;
+        this.data.passengers.push(userMail);
+        this.firestore.updateCollection('Drivers', driverMail, this.data);
+        // this.refreshTripData();
       }
     })
   }
@@ -132,11 +133,21 @@ export class PassTripsComponent implements OnInit {
 
 
   doRefresh(event) {
+    this.refreshTripData(event);
+  }
+
+  refreshTripData(event?) {
     this.firestore.getCollection('Drivers').pipe(take(1)).subscribe(e => {
-      // console.log(e);
+      // for (let i = 0; i < e.length; i++) {
+      //   if (this.checkSpace(e[i].capacity, e[i].passengers) && e[i].available == 'true') {
+      //     this.tripsData.push(e[i]);
+      //     console.log(e[i]);
+      //   }
+      // }
       this.tripsData = e;
-      
-      event.target.complete();
+      if (event) {
+        event.target.complete();
+      }
     });
   }
 }
