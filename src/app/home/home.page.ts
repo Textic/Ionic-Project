@@ -13,6 +13,7 @@ export class HomePage implements OnInit {
   constructor(private service: GlobalService, private router: Router, private firestore: FirestoreService) { }
 
   lsMail: string;
+  lsName: string;
 
   ngOnInit() {
     history.replaceState(null, null, location.href);
@@ -20,6 +21,7 @@ export class HomePage implements OnInit {
 
   ionViewWillEnter() {
     this.lsMail = localStorage.getItem("userMail")
+    this.lsName = localStorage.getItem("userName")
   }
 
   ionViewDidLeave() {

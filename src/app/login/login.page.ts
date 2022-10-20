@@ -114,6 +114,7 @@ export class LoginPage implements OnInit {
           mail: this.loginData.__zone_symbol__value.mail,
           name: this.loginData.__zone_symbol__value.name,
         }
+        localStorage.setItem('userName', this.loginData.__zone_symbol__value.name.substring(0, this.loginCheckData.name.indexOf(" ")))
         this.firestore.getCollectionById<iUserData>("Users", this.loginCheckData.mail).pipe(take(1)).subscribe(e => {
           if (!e) {
             this.makeUserData.name = this.loginCheckData.name.substring(0, this.loginCheckData.name.indexOf(" "));
