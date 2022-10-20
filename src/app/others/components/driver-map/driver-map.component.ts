@@ -29,7 +29,7 @@ export class DriverMapComponent implements OnInit, AfterViewInit {
   lsLng = Number(localStorage.getItem('driverLng'));
 
   sub: any;
-  watch = this.geolocation.watchPosition();
+  driverWatch = this.geolocation.watchPosition();
 
   ngOnInit() {
     const modal = document.querySelector('ion-modal');
@@ -98,8 +98,8 @@ export class DriverMapComponent implements OnInit, AfterViewInit {
       },
       zoom: 15,
     });
-    this.watch.subscribe((e: any) => {  // current location
-      console.log(e);
+    this.driverWatch.subscribe((e: any) => {  // current location
+      // console.log(e);
       if (this.marker) {  //    check if marker is already added
         this.marker.setMap(null);
       }
