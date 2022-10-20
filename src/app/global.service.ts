@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastController, AlertController, LoadingController } from '@ionic/angular';
+import { Subscription } from 'rxjs'
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +11,8 @@ export class GlobalService {
   constructor(public toastController: ToastController, private alertController: AlertController, private router: Router, private loadingCtrl: LoadingController) { }
 
   loading: any;
-  driverMapSub: any;
-  passMapSub: any;
+  driverMapSub: Subscription;
+  passMapSub: Subscription;
 
   checkSesion() {
     if (!localStorage.getItem("sessionStatus")) {
