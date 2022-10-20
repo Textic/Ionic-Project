@@ -28,6 +28,7 @@ export class DriverMapComponent implements OnInit, AfterViewInit {
   lsLat = Number(localStorage.getItem('driverLat'));
   lsLng = Number(localStorage.getItem('driverLng'));
 
+  sub: any;
   watch = this.geolocation.watchPosition();
 
   ngOnInit() {
@@ -71,7 +72,7 @@ export class DriverMapComponent implements OnInit, AfterViewInit {
       }
     }, 2000);
 
-    this.firestore.getCollectionById<iDriverData>('Drivers', this.lsMail).subscribe(e => {
+    this.sub = this.firestore.getCollectionById<iDriverData>('Drivers', this.lsMail).subscribe(e => {
       this.usersData = [];
       for(let i = 0; i < e.passengers.length; i++) {
         this.firestore.getCollectionById<iUserData>('Users', e.passengers[i]).pipe(take(1)).subscribe(resp => {
@@ -80,6 +81,7 @@ export class DriverMapComponent implements OnInit, AfterViewInit {
       }
       // console.log(this.usersData);
     });
+    this.service.driverMapSub = this.sub
   }
 
   ionViewDidLeave() {

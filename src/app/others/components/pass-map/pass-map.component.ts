@@ -53,6 +53,7 @@ export class PassMapComponent implements OnInit, AfterViewInit {
     this.sub.unsubscribe();
   }
 
+
   async ionViewWillEnter() {
     this.loading = await this.loadingCtrl.create({
       message: 'Por favor espere...'
@@ -68,6 +69,7 @@ export class PassMapComponent implements OnInit, AfterViewInit {
             this.driverData = resp;
             this.createRoute();
           });
+          this.service.passMapSub = this.sub
         }
       }
     });

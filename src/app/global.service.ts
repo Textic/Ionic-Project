@@ -10,6 +10,8 @@ export class GlobalService {
   constructor(public toastController: ToastController, private alertController: AlertController, private router: Router, private loadingCtrl: LoadingController) { }
 
   loading: any;
+  driverMapSub: any;
+  passMapSub: any;
 
   checkSesion() {
     if (!localStorage.getItem("sessionStatus")) {

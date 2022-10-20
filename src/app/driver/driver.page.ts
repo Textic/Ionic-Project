@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { take } from 'rxjs/operators';
-import { iDriverData } from '../others/interfaces/interface';
+import { GlobalService } from '../global.service';
 import { FirestoreService } from '../others/services/firestore.service';
+
 
 @Component({
   selector: 'app-driver',
@@ -11,7 +11,7 @@ import { FirestoreService } from '../others/services/firestore.service';
 })
 export class DriverPage implements OnInit {
 
-  constructor(private router: Router, private firestore: FirestoreService) { }
+  constructor(private router: Router, private firestore: FirestoreService, private service: GlobalService) { }
 
   lsMail = localStorage.getItem('userMail');
 
@@ -22,6 +22,7 @@ export class DriverPage implements OnInit {
   click() {
     const modal = document.querySelector('ion-modal');
     modal.isOpen = false;
+    this.service.driverMapSub.unsubscribe();
   }
 
   ionViewWilEnter() {

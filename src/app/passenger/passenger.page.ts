@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { GlobalService } from '../global.service';
 
 @Component({
   selector: 'app-passenger',
@@ -8,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class PassengerPage implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private service: GlobalService) { }
 
   ngOnInit() {
     
@@ -17,6 +18,7 @@ export class PassengerPage implements OnInit {
   click() {
     const modal = document.querySelector('ion-modal');
     modal.isOpen = false;
+    this.service.passMapSub.unsubscribe();
   }
 
   onChangeSegment($event){
