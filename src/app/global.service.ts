@@ -12,7 +12,9 @@ export class GlobalService {
 
   loading: any;
   driverMapSub: Subscription;
+  driverWatch: Subscription;
   passMapSub: Subscription;
+  passWatch: Subscription;
 
   checkSesion() {
     if (!localStorage.getItem("sessionStatus")) {

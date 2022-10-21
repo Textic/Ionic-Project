@@ -17,8 +17,13 @@ export class PassengerPage implements OnInit {
 
   click() {
     const modal = document.querySelector('ion-modal');
-    modal.isOpen = false;
+    try {
+      modal.isOpen = false;
+    } catch (error) {
+      console.log("Error: " + error);
+    }
     this.service.passMapSub.unsubscribe();
+    this.service.passWatch.unsubscribe();
   }
 
   onChangeSegment($event){

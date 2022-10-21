@@ -21,8 +21,13 @@ export class DriverPage implements OnInit {
 
   click() {
     const modal = document.querySelector('ion-modal');
-    modal.isOpen = false;
+    try {
+      modal.isOpen = false;
+    } catch (error) {
+      console.log("Error: " + error);
+    }
     this.service.driverMapSub.unsubscribe();
+    this.service.driverWatch.unsubscribe();
   }
 
   ionViewWilEnter() {

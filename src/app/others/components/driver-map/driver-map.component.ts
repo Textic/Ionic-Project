@@ -5,6 +5,7 @@ import { GlobalService } from 'src/app/global.service';
 import { iDriverData, iUserData } from '../../interfaces/interface';
 import { FirestoreService } from '../../services/firestore.service';
 import { Geolocation } from '@awesome-cordova-plugins/geolocation/ngx';
+import { Subscription } from 'rxjs';
 
 declare var google;
 
@@ -27,9 +28,6 @@ export class DriverMapComponent implements OnInit, AfterViewInit {
 
   lsLat = Number(localStorage.getItem('driverLat'));
   lsLng = Number(localStorage.getItem('driverLng'));
-
-  sub: any;
-  driverWatch = this.geolocation.watchPosition();
 
   ngOnInit() {
     const modal = document.querySelector('ion-modal');
@@ -72,7 +70,7 @@ export class DriverMapComponent implements OnInit, AfterViewInit {
       }
     }, 2000);
 
-    this.sub = this.firestore.getCollectionById<iDriverData>('Drivers', this.lsMail).subscribe(e => {
+    this.service.driverMapSub = this.firestore.getCollectionById<iDriverData>('Drivers', this.lsMail).subscribe(e => {
       this.usersData = [];
       for(let i = 0; i < e.passengers.length; i++) {
         this.firestore.getCollectionById<iUserData>('Users', e.passengers[i]).pipe(take(1)).subscribe(resp => {
@@ -81,7 +79,6 @@ export class DriverMapComponent implements OnInit, AfterViewInit {
       }
       // console.log(this.usersData);
     });
-    this.service.driverMapSub = this.sub
   }
 
   ionViewDidLeave() {
@@ -98,8 +95,8 @@ export class DriverMapComponent implements OnInit, AfterViewInit {
       },
       zoom: 15,
     });
-    this.driverWatch.subscribe((e: any) => {  // current location
-      // console.log(e);
+    this.service.driverWatch = this.geolocation.watchPosition().subscribe((e: any) => {  // current location
+      console.log(e);
       if (this.marker) {  //    check if marker is already added
         this.marker.setMap(null);
       }

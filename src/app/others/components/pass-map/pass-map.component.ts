@@ -26,8 +26,6 @@ export class PassMapComponent implements OnInit, AfterViewInit {
   driverDataNull: iDriverData
   loading: any;
   myDriver: string;
-  sub: any;
-  passWatch = this.geolocation.watchPosition();
 
   ngOnInit() {
     const modal = document.querySelector('ion-modal');
@@ -52,7 +50,7 @@ export class PassMapComponent implements OnInit, AfterViewInit {
   ionViewWillLeave() {
     const modal = document.querySelector('ion-modal');
     modal.isOpen = false;
-    this.sub.unsubscribe();
+    this.service.passMapSub.unsubscribe();
   }
 
 
@@ -66,12 +64,11 @@ export class PassMapComponent implements OnInit, AfterViewInit {
       for(let i = 0; i < e.length; i++) {
         if(e[i].passengers.includes(localStorage.getItem('userMail'))) {
           this.myDriver = e[i].mail;
-          this.sub = this.firestore.getCollectionById<iDriverData>('Drivers', this.myDriver).subscribe(resp => {
+          this.service.passMapSub = this.firestore.getCollectionById<iDriverData>('Drivers', this.myDriver).subscribe(resp => {
             // console.log(resp);
             this.driverData = resp;
             this.createRoute();
           });
-          this.service.passMapSub = this.sub
         }
       }
     });
@@ -105,7 +102,7 @@ export class PassMapComponent implements OnInit, AfterViewInit {
     this.firestore.getCollectionById<iDriverData>('Drivers', this.driverData.mail).pipe(take(1)).subscribe(e => {
       const index = e.passengers.indexOf(localStorage.getItem('userMail'));
       e.passengers.splice(index, 1);
-      this.sub.unsubscribe();
+      this.service.passMapSub.unsubscribe();
       this.firestore.updateCollection('Drivers', this.driverData.mail, e);
       this.driverData = this.driverDataNull;
       this.directionsRenderer.setMap(null);
@@ -122,8 +119,8 @@ export class PassMapComponent implements OnInit, AfterViewInit {
       },
       zoom: 15,
     });
-    this.passWatch.subscribe((e: any) => {  // current location
-      // console.log(e);
+    this.service.passWatch = this.geolocation.watchPosition().subscribe((e: any) => {  // current location
+      console.log(e);
       if (this.marker) {  //    check if marker is already added
         this.marker.setMap(null);
       }
