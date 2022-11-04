@@ -40,15 +40,23 @@ export class DriverMapComponent implements OnInit, AfterViewInit {
     modal.initialBreakpoint = 0.2;
   }
 
+  ngAfterViewInit() {
+    this.createMap();
+  }
+
+  checkPassengers() {
+    if(this.usersData.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   ionViewWillLeave() {
     const modal = document.querySelector('ion-modal');
     modal.isOpen = false;
     this.service.driverMapSub.unsubscribe();
     this.service.driverWatch.unsubscribe();
-  }
-
-  ngAfterViewInit() {
-    this.createMap();
   }
 
   ionViewDidEnter() {

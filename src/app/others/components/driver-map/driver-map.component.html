@@ -6,6 +6,11 @@
   <ion-content class="ion-padding">
     <ion-modal id="modalDriver">
       <ng-template>
+        <ion-header *ngIf="!checkPassengers()">
+          <ion-toolbar class="ion-text-center">
+            <ion-title>Sin Pasajeros</ion-title>
+          </ion-toolbar>
+        </ion-header>
         <ion-content class="ion-padding">
           <!-- <ion-searchbar placeholder="Search"></ion-searchbar> -->
           <ion-list>

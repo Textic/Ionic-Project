@@ -34,4 +34,8 @@
       <ion-toggle id="toggle" (ionChange)="toggleAvailability($event)" disabled="true"></ion-toggle>
     </ion-item>
   </ion-card>
+  <ion-card *ngIf="checkPassengers()" class="ion-text-center">
+    <ion-icon style="font-size: 50px;" name="alert-circle-outline"></ion-icon>
+    <ion-card-title>No puede guardar si tiene pasajeros activos</ion-card-title>
+  </ion-card>
 </ion-content>

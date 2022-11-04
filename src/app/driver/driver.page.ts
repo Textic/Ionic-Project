@@ -28,6 +28,7 @@ export class DriverPage implements OnInit {
     }
     this.service.driverMapSub.unsubscribe();
     this.service.driverWatch.unsubscribe();
+    this.service.driverConfig.unsubscribe();
   }
 
   ionViewWilEnter() {

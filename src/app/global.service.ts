@@ -13,6 +13,7 @@ export class GlobalService {
   loading: any;
   driverMapSub: Subscription;
   driverWatch: Subscription;
+  driverConfig: Subscription;
   passMapSub: Subscription;
   passWatch: Subscription;
 

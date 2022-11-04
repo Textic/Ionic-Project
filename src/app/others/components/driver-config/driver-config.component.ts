@@ -32,6 +32,8 @@ export class DriverConfigComponent implements OnInit {
     available: localStorage.getItem('driverAvailable') ?? "false",
   }
 
+  passengers: number;
+
   ngOnInit() {
 
   }
@@ -47,6 +49,23 @@ export class DriverConfigComponent implements OnInit {
         toggle.setAttribute("checked", "true");
       }
     }
+    this.service.driverConfig = this.firestore.getCollectionById("Drivers", localStorage.getItem('userMail')).subscribe((e: any) => {
+      this.passengers = e.passengers.length;
+      console.log(this.passengers);
+    });
+  }
+
+  ionViewWillLeave() {
+    this.service.driverConfig.unsubscribe();
+  }
+
+  checkPassengers() {
+    if (this.passengers != 0) {
+      return true;
+    } else {
+      return false;
+    }
+
   }
 
   async toggleAvailability($event) {
@@ -84,6 +103,9 @@ export class DriverConfigComponent implements OnInit {
     // } else if (this.data.capacity.substring(0, 1).toUpperCase() == "E" || this.data.capacity.substring(1, 2).toUpperCase() == "E") {
     //   this.loading.dismiss();
     //   this.service.presentAlert("Capacidad inválida");
+    } else if (this.passengers != 0) {
+      this.loading.dismiss();
+      this.service.presentAlert("No puede cambiar la configuración si tiene pasajeros");
     } else {
       this.firestore.updateCollection("Drivers", this.lsMail, this.data);
       localStorage.setItem('driverVehicle', this.data.vehicle);
