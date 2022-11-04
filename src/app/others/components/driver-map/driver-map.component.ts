@@ -43,6 +43,8 @@ export class DriverMapComponent implements OnInit, AfterViewInit {
   ionViewWillLeave() {
     const modal = document.querySelector('ion-modal');
     modal.isOpen = false;
+    this.service.driverMapSub.unsubscribe();
+    this.service.driverWatch.unsubscribe();
   }
 
   ngAfterViewInit() {
