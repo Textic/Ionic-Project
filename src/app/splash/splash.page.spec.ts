@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { SplashPage } from './splash.page';
@@ -10,7 +11,7 @@ describe('SplashPage', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ SplashPage ],
-      imports: [IonicModule.forRoot()]
+      imports: [IonicModule.forRoot(), RouterTestingModule.withRoutes([{path: 'login', component: SplashPage}])]
     }).compileComponents();
 
     fixture = TestBed.createComponent(SplashPage);

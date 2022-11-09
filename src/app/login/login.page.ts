@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { GlobalService } from '../global.service';
 import { LoadingController, MenuController } from '@ionic/angular';
 import { FirestoreService } from '../others/services/firestore.service';
@@ -70,13 +70,7 @@ export class LoginPage implements OnInit {
   img: string;
   void: String = "";
 
-  constructor(private activeroute: ActivatedRoute, private service: GlobalService, private router: Router, private menuController: MenuController, private firestore: FirestoreService, private loadingCtrl: LoadingController, private login: LoginService) {
-    this.activeroute.queryParams.subscribe(params => {
-      if (this.router.getCurrentNavigation().extras.state) {
-        this.dataExtras = this.router.getCurrentNavigation().extras.state.data;
-      }
-    });
-  }
+  constructor(private service: GlobalService, private router: Router, private menuController: MenuController, private firestore: FirestoreService, private loadingCtrl: LoadingController, private login: LoginService) {}
 
   ngOnInit() {
     history.replaceState(null, null, location.href);
@@ -89,10 +83,12 @@ export class LoginPage implements OnInit {
     } else {
       this.img = "assets/img/TELLEVO2_BLUR.png"
     }
+    this.dataExtras.mail = localStorage.getItem('extraMail');
   }
 
   ionViewWillLeave() {
     this.menuController.enable(true)
+    localStorage.removeItem('extraMail');
   }
 
   async send() {
@@ -195,7 +191,6 @@ export class LoginPage implements OnInit {
       this.tempLoginData.name = "";
       this.tempLoginData.boolean = false;
       await this.loading.dismiss();
-      // });
     } else {
       await this.loading.dismiss();
       this.service.presentAlert("Falta informacion en los siguientes campos: ", this.void);

@@ -6,7 +6,7 @@ import { iDriverData } from '../../interfaces/interface';
 import { FirestoreService } from '../../services/firestore.service';
 import { Geolocation } from '@awesome-cordova-plugins/geolocation/ngx';
 
-declare var google;
+export declare var google;
 
 @Component({
   selector: 'app-pass-map',

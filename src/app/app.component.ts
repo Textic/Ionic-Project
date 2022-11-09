@@ -9,9 +9,9 @@ import { GlobalService } from './global.service';
 export class AppComponent {
   public appPages = [
     { title: 'Inicio', url: '/home', icon: 'grid' },
+    { title: 'Configuraciones', url: '/config', icon: 'settings' },
     // { title: 'Mapa', url: '/map', icon: 'map' },
     // { title: 'Viajes', url: '/trips', icon: 'navigate-circle' },
-    { title: 'Configuraciones', url: '/config', icon: 'settings' },
   ];
 
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];

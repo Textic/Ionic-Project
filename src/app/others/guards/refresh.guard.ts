@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { CanLoad, Route, UrlSegment, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
-import { FirestoreService } from '../services/firestore.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RefreshGuard implements CanLoad {
 
-  constructor(private firestore: FirestoreService) { }
+  constructor() { }
 
   canLoad(
     route: Route,
@@ -19,7 +18,6 @@ export class RefreshGuard implements CanLoad {
     } else {
       document.body.setAttribute("color-theme", "light");
     }
-
     return true;
   }
 }
