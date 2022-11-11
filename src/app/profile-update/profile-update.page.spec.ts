@@ -10,7 +10,7 @@ describe('ProfileUpdatePage', () => {
   let component: ProfileUpdatePage;
   let fixture: ComponentFixture<ProfileUpdatePage>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ ProfileUpdatePage ],
       imports: [IonicModule.forRoot(), AngularFireModule.initializeApp(environment.firebaseConfig), AngularFirestoreModule]
@@ -19,7 +19,7 @@ describe('ProfileUpdatePage', () => {
     fixture = TestBed.createComponent(ProfileUpdatePage);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();

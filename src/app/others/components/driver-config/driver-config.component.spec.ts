@@ -10,7 +10,7 @@ describe('DriverConfigComponent', () => {
   let component: DriverConfigComponent;
   let fixture: ComponentFixture<DriverConfigComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ DriverConfigComponent ],
       imports: [IonicModule.forRoot(), AngularFireModule.initializeApp(environment.firebaseConfig), AngularFirestoreModule]
@@ -19,7 +19,7 @@ describe('DriverConfigComponent', () => {
     fixture = TestBed.createComponent(DriverConfigComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
