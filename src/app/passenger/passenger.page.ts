@@ -20,10 +20,22 @@ export class PassengerPage implements OnInit {
     try {
       modal.isOpen = false;
     } catch (error) {
-      console.log("Error: " + error);
+      console.log("Modal doesn't exist");
     }
-    this.service.passMapSub.unsubscribe();
-    this.service.passWatch.unsubscribe();
+
+    try {
+      this.service.passMapSub.unsubscribe();
+      console.log("Service PassMapSub Unsubscribed");
+    } catch {
+      console.log("Service PassMapSub not found");
+    }
+
+    try {
+      this.service.passWatch.unsubscribe();
+      console.log("Service PassWatch Unsubscribed");
+    } catch {
+      console.log("Service PassWatch not found");
+    }
   }
 
   onChangeSegment($event){

@@ -24,11 +24,29 @@ export class DriverPage implements OnInit {
     try {
       modal.isOpen = false;
     } catch (error) {
-      console.log("Error: " + error);
+      console.log("Modal doesn't exist");
     }
-    this.service.driverMapSub.unsubscribe();
-    this.service.driverWatch.unsubscribe();
-    this.service.driverConfig.unsubscribe();
+
+    try {
+      this.service.driverMapSub.unsubscribe();
+      console.log("Service DriverMapSub Unsubscribed");
+    } catch (error) {
+      console.log("Service DriverMapSub not found");
+    }
+
+    try {
+      this.service.driverWatch.unsubscribe();
+      console.log("Service DriverWatch Unsubscribed");
+    } catch (error) {
+      console.log("Service DriverWatch not found");
+    }
+    
+    try {
+      this.service.driverConfig.unsubscribe();
+      console.log("Service DriverConfig Unsubscribed");
+    } catch (error) {
+      console.log("Service DriverConfig not found");
+    }
   }
 
   ionViewWilEnter() {
