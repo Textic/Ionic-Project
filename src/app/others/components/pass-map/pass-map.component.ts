@@ -50,8 +50,19 @@ export class PassMapComponent implements OnInit, AfterViewInit {
   ionViewWillLeave() {
     const modal = document.querySelector('ion-modal');
     modal.isOpen = false;
-    this.service.passMapSub.unsubscribe();
-    this.service.passWatch.unsubscribe();
+    try {
+      this.service.passMapSub.unsubscribe();
+      console.log('Service PassMap unsubscribed');
+    } catch {
+      console.log('Service PassMap not found');
+    }
+
+    try {
+      this.service.passWatch.unsubscribe();
+      console.log('Service PassWatch unsubscribed');
+    } catch {
+      console.log('Service PassWatch not found');
+    }
   }
 
 
