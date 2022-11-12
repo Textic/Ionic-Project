@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.tex.tellevoapp',
-  appName: 'TeLlevoApp',
+  appId: 'io.ionic.starter',
+  appName: 'MyProject',
   webDir: 'www',
   bundledWebRuntime: false
 };
