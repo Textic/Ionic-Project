@@ -23,6 +23,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="textic.github.io" />
+            </intent-filter>
+
         </activity>
 
         <provider
@@ -33,10 +40,14 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths"></meta-data>
+            <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyBUZpDOtzM1O85n-4A6vtp81ORR99FFv-o" />
         </provider>
     </application>
 
     <!-- Permissions -->
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-feature android:name="android.hardware.location.gps" />
 </manifest>

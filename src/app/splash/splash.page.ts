@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Animation, AnimationController, NavController } from '@ionic/angular';
+import { Animation, AnimationController, MenuController, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-splash',
@@ -11,7 +11,7 @@ export class SplashPage implements OnInit {
 
   @ViewChild('squareA', { read: ElementRef, static: true }) squareA: ElementRef;
   
-  constructor(public router: Router, private animationCtrl: AnimationController, public navCtrl: NavController) {
+  constructor(public router: Router, private animationCtrl: AnimationController, public navCtrl: NavController, private menuController: MenuController) {
     setTimeout(() => {
       if (localStorage.getItem('sessionStatus') == "true") {
         this.router.navigateByUrl('home')
@@ -35,5 +35,13 @@ export class SplashPage implements OnInit {
       ]);
 
     squareA.play()
+  }
+
+  ionViewWillEnter() {
+    this.menuController.enable(false)
+  }
+
+  ionViewWillLeave() {
+    this.menuController.enable(true)
   }
 }

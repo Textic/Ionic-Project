@@ -74,10 +74,10 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
     history.replaceState(null, null, location.href);
-    this.menuController.enable(false)
   }
-
+  
   ionViewWillEnter() {
+    this.menuController.enable(false)
     if (localStorage.getItem('theme') == "dark") {
       this.img = "assets/img/TELLEVO1_Back.png"
     } else {

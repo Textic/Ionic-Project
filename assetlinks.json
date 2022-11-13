@@ -1,0 +1,8 @@
+[{
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target" : {
+        "namespace": "android_app",
+        "package_name": "com.tex.tellevoapp",
+        "sha256_cert_fingerprints": ["C9:B4:44:EC:A7:B7:1A:6B:48:D8:93:63:1F:98:76:6C:20:22:D8:A7:FC:87:65:A3:B5:61:30:A9:57:8E:4B:56"]
+    }
+}]

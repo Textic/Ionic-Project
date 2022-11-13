@@ -74,6 +74,10 @@ const routes: Routes = [
     canLoad: [RefreshGuard]
   },
   {
+    path: 'deeplink/:id',
+    loadChildren: () => import('./deeplink/deeplink.module').then( m => m.DeeplinkPageModule)
+  },
+  {
     path: '**',
     loadChildren: () => import('./error/error.module').then(m => m.ErrorPageModule),
     canLoad: [RefreshGuard]
