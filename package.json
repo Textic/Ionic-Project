@@ -34,6 +34,7 @@
     "@ionic-native/geolocation": "^5.36.0",
     "@ionic-native/google-maps": "^5.5.0",
     "@ionic/angular": "^6.1.9",
+    "capacitor-email-composer": "^1.2.1",
     "cordova-plugin-geolocation": "^4.1.0",
     "firebase": "^9.10.0",
     "ionicons": "^6.0.3",

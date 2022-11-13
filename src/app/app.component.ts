@@ -1,7 +1,10 @@
 import { Component, NgZone } from '@angular/core';
-import { Router } from '@angular/router';
 import { App, URLOpenListenerEvent } from '@capacitor/app';
+import { AlertController } from '@ionic/angular';
+import { take } from 'rxjs/operators';
 import { GlobalService } from './global.service';
+import { FirestoreService } from './others/services/firestore.service';
+
 
 @Component({
   selector: 'app-root',
@@ -15,29 +18,121 @@ export class AppComponent {
     // { title: 'Mapa', url: '/map', icon: 'map' },
     // { title: 'Viajes', url: '/trips', icon: 'navigate-circle' },
   ];
+  bool: boolean;
+  data = {
+    passengers: Array()
+  }
 
   // public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
-  constructor(private zone: NgZone, private router: Router, private service: GlobalService) {
+  constructor(private zone: NgZone, private service: GlobalService, private alertController: AlertController, private firestore: FirestoreService) {
     this.deepLink();
   }
 
   deepLink() {
     App.addListener('appUrlOpen', (data: URLOpenListenerEvent) => {
       this.zone.run(() => {
-        const link = data.url;
-        // remove https://textic.github.io/ from https://textic.github.io/deeplink/6969
-        var path = link.replace('https://textic.github.io/', '');
-        if (path) {
-          this.service.presentAlert('Path', path);
-          this.router.navigateByUrl(path);
-        }
+        this.presentAlertConfirm(data);
       });
+    });
+  }
 
-    
-      // console.log('App opened with URL: ' + data.url);
+  async presentAlertConfirm(data: URLOpenListenerEvent) {
+    const alert = await this.alertController.create({
+      header: 'Quiere agregar a este usuario de pasajero?',
+      mode: 'ios',
+      buttons: [
+        {
+        text: 'Cancelar',
+        handler: () => {}
+        },
+        {
+          text: 'Aceptar',
+          handler: () => {
+            this.addUserToPassengers(data);
+          }
+        }
+      ]
     });
 
+    await alert.present();
+  };
 
+  checkPassengers(user: string) {
+    this.firestore.getCollection('Drivers').pipe(take(1)).subscribe((e: any) => {
+      // console.log(e);
+      for(let i = 0; i < e.length; i++) {
+        // console.log(e[i].passengers);
+        if(e[i].passengers.includes(user)) {
+          this.bool = true;
+          return
+        }
+      }
+      this.bool = false;
+      return
+    });
+  }
+
+  addUserToPassengers(data: URLOpenListenerEvent) {
+    const link = data.url;
+    const users = link.replace('https://textic.github.io/', '');
+    var usersArray = users.split('/');
+    if (usersArray.length > 2 || usersArray.length == 0) {
+      this.service.presentAlert("Error", "Cantidad incorrecta de usuarios");
+    } else if (usersArray[0] == localStorage.getItem('userMail')) {
+      this.firestore.getCollection('Drivers').pipe(take(1)).subscribe((e: any) => {
+        for (let i = 0; i < e.length; i++) {
+          if (e[i].passengers.includes(usersArray[1])) {
+            this.service.presentAlert("Error", "El usuario ya esta en un viaje");
+            return
+          }
+        }
+        this.firestore.getCollectionById('Drivers', localStorage.getItem("userMail")).pipe(take(1)).subscribe((e: any) => {
+          this.data.passengers = e.passengers;
+          this.data.passengers.push(usersArray[1]);
+          this.firestore.updateCollection('Drivers', localStorage.getItem("userMail"), this.data);
+          this.service.presentAlert("Agregado", "Se ha agregado a " + usersArray[1] + " como pasajero");
+        })
+      });
+    } else {
+      this.service.presentAlert("Error", "Hubo un error al procesar el enlace");
+    }
+  }
+
+  closeSubscribers() {
+    try {
+      this.service.driverMapSub.unsubscribe();
+      console.log("Service DriverMapSub Unsubscribed");
+    } catch (error) {
+      console.log("Service DriverMapSub not found");
+    }
+  
+    try {
+      this.service.driverWatch.unsubscribe();
+      console.log("Service DriverWatch Unsubscribed");
+    } catch (error) {
+      console.log("Service DriverWatch not found");
+    }
+  
+    try {
+      this.service.driverConfig.unsubscribe();
+      console.log("Service DriverConfig Unsubscribed");
+    } catch (error) {
+      console.log("Service DriverConfig not found");
+    }
+  
+    try {
+      this.service.passMapSub.unsubscribe();
+      console.log("Service PassMapSub Unsubscribed");
+    } catch (error) {
+      console.log("Service PassMapSub not found");
+    }
+  
+    try {
+      this.service.passWatch.unsubscribe();
+      console.log("Service PassWatch Unsubscribed");
+    } catch (error) {
+      console.log("Service PassWatch not found");
+    }
   }
 }
