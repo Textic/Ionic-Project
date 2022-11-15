@@ -49,8 +49,15 @@ export class DriverPage implements OnInit {
     }
   }
 
-  ionViewWilEnter() {
+  click2() {
+    const modal = document.querySelector('ion-modal');
+    try {
+      modal.isOpen = false;
+    } catch (error) {
+      console.log("Modal doesn't exist");
+    }
 
+    this.router.navigate(['profile']);
   }
 
   onChangeSegment($event){

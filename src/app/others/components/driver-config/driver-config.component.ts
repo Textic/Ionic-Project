@@ -106,6 +106,9 @@ export class DriverConfigComponent implements OnInit {
     } else if (this.passengers != 0) {
       this.loading.dismiss();
       this.service.presentAlert("No puede cambiar la configuración si tiene pasajeros");
+    } else if (Number(this.data.value) > 3500) {
+      this.loading.dismiss();
+      this.service.presentAlert("El valor no puede ser mayor a $3500");
     } else {
       this.firestore.updateCollection("Drivers", this.lsMail, this.data);
       localStorage.setItem('driverVehicle', this.data.vehicle);

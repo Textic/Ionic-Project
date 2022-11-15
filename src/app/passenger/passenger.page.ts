@@ -38,6 +38,17 @@ export class PassengerPage implements OnInit {
     }
   }
 
+  click2() {
+    const modal = document.querySelector('ion-modal');
+    try {
+      modal.isOpen = false;
+    } catch (error) {
+      console.log("Modal doesn't exist");
+    }
+
+    this.router.navigate(['profile']);
+  }
+
   onChangeSegment($event){
     let value = $event.detail.value;
     this.router.navigate(['passenger/' + value]);
