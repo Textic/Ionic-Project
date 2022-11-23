@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { GlobalService } from '../global.service';
-import { FirestoreService } from '../others/services/firestore.service';
 
 @Component({
   selector: 'app-home',
@@ -10,13 +9,16 @@ import { FirestoreService } from '../others/services/firestore.service';
 })
 export class HomePage implements OnInit {
 
-  constructor(private service: GlobalService, private router: Router, private firestore: FirestoreService) { }
+  constructor(private service: GlobalService, private router: Router) { }
 
   lsMail: string;
   lsName: string;
 
   ngOnInit() {
     history.replaceState(null, null, location.href);
+    if (localStorage.getItem("lastLocation")) {
+      this.router.navigateByUrl(localStorage.getItem("lastLocation"));
+    }
   }
 
   ionViewWillEnter() {

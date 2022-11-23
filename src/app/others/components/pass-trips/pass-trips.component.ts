@@ -5,7 +5,7 @@ import { GlobalService } from 'src/app/global.service';
 import { AlertController } from '@ionic/angular';
 import { iDriverData } from '../../interfaces/interface';
 import { Router } from '@angular/router';
-import { EmailComposer } from 'capacitor-email-composer';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-pass-trips',
@@ -14,7 +14,7 @@ import { EmailComposer } from 'capacitor-email-composer';
 })
 export class PassTripsComponent implements OnInit {
 
-  constructor(private firestore: FirestoreService, private service: GlobalService, private alertController: AlertController, private router: Router) { }
+  constructor(private firestore: FirestoreService, private service: GlobalService, private alertController: AlertController, private router: Router, private http: HttpClient) { }
 
   tripsData: Array<any>;
   lsMail: string;
@@ -86,8 +86,19 @@ export class PassTripsComponent implements OnInit {
     }
   }
 
-  sendMail(mail: string) {
-    window.open('mailto:' + mail + '?cc=' + localStorage.getItem("userMail") + '&subject=Soliciutd%20de%20viaje&body=Hola%2C%20me%20gustar%C3%ADa%20solicitar%20un%20viaje.%20Estos%20son%20mis%20datos%3A%0D%0A%0D%0ANombre%3A%20' + localStorage.getItem("userName") + ' ' + localStorage.getItem("userLName") + '%0D%0ACorreo%3A%20' + localStorage.getItem("userMail") + '%0D%0A%0D%0APresiona%20este%20link%20para%20agregarme%20a%20tu%20viaje: textic.github.io/'+ mail + '/' + localStorage.getItem("userMail"));
+  async sendMail(mail: string) {
+    // window.open('mailto:' + mail + '?cc=' + localStorage.getItem("userMail") + '&subject=Soliciutd%20de%20viaje&body=Hola%2C%20me%20gustar%C3%ADa%20solicitar%20un%20viaje.%20Estos%20son%20mis%20datos%3A%0D%0A%0D%0ANombre%3A%20' + localStorage.getItem("userName") + ' ' + localStorage.getItem("userLName") + '%0D%0ACorreo%3A%20' + localStorage.getItem("userMail") + '%0D%0A%0D%0APresiona%20este%20link%20para%20agregarme%20a%20tu%20viaje: textic.github.io/'+ mail + '/' + localStorage.getItem("userMail"));
+    this.http.post('https://api.emailjs.com/api/v1.0/email/send', {
+      service_id: "service_ea9m6hb",
+      template_id: "template_exd0vyl",
+      user_id: "h87C7zlJq9KKUZeFF",
+      template_params: {
+        dmail: mail,
+        name: localStorage.getItem("userName") + ' ' + localStorage.getItem("userLName"),
+        mail: localStorage.getItem("userMail")
+      },
+      accessToken: "MXv3_sbv-w9U82sNZxAA4"
+    }).pipe(take(1)).subscribe();
   }
 
   requestTrip(driverMail: string, userMail: string) {

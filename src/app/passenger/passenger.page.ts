@@ -12,7 +12,14 @@ export class PassengerPage implements OnInit {
   constructor(private router: Router, private service: GlobalService) { }
 
   ngOnInit() {
-    
+  }
+
+  ionViewWillEnter() {
+    localStorage.setItem('lastLocation', 'passenger/pass-trips');
+  }
+
+  ionViewWillLeave() {
+    localStorage.removeItem("lastLocation")
   }
 
   click() {

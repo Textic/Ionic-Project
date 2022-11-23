@@ -92,6 +92,7 @@ export class LoginPage implements OnInit {
   }
 
   async send() {
+    localStorage.clear();
     this.loading = await this.loadingCtrl.create({
       message: 'Por favor espere...'
     });
@@ -181,6 +182,7 @@ export class LoginPage implements OnInit {
         });
         await this.loading.dismiss();
         localStorage.setItem('sessionStatus', "true")
+        this.data.password = "";
         this.router.navigate(['/home']);
       } else {
         await this.loading.dismiss();

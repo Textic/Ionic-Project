@@ -4,6 +4,7 @@ import { AlertController } from '@ionic/angular';
 import { take } from 'rxjs/operators';
 import { GlobalService } from './global.service';
 import { FirestoreService } from './others/services/firestore.service';
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
@@ -25,7 +26,7 @@ export class AppComponent {
 
   // public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
-  constructor(private zone: NgZone, private service: GlobalService, private alertController: AlertController, private firestore: FirestoreService) {
+  constructor(private zone: NgZone, private service: GlobalService, private alertController: AlertController, private firestore: FirestoreService, private http: HttpClient) {
     this.deepLink();
   }
 
@@ -92,12 +93,24 @@ export class AppComponent {
           this.data.passengers.push(usersArray[1]);
           this.firestore.updateCollection('Drivers', localStorage.getItem("userMail"), this.data);
           this.service.presentAlert("Agregado", "Se ha agregado a " + usersArray[1] + " como pasajero");
+          this.http.post('https://api.emailjs.com/api/v1.0/email/send', {
+            service_id: "service_ea9m6hb",
+            template_id: "template_wdrk48p",
+            user_id: "h87C7zlJq9KKUZeFF",
+            template_params: {
+              pmail: usersArray[1],
+              dname: localStorage.getItem('userName')
+            },
+            accessToken: "MXv3_sbv-w9U82sNZxAA4"
+          }).pipe(take(1)).subscribe();
         })
       });
     } else {
       this.service.presentAlert("Error", "Hubo un error al procesar el enlace");
     }
   }
+
+  // Por Favor revise la aplicacion para ver mas detalles sobre el viaje y el conductor
 
   closeSubscribers() {
     try {

@@ -19,6 +19,14 @@ export class DriverPage implements OnInit {
   ngOnInit() {
   }
 
+  ionViewWillEnter() {
+    localStorage.setItem('lastLocation', 'driver/driver-config');
+  }
+
+  ionViewWillLeave() {
+    localStorage.removeItem("lastLocation")
+  }
+
   click() {
     const modal = document.querySelector('ion-modal');
     try {
