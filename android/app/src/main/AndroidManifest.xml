@@ -40,7 +40,7 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths"></meta-data>
-            <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyBUZpDOtzM1O85n-4A6vtp81ORR99FFv-o" />
+            <meta-data android:name="com.google.android.geo.API_KEY" android:value="" /> <!-- Add your Google Maps API key here -->
         </provider>
     </application>
 
